@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SimuladorTransito">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/lib/SimuladorTransito.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
