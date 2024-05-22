@@ -1,18 +1,24 @@
 package sistemas;
 import dominio.Cochera;
+import dominio.Estadia;
 import dominio.Etiqueta;
 import dominio.Parking;
 import dominio.Propietario;
 import dominio.TipoVehiculo;
 import dominio.Vehiculo;
 import java.util.ArrayList;
+import observador.Observable;
 
-public class Fachada {
+public class Fachada extends Observable{
+    
+    public enum Eventos{cambioListaEstadias};
+    
     private SistemaParking sParking = new SistemaParking();
     private SistemaEtiqueta sEtiqueta = new SistemaEtiqueta();
     private SistemaCochera sCochera = SistemaCochera.getInstancia();
     private SistemaPropietario sPropietario = SistemaPropietario.getInstancia();
     private SistemaVehiculo sVehiculo = SistemaVehiculo.getInstancia();
+    private SistemaEstadia sEstadia = new SistemaEstadia();
 
     
     private static Fachada instancia = new Fachada();
@@ -74,6 +80,26 @@ public class Fachada {
     
     public ArrayList<Parking> obtenerParkings(){
         return sParking.obtenerParkings();
+    }
+    
+    public Vehiculo obtenerVehiculoPorPatente(String patente){
+        return sVehiculo.obtenerVehiculoPorPatente(patente);
+    }
+    
+    public Cochera obtenerCocheraPorCodigo(String codCochera){
+        return sCochera.obtenerCocheraPorCodigo(codCochera);
+    }
+    
+    public void iniciarEstadia(String patenteVehiculo, String codigoCochera){
+       sEstadia.ingreso(obtenerVehiculoPorPatente(patenteVehiculo), obtenerCocheraPorCodigo(codigoCochera));
+    }
+    
+    public void finalizarEstadia(String patenteVehiculo, String codigoCochera) {
+        sEstadia.egreso(obtenerVehiculoPorPatente(patenteVehiculo), obtenerCocheraPorCodigo(codigoCochera));
+    }
+    
+   public ArrayList<Estadia> obtenerEstadias(){
+        return sEstadia.obtenerEstadias();
     }
     
 }

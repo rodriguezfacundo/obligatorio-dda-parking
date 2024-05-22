@@ -12,7 +12,7 @@ import simuladortransito.Transitable;
  *
  * @author PC
  */
-public class SensorDePrueba implements Sensor{
+/*public class SensorDePrueba implements Sensor{
     
     @Override
     public void ingreso(Transitable transitable, Estacionable estacionable) {
@@ -29,4 +29,4 @@ public class SensorDePrueba implements Sensor{
         v.setEstacionado(false);
         c.setOcupada(false);
     }
-}
+}*/

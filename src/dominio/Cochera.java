@@ -2,19 +2,18 @@ package dominio;
 
 import interfaces.IEtiquetable;
 import java.util.ArrayList;
-import simuladortransito.Estacionable;
 import sistemas.SistemaCochera;
 
 
 
-public class Cochera implements IEtiquetable, Estacionable  {
+public class Cochera implements IEtiquetable  {
     private static int contadorID = 1;
     private String codigo;
     private Parking parking;
     private Vehiculo vehiculo;
     private boolean estaOcupada;
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
-    private String tipo;
+    private ArrayList<Estadia> estadias = new ArrayList<>();
 
 
     public Cochera( Parking parking) {
@@ -61,23 +60,36 @@ public class Cochera implements IEtiquetable, Estacionable  {
             return sb.toString();
         }
         
-        public void setOcupada(boolean ocupada) {
-        this.estaOcupada = ocupada;
-    }
+        public void setOcupada(boolean estaOcupada) {
+             this.estaOcupada = estaOcupada;
+        }
+        
+        public boolean estaOcupada(){
+            return this.estaOcupada ? true : false;
+        }
+        
+        public String getEstadoToString(){
+            if (!this.estaOcupada){
+                return "Libre";
+            } else{
+                return "Ocupada";
+            }
+        }
+        
+        public ArrayList<Estadia> getEstadias(){
+            return this.estadias;
+        }
+        
+        public void agregarEstadia(Estadia estadia){
+            this.estadias.add(estadia);
+        }
 
-    @Override
-    public boolean esDiscapacitado() {
-        return tipo.equals("DISCAPACITADO");
-    }
-
-    @Override
-    public boolean esElectrico() {
-        return  tipo.equals("ELECTRICO");
-    }
-
-    @Override
-    public boolean esEmpleado() {
-        return tipo.equals("EMPLEADO");
-    }
-
+        public Estadia getEstadiaSinFinalizar() {
+            for(Estadia est:this.estadias){
+                if(!est.getEsFinalizada()){
+                    return est;
+                }
+            }
+            return null;
+        }
 }

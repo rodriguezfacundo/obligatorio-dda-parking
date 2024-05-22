@@ -22,4 +22,13 @@ public class SistemaCochera {
     public ArrayList<Cochera> obtenerCocheras(){
         return this.cocheras;
     }
+
+    public Cochera obtenerCocheraPorCodigo(String codCochera) {
+        for (Cochera cochera : cocheras) {
+            if (cochera.getCodigo().equals(codCochera)) {
+                return cochera;
+            }
+        }
+        return null;
+    }
 }

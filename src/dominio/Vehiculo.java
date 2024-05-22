@@ -2,17 +2,13 @@ package dominio;
 
 import interfaces.IEtiquetable;
 import java.util.ArrayList;
-import simuladortransito.Transitable;
 
-public class Vehiculo implements IEtiquetable, Transitable{
+public class Vehiculo implements IEtiquetable{
     private String patente;
     private TipoVehiculo tipo;
     private Propietario propietario;
     private ArrayList<Etiqueta> etiquetas;
     private ArrayList<Multa> infracciones;
-    private boolean estacionado;
-   private String tipoEtiqueta;
-
 
     public Vehiculo(String patente, TipoVehiculo tipo, Propietario propietario) {
         this.patente = patente;
@@ -20,7 +16,6 @@ public class Vehiculo implements IEtiquetable, Transitable{
         this.propietario = propietario;
         this.etiquetas = new ArrayList<>();
         this.infracciones = new ArrayList<>();
-        this.estacionado = false;
     }
 
     public String getPatente() {
@@ -95,21 +90,4 @@ public class Vehiculo implements IEtiquetable, Transitable{
         this.etiquetas.add(etiqueta);
     }
     
-    public void setEstacionado(boolean estacionado) {
-        this.estacionado = estacionado;
-    }
-    @Override
-    public boolean esDiscapacitado() {
-        return tipoEtiqueta.equals("DISCAPACITADO");
-    }
-
-    @Override
-    public boolean esElectrico() {
-        return  tipoEtiqueta.equals("ELECTRICO");
-    }
-
-    @Override
-    public boolean esEmpleado() {
-        return tipoEtiqueta.equals("EMPLEADO");
-    }
 }

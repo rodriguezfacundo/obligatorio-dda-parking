@@ -66,5 +66,14 @@ public class SistemaVehiculo {
                 }
                 return tipoVehiculoARetornar;
             }
+
+        public Vehiculo obtenerVehiculoPorPatente(String patente) {
+            for (Vehiculo v : vehiculos) {
+                if (v.getPatente().equals(patente)) {
+                    return v;
+                }
+            }
+            return null;
+        }
+ }
         
-}

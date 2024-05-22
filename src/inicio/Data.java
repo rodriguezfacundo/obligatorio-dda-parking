@@ -44,14 +44,14 @@ public class Data {
         }
         
         //Se utiliza solamente para ver las cocheras creadas y que estan disponibles para estacionar
-        public ArrayList<Estacionable> obtenerCocheras(){
+       /* public ArrayList<Estacionable> obtenerCocheras(){
             ArrayList<Estacionable> estacionablesToReturn = new ArrayList<>();
             for(Cochera cochera:fachada.obtenerCocheras() ){
                                estacionablesToReturn.add(cochera);
 
             }
             return estacionablesToReturn;
-        }
+        }*/
 
         //Se registran los tipos de vehiculos solicitados.
         public void registrarTipoVehiculo (){
@@ -76,14 +76,14 @@ public class Data {
         }
         
         //Solamente para ver los vehiculos registrados
-        public ArrayList<Transitable> obtenerVehiculos(){
+        /*public ArrayList<Transitable> obtenerVehiculos(){
            ArrayList<Transitable> transitablesToReturn = new ArrayList<>();
             for(Vehiculo vehiculo:fachada.obtenerVehiculos() ){
                                transitablesToReturn.add(vehiculo);
 
             }
             return transitablesToReturn;
-        }
+        }*/
 
         //Se utiliza solamente para ver los propietarios creados
          public ArrayList<Propietario> obtenerPropietarios (){
