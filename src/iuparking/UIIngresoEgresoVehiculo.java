@@ -74,20 +74,20 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
 
         tableEstadias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Vehiculo", "Cochera", "Entrada", "Salida", "Estado", "Anomalias"
+                "Vehiculo", "Cochera", "Entrada", "Salida", "Estado", "Anomalias", "Tiempo Estacionado", "Valor Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.Object.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, false
+                true, true, true, true, true, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -107,38 +107,34 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(177, 177, 177)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnSaleVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(58, 58, 58)
-                                .addComponent(btnEntraVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(59, 59, 59)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(comboCocheras, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(345, 345, 345)
                         .addComponent(jLabel3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 834, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(54, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(177, 177, 177)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(126, 126, 126))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSaleVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                        .addComponent(btnEntraVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(115, 115, 115)
+                        .addComponent(comboCocheras, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(99, 99, 99)
-                        .addComponent(btnEntraVehiculo))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,14 +143,18 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(comboCocheras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnSaleVehiculo)
-                .addGap(64, 64, 64)
+                            .addComponent(comboVehiculos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(93, 93, 93))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnEntraVehiculo)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnSaleVehiculo)
+                        .addGap(64, 64, 64)))
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
 
         pack();
@@ -162,12 +162,12 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
 
     private void btnEntraVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntraVehiculoActionPerformed
         // TODO add your handling code here:
-        registrarEstadia();
+        ingresoVehiculo();
     }//GEN-LAST:event_btnEntraVehiculoActionPerformed
 
     private void btnSaleVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaleVehiculoActionPerformed
         // TODO add your handling code here:
-        finalizarEstadia();
+        egresoVehiculo();
     }//GEN-LAST:event_btnSaleVehiculoActionPerformed
 
     /**
@@ -246,19 +246,22 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
         model.setRowCount(0); 
 
         for (Estadia estadia : estadias) {
-            Object[] row = new Object[6];
+            Object[] row = new Object[8];
             row[0] = estadia.getVehiculo().getPatente();
             row[1] = estadia.getCochera().getCodigo();
             row[2] = estadia.getEntrada();
             row[3] = estadia.getSalida();
             row[4] = estadia.getEsFinalizadaToString();
-            row[5] = estadia.getAnomaliasAsignadas();
+            row[5] = estadia.getAnomalia() != null ? estadia.getAnomalia().getCodigoError() : "";
+            row[6] = estadia.getCantidadUT();
+            row[7] = estadia.getValorFacturado();
+
             model.addRow(row);
         }
     }
     
     
-   private void registrarEstadia() {
+   private void ingresoVehiculo() {
         String patenteVehiculo = (String) comboVehiculos.getSelectedItem();
         String codigoCochera = (String) comboCocheras.getSelectedItem();
 
@@ -269,7 +272,7 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
         }
     }
    
-   private void finalizarEstadia(){
+   private void egresoVehiculo(){
         String patenteVehiculo = (String) comboVehiculos.getSelectedItem();
         String codigoCochera = (String) comboCocheras.getSelectedItem();
         
@@ -282,7 +285,7 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        if(evento.equals(Fachada.Eventos.cambioListaEstadias)){
+        if(evento.equals(Fachada.Eventos.entraVehiculo) || evento.equals(Fachada.Eventos.saleVehiculo)){
             cargarEstadias();            
         } else {
         }

@@ -1,10 +1,9 @@
 package inicio;
 
-import dominio.Cochera;
 import dominio.Parking;
 import dominio.Propietario;
-import dominio.Vehiculo;
 import java.util.ArrayList;
+import java.util.Random;
 import simuladortransito.Estacionable;
 import simuladortransito.Transitable;
 import sistemas.Fachada;
@@ -21,17 +20,13 @@ public class Data {
         
         //Se registran dos parkings
         public  void agregarParkings(){
-            fachada.agregarParking("ParkGuardián", "Av. Italia 2500", 75);
-            fachada.agregarParking("ParkCordón", "Av. 18 de Julio 1500", 66);
+            fachada.agregarParking("ParkGuardián", "Av. Italia 2500", 75, new Random().nextDouble(10 - 0.25 + 1 ) + 0.25);
+            fachada.agregarParking("ParkCordón", "Av. 18 de Julio 1500", 66,new Random().nextDouble(10 - 0.25 + 1 ) + 0.25);
         }
-       
         
         public void agregarEtiquetas(){
-            fachada.agregarEtiqueta("Discapacitado");
-            fachada.agregarEtiqueta("Eléctrico");
-            fachada.agregarEtiqueta("Empleado");
+            fachada.agregarEtiquetas();
         }
-
         
         //Se generan 50 propietarios
         public void generarPropietarios (){
@@ -43,16 +38,6 @@ public class Data {
             fachada.asignarEtiquetasCocheras();
         }
         
-        //Se utiliza solamente para ver las cocheras creadas y que estan disponibles para estacionar
-       /* public ArrayList<Estacionable> obtenerCocheras(){
-            ArrayList<Estacionable> estacionablesToReturn = new ArrayList<>();
-            for(Cochera cochera:fachada.obtenerCocheras() ){
-                               estacionablesToReturn.add(cochera);
-
-            }
-            return estacionablesToReturn;
-        }*/
-
         //Se registran los tipos de vehiculos solicitados.
         public void registrarTipoVehiculo (){
             fachada.registrarTipoVehiculo("Motocicleta");
@@ -61,7 +46,6 @@ public class Data {
             fachada.registrarTipoVehiculo("Pasajeros");
         }
        
-        
         //Se registran los vehiculos (el doble de vehículos que total de cocheras considerando todos los parkings)
         public void registrarVehiculos(){
                     fachada.registrarVehiculos();
@@ -75,16 +59,6 @@ public class Data {
                     fachada.inicializarTarifasEnParking();
         }
         
-        //Solamente para ver los vehiculos registrados
-        /*public ArrayList<Transitable> obtenerVehiculos(){
-           ArrayList<Transitable> transitablesToReturn = new ArrayList<>();
-            for(Vehiculo vehiculo:fachada.obtenerVehiculos() ){
-                               transitablesToReturn.add(vehiculo);
-
-            }
-            return transitablesToReturn;
-        }*/
-
         //Se utiliza solamente para ver los propietarios creados
          public ArrayList<Propietario> obtenerPropietarios (){
              return fachada.obtenerPropietarios();
@@ -94,6 +68,14 @@ public class Data {
          public ArrayList<Parking> obtenerParkings(){
              return fachada.obtenerParkings();
         }
+         
+         public ArrayList<Transitable> obtenerTransitables(){
+             return fachada.obtenerVehiculosTransitables();
+         }
+         
+         public ArrayList<Estacionable> obtenerEstacionables(){
+             return fachada.obtenerCocherasEstacionables();
+         }
          
          public void cargarData(){
              this.agregarParkings();
@@ -105,8 +87,4 @@ public class Data {
              this.asignarEtiquetasVehiculos();
              this.inicializarTarifasEnParking();
          }
-        
-
-
-
 }

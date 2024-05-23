@@ -1,17 +1,29 @@
 package dominio;
 
 public class Multa {
-    private String multa;
+    private String nombre;
+    private Etiqueta etiqueta;
+    private Estadia estadia;
 
-    public Multa(String multa) {
-        this.multa = multa;
+    public Multa(Etiqueta etiqueta, Estadia estadia) {
+        this.nombre = "Multa por etiqueta" + etiqueta.getNombre();
+        this.etiqueta = etiqueta;
+        this.estadia = estadia;
+    }
+    
+    public Double valorMulta(int UT, double valorFacturado){
+        return this.etiqueta.calcularMulta(UT, valorFacturado);
+    }
+    
+     public Etiqueta getEtiqueta() {
+        return etiqueta;
     }
 
-    public String getMulta() {
-        return multa;
+    public Estadia getEstadia() {
+        return estadia;
     }
 
-    public void setMulta(String multa) {
-        this.multa = multa;
+    public String getNombre() {
+        return nombre;
     }
 }

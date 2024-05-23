@@ -2,20 +2,22 @@ package dominio;
 
 import interfaces.IEtiquetable;
 import java.util.ArrayList;
+import simuladortransito.Transitable;
 
-public class Vehiculo implements IEtiquetable{
+public class Vehiculo implements IEtiquetable, Transitable{
     private String patente;
     private TipoVehiculo tipo;
     private Propietario propietario;
     private ArrayList<Etiqueta> etiquetas;
-    private ArrayList<Multa> infracciones;
+    private ArrayList<Multa> multas;
+    private boolean estaEstacionado;
 
     public Vehiculo(String patente, TipoVehiculo tipo, Propietario propietario) {
         this.patente = patente;
         this.tipo = tipo;
         this.propietario = propietario;
         this.etiquetas = new ArrayList<>();
-        this.infracciones = new ArrayList<>();
+        this.multas = new ArrayList<>();
     }
 
     public String getPatente() {
@@ -51,11 +53,11 @@ public class Vehiculo implements IEtiquetable{
     }
 
     public ArrayList<Multa> getInfracciones() {
-        return infracciones;
+        return multas;
     }
 
     public void setInfracciones(ArrayList<Multa> infracciones) {
-        this.infracciones = infracciones;
+        this.multas = infracciones;
     }
  
     
@@ -75,9 +77,9 @@ public class Vehiculo implements IEtiquetable{
             }
             sb.append("]}");
             sb.append(", Infracciones=[");
-            for (int i = 0; i < this.infracciones.size(); i++) {
-                sb.append(this.infracciones.get(i).getMulta());
-                if (i < this.infracciones.size() - 1) {
+            for (int i = 0; i < this.multas.size(); i++) {
+                sb.append(this.multas.get(i).getNombre());
+                if (i < this.multas.size() - 1) {
                     sb.append(", ");
                 }
             }
@@ -88,6 +90,38 @@ public class Vehiculo implements IEtiquetable{
     @Override
     public void agregarEtiqueta(Etiqueta etiqueta) {
         this.etiquetas.add(etiqueta);
+    }
+    
+    public boolean tieneEtiqueta(Class<? extends Etiqueta> etiquetaClass) {
+        for (Etiqueta etiqueta : etiquetas) {
+            if (etiquetaClass.isInstance(etiqueta)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setEstacionado(boolean b) {
+        this.estaEstacionado = b;
+    }
+    
+    public boolean estaEstacionado(){
+        return this.estaEstacionado;
+    }
+
+    @Override
+    public boolean esDiscapacitado() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean esElectrico() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean esEmpleado() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

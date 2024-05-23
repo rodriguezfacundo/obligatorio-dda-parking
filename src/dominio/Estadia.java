@@ -10,19 +10,26 @@ public class Estadia {
     private Cochera cochera;
     private float valorFacturado;
     private boolean esFinalizada;
-    private ArrayList<Anomalia> anomalias = new ArrayList<>();
-
-    /*public Estadia(Date fechaEntrada, int horaEntrada, Date fechaSalida, int horaSalida, float valorFacturado) {
-        this.fechaEntrada = fechaEntrada;
-        this.horaEntrada = horaEntrada;
-        this.fechaSalida = fechaSalida;
-        this.horaSalida = horaSalida;
-        this.valorFacturado = valorFacturado;
-    }*/
+    private Anomalia anomalia;
+    private TemporizadorUT temporizadorUT;
+    private double factorDemanda;
+    private double precioBase;
+    private ArrayList<Multa> multas = new ArrayList<>();
+    
+    public Estadia(Vehiculo vehiculo, Cochera cochera, double precioBase, double factorDemanda){
+        this.cochera = cochera;
+        this.vehiculo = vehiculo;
+        this.temporizadorUT = new TemporizadorUT();
+        this.temporizadorUT.start();
+        this.factorDemanda = factorDemanda;
+        this.precioBase = precioBase;
+    }
     
     public Estadia(Vehiculo vehiculo, Cochera cochera){
         this.cochera = cochera;
         this.vehiculo = vehiculo;
+        this.temporizadorUT = new TemporizadorUT();
+        this.temporizadorUT.start();
     }
     
     public float getValorFacturado() {
@@ -56,6 +63,7 @@ public class Estadia {
             this.esFinalizada = true;
             this.cochera.setOcupada(false);
             this.salida = new Date();
+            temporizadorUT.stop();
         }
     }
     public boolean getEsFinalizada(){
@@ -73,12 +81,12 @@ public class Estadia {
         this.cochera.setOcupada(estaOcupada);
     }
     
-    public ArrayList<Anomalia> getAnomalias(){
-        return this.anomalias;
+    public Anomalia getAnomalia(){
+        return this.anomalia;
     }
     
-    public void agregarAnomalia(Anomalia anomalia){
-        this.anomalias.add(anomalia);
+    public void setAnomalia(Anomalia anomalia){
+        this.anomalia = anomalia;
     }
     
     public void setFechaEntrada(Date entrada){
@@ -88,12 +96,46 @@ public class Estadia {
     public void setFechaSalida(Date salida) {
         this.salida = salida;
     }
-
-    public String getAnomaliasAsignadas() {
-        String anomalias = "";
-        for(Anomalia a:this.anomalias){
-            anomalias += " | " + a.getCodigoError();
-        }
-        return anomalias;
+    
+    public int getCantidadUT(){
+        return this.temporizadorUT.getUT();
     }
+    
+    //Esto es solo para calcular el valorFacturado dependiendo la tendencia y el factor demanda, falta implementar 
+    public void calcularValorFacturado() {
+        int UT = this.getCantidadUT();
+
+        double valorEstadia = this.precioBase * UT * this.factorDemanda;
+        this.valorFacturado = (float) (valorEstadia);
+        Double costoMultas = getCostoTotalMultas();
+        this.valorFacturado+= costoMultas;
+    }
+    
+    public boolean tieneMultas(){
+        if(this.multas.size()>0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    public Double getCostoTotalMultas(){
+        Double total = 0d;
+        if(tieneMultas()){
+            for(Multa multa:this.multas){
+                total+= multa.valorMulta(this.getCantidadUT(), this.valorFacturado);
+            }
+        }
+        return total;
+    }
+    
+    
+    public void verificarSiEsMultable(){
+        for (Etiqueta etiqueta : this.cochera.getEtiquetas()) {
+            if (!this.getVehiculo().tieneEtiqueta(etiqueta.getClass())) {
+                this.multas.add(new Multa(etiqueta, this));//Si es multable va a agregar esas nuevas multas a la estadia asociada.
+            }
+        }
+    }
+    
 }

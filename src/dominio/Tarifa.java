@@ -13,4 +13,8 @@ public class Tarifa {
     public double getPrecioPorUT(){
         return this.precioPorUT;
     }
+    
+    public TipoVehiculo getTipoVehiculo(){
+        return this.tipoVehiculo;
+    }
 }

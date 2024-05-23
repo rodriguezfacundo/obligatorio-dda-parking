@@ -1,6 +1,6 @@
 package dominio;
 
-public class Etiqueta {
+public abstract class Etiqueta {
     private String nombre;
 
     public Etiqueta(String nombre) {
@@ -14,4 +14,6 @@ public class Etiqueta {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+    
+   public abstract Double calcularMulta(int UT, double valorFacturado);
 }

@@ -2,6 +2,7 @@ package sistemas;
 
 import dominio.Cochera;
 import java.util.ArrayList;
+import simuladortransito.Estacionable;
 
 public class SistemaCochera {
     private ArrayList<Cochera> cocheras = new ArrayList<>();
@@ -30,5 +31,15 @@ public class SistemaCochera {
             }
         }
         return null;
+    }
+
+    ArrayList<Estacionable> obtenerCocherasEstacionables() {
+        ArrayList<Estacionable> estacionables = new ArrayList<>();
+        for(Cochera cochera:this.cocheras){
+            if(!cochera.estaOcupada()){
+                estacionables.add((Estacionable) cochera);
+            }
+        }
+        return estacionables;
     }
 }

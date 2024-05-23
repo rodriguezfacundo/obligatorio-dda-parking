@@ -9,6 +9,7 @@ public class Parking {
         private String direccion;
         private ArrayList<Cochera> cocheras;
         private ArrayList<Tarifa> tarifas;
+        private Double factorDemanda;
 
         public Parking(String nombre, String direccion, Tarifa tarifa) {
             this.id = contadorID++;
@@ -18,11 +19,12 @@ public class Parking {
             this.tarifas = new ArrayList<>();
         }
 
-        public Parking(String nombre, String direccion, int cantidadCocheras) {
+        public Parking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda) {
             this.id = this.contadorID;
             this.nombre = nombre;
             this.direccion = direccion;
             this.contadorID++;
+            this.factorDemanda = factorDemanda;
             this.cocheras = agregarCocheras(cantidadCocheras);
         }
 
@@ -100,5 +102,9 @@ public class Parking {
             }
             sb.append("]}");
             return sb.toString();
+        }
+        
+        public Double getFactorDemanda(){
+            return this.factorDemanda;
         }
 }

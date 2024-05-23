@@ -2,16 +2,21 @@ package sistemas;
 import dominio.Cochera;
 import dominio.Estadia;
 import dominio.Etiqueta;
+import dominio.EtiquetaDiscapacitado;
+import dominio.EtiquetaElectrico;
+import dominio.EtiquetaEmpleado;
 import dominio.Parking;
 import dominio.Propietario;
 import dominio.TipoVehiculo;
 import dominio.Vehiculo;
 import java.util.ArrayList;
 import observador.Observable;
+import simuladortransito.Estacionable;
+import simuladortransito.Transitable;
 
 public class Fachada extends Observable{
     
-    public enum Eventos{cambioListaEstadias};
+    public enum Eventos{entraVehiculo, saleVehiculo};
     
     private SistemaParking sParking = new SistemaParking();
     private SistemaEtiqueta sEtiqueta = new SistemaEtiqueta();
@@ -30,12 +35,16 @@ public class Fachada extends Observable{
     private Fachada() {
     }
     
-    public void agregarParking(String nombre, String direccion, int cantidadCocheras){
-        sParking.agregarParking(new Parking(nombre, direccion, cantidadCocheras));
+    public void agregarParking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda){
+        sParking.agregarParking(new Parking(nombre, direccion, cantidadCocheras, factorDemanda));
     }
     
-    public void agregarEtiqueta(String nombre){
-        sEtiqueta.agregarEtiquetea(new Etiqueta(nombre));
+    public void agregarEtiquetas(){
+        sEtiqueta.agregarEtiqueta(new EtiquetaDiscapacitado());
+        sEtiqueta.agregarEtiqueta(new EtiquetaElectrico());
+        sEtiqueta.agregarEtiqueta(new EtiquetaEmpleado());
+
+
     }
     
     public ArrayList<Etiqueta> obtenerEtiquetas(){
@@ -44,6 +53,10 @@ public class Fachada extends Observable{
     
     public void asignarEtiquetasCocheras(){
         sEtiqueta.asignarEtiquetas(this.obtenerCocheras());
+    }
+    
+    public ArrayList<Estacionable> obtenerCocherasEstacionables(){
+        return sCochera.obtenerCocherasEstacionables();
     }
     
     public ArrayList<Cochera> obtenerCocheras(){
@@ -66,7 +79,11 @@ public class Fachada extends Observable{
         sVehiculo.registrarVehiculos(this.sCochera.obtenerCocheras().size() * 2);
     }
     
-    public ArrayList<Vehiculo> obtenerVehiculos(){
+    public ArrayList<Transitable> obtenerVehiculosTransitables(){
+        return sVehiculo.obtenerVehiciulosTransitables();
+    }
+    
+     public ArrayList<Vehiculo> obtenerVehiculos(){
         return sVehiculo.obtenerVehiciulos();
     }
     

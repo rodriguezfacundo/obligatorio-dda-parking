@@ -8,7 +8,7 @@ import java.util.Collections;
 public class SistemaEtiqueta<T extends IEtiquetable> {
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     
-    public void agregarEtiquetea(Etiqueta etiqueta){
+    public void agregarEtiqueta(Etiqueta etiqueta){
         etiquetas.add(etiqueta);
     }
     

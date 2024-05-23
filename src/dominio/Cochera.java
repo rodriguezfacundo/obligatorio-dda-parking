@@ -2,11 +2,12 @@ package dominio;
 
 import interfaces.IEtiquetable;
 import java.util.ArrayList;
+import simuladortransito.Estacionable;
 import sistemas.SistemaCochera;
 
 
 
-public class Cochera implements IEtiquetable  {
+public class Cochera implements IEtiquetable, Estacionable  {
     private static int contadorID = 1;
     private String codigo;
     private Parking parking;
@@ -92,4 +93,23 @@ public class Cochera implements IEtiquetable  {
             }
             return null;
         }
+
+       public ArrayList<Etiqueta> getEtiquetas() {
+        return this.etiquetas;
+    }
+
+    @Override
+    public boolean esDiscapacitado() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean esElectrico() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean esEmpleado() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
