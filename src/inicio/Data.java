@@ -24,10 +24,16 @@ public class Data {
     
         private Fachada fachada = Fachada.getInstancia();
         
+        public void agregarTendencias(){
+                fachada.agregarTendencia(new TendenciaEstable());
+                fachada.agregarTendencia(new TendenciaNegativa());
+                fachada.agregarTendencia(new TendenciaPositiva());
+         }
+        
         //Se registran dos parkings
         public  void agregarParkings(){
-            fachada.agregarParking("ParkGuardián", "Av. Italia 2500", 75, 1.0);
-            fachada.agregarParking("ParkCordón", "Av. 18 de Julio 1500", 66,1.0);
+            fachada.agregarParking("ParkGuardián", "Av. Italia 2500", 75, 1.0, fachada.obtenerTendenciaPorNombre("Estable"));
+            fachada.agregarParking("ParkCordón", "Av. 18 de Julio 1500", 66,1.0,fachada.obtenerTendenciaPorNombre("Estable"));
         }
         
         public void agregarEtiquetas(){
@@ -83,12 +89,6 @@ public class Data {
          
          public ArrayList<Estacionable> obtenerEstacionables(){
              return fachada.obtenerCocherasEstacionables();
-         }
-         
-         public void agregarTendencias(){
-                fachada.agregarTendencia(new TendenciaEstable());
-                fachada.agregarTendencia(new TendenciaNegativa());
-                fachada.agregarTendencia(new TendenciaPositiva());
          }
          
          public void cargarData(){

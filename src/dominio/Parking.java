@@ -1,32 +1,28 @@
 package dominio;
 
 import java.util.ArrayList;
+import observador.Observable;
+import sistemas.SistemaParking;
 
-public class Parking {
+public class Parking extends Observable {
         private static int contadorID = 1;
         private int id;
         private String nombre;
         private String direccion;
         private ArrayList<Cochera> cocheras = new ArrayList<>();
         private ArrayList<Tarifa> tarifas = new ArrayList<>();
-        private ArrayList<Tendencia> tendencias= new ArrayList<>();
+        private Tendencia tendencia;
         private double factorDemanda;
 
         private int cantidadIngresos = 0;
         private int cantidadEgresos = 0;
-        public Parking(String nombre, String direccion, Tarifa tarifa, double factor) {
-            this.id = contadorID++;
-            this.nombre = nombre;
-            this.direccion = direccion;
-            this.factorDemanda = factor;//El factor de demanda es un valor de entre 0.25 y 10 que se establece en cada parking, el factor de demanda inicial es 1
-        }
 
-        public Parking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda) {
+        public Parking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda, Tendencia tendencia) {
             this.id = this.contadorID;
             this.nombre = nombre;
             this.direccion = direccion;
             this.contadorID++;
-            this.factorDemanda = factorDemanda;
+            this.factorDemanda = factorDemanda; //El factor de demanda es un valor de entre 0.25 y 10 que se establece en cada parking, el factor de demanda inicial es 1
             this.cocheras = agregarCocheras(cantidadCocheras);
         }
 
@@ -145,15 +141,56 @@ public class Parking {
             return this.cantidadIngresos - this.cantidadEgresos;
         }
         
-        public ArrayList<Tendencia> getTendencias(){
-            return this.tendencias;
+        public Tendencia getTendencia(){
+            return this.tendencia;
+        }
+        
+        public void setTendencia(Tendencia ten){
+            this.tendencia = ten;
         }
         
         public double obtenerValorFactorDemanda(int cantidadUT){
-            for(Tendencia ten:this.tendencias){
+            for(Tendencia ten: SistemaParking.getInstancia().getTendencias()){
                 this.factorDemanda = ten.calcularFactorDemanda(this.factorDemanda, this.getCantidadCocherasOcupadas(), 
-                        this.getCapacidad(), this.diferenciaEntreIngresoYEgresos(), cantidadUT);
+                        this.getCapacidad(), this.diferenciaEntreIngresoYEgresos(), cantidadUT, this);
             }
             return this.factorDemanda;
+        }
+        
+        public long getCantidadCocherasDisponibles(){
+            long cantidadNoOcupadas = cocheras.stream()
+                                          .filter(cochera -> !cochera.estaOcupada())
+                                          .count();
+            return cantidadNoOcupadas;
+        }
+        
+        public int contarCocherasDisponiblesPorEtiqueta(Etiqueta etiqueta) {
+            return (int) cocheras.stream()
+                             .filter(cochera -> !cochera.estaOcupada() && cochera.getEtiquetas().contains(etiqueta))
+                             .count();
+        }
+        
+        public double getPrecioTarifaPorTipoVehiculo(TipoVehiculo tipo){
+            for(Tarifa tarifa: this.tarifas){
+                if(tarifa.getTipoVehiculo().equals(tipo)){
+                    return tarifa.getPrecioPorUT();
+                }
+            }
+            return 0d;
+        }
+        
+        public int obtenerCantidadEstadias(){
+            int cantidadEstadias = 0;
+            for(Cochera c:cocheras){
+                cantidadEstadias = cantidadEstadias + c.obtenerCantidadEstadias();
+            }
+            return cantidadEstadias;
+        }
+        public double obtenerTotalFacturado(){
+            double total = 0;
+             for(Cochera c:cocheras){
+                total = total + c.obtenerTotalFacturado();
+            }
+            return total;
         }
 }

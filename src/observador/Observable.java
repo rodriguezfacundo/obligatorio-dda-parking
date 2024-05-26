@@ -3,6 +3,10 @@ package observador;
 import java.util.ArrayList;
 
 public class Observable {
+    public enum Eventos {
+        ANOMALIA_REGISTRADA,
+        PARKING_CAMBIO
+    }
     
     private ArrayList<IObservador> observadores = new ArrayList();
     

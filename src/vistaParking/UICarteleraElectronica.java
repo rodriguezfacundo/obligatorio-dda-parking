@@ -2,19 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package org.obligatorio.iuparking;
+package vistaParking;
+
+import controlador.VistaParking;
 
 /**
  *
  * @author facul
  */
-public class UICarteleraElectronica extends javax.swing.JFrame {
+public class UICarteleraElectronica extends javax.swing.JFrame implements VistaParking {
 
     /**
      * Creates new form UICarteleraElectronica
      */
     public UICarteleraElectronica() {
         initComponents();
+        mostrarCartelera();
     }
 
     /**
@@ -202,4 +205,13 @@ public class UICarteleraElectronica extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JToggleButton jToggleButton1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void mostrarTableroElectronico() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    private void mostrarCartelera() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

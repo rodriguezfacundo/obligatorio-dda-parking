@@ -101,6 +101,17 @@ public class Cochera implements IEtiquetable, Estacionable  {
         public Parking getParking(){
             return this.parking;
         }
+        
+        public int obtenerCantidadEstadias(){
+            return this.estadias.size();
+        }
+        public double obtenerTotalFacturado(){
+            double total = 0;
+            for(Estadia e:estadias){
+                total = total + e.getValorFacturado();
+            }
+            return total;
+        }
 
     @Override
     public boolean esDiscapacitado() {

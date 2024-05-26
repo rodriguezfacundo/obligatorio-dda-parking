@@ -9,6 +9,13 @@ import java.util.ArrayList;
 public class SistemaParking {
     
     private ArrayList<Parking> parkings = new ArrayList<>();
+    private ArrayList<Tendencia> tendencias = new ArrayList<>();
+    
+    private static SistemaParking instancia = new SistemaParking();
+
+    public static SistemaParking getInstancia() {
+        return instancia;
+    }
     
     public  void agregarParking(Parking parking){
         parkings.add(parking);
@@ -31,9 +38,37 @@ public class SistemaParking {
         }
     }
 
-    void agregarTendencia(Tendencia ten) {
-        for(Parking par: this.parkings){
-            par.getTendencias().add(ten);
-        }
+    public void agregarTendencia(Tendencia ten) {
+        this.tendencias.add(ten);
     }
+    
+    public ArrayList<Tendencia> getTendencias(){
+        return this.tendencias;
+    }
+
+    Tendencia obtenerTendenciaPorNombre(String nombre) {
+        for(Tendencia tendencia:this.tendencias){
+            if(tendencia.getNombre().equals(nombre)){
+                return tendencia;
+            }
+        }
+        return null;
+    }
+    
+    public int obtenerCantidadEstadias(){
+       int cantidad = 0;
+       for(Parking p:parkings){
+           cantidad = cantidad + p.obtenerCantidadEstadias();
+       }
+       return cantidad;
+   }
+    
+    public double obtenerTotalFacturado(){
+        double total = 0;
+      for(Parking p:parkings){
+           total = total + p.obtenerTotalFacturado();
+       }
+       return total;
+   }
+    
 }

@@ -16,7 +16,7 @@ public class Fachada extends Observable{
     
     public enum Eventos{entraVehiculo, saleVehiculo};
     
-    private SistemaParking sParking = new SistemaParking();
+    private SistemaParking sParking = SistemaParking.getInstancia();
     private SistemaEtiqueta sEtiqueta = new SistemaEtiqueta();
     private SistemaCochera sCochera = SistemaCochera.getInstancia();
     private SistemaPropietario sPropietario = SistemaPropietario.getInstancia();
@@ -33,8 +33,11 @@ public class Fachada extends Observable{
     private Fachada() {
     }
     
-    public void agregarParking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda){
-        sParking.agregarParking(new Parking(nombre, direccion, cantidadCocheras, factorDemanda));
+    public void agregarTendencia(Tendencia ten){
+        sParking.agregarTendencia(ten);
+    }
+    public void agregarParking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda, Tendencia tendencia){
+        sParking.agregarParking(new Parking(nombre, direccion, cantidadCocheras, factorDemanda, tendencia));
     }
     
     public void agregarEtiquetas(Etiqueta etiqueta){
@@ -109,12 +112,18 @@ public class Fachada extends Observable{
         sEstadia.egreso(obtenerVehiculoPorPatente(patenteVehiculo), obtenerCocheraPorCodigo(codigoCochera));
     }
     
-    public void agregarTendencia(Tendencia ten){
-        sParking.agregarTendencia(ten);
-    }
-    
    public ArrayList<Estadia> obtenerEstadias(){
         return sEstadia.obtenerEstadias();
     }
     
+   public Tendencia obtenerTendenciaPorNombre(String nombre){
+       return sParking.obtenerTendenciaPorNombre(nombre);
+   }
+   
+   public int obtenerCantidadEstadias(){
+       return sParking.obtenerCantidadEstadias();
+   }    
+   public double obtenerTotalFacturado(){
+       return sParking.obtenerTotalFacturado();
+   }
 }

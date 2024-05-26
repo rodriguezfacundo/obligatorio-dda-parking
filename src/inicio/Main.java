@@ -2,7 +2,7 @@ package inicio;
 
 import dominio.Cochera;
 import dominio.Vehiculo;
-import iuparking.UIIngresoEgresoVehiculo;
+import vistaParking.UIIngresoEgresoVehiculo;
 import java.util.ArrayList;
 import simuladortransito.ConfiguracionException;
 import simuladortransito.Estacionable;
@@ -20,7 +20,7 @@ public class Main {
         Data data = Data.getInstancia();
         data.cargarData();
         //Fachada fachada = Fachada.getInstancia();
-        ArrayList<Estacionable> cocheras = data.obtenerEstacionables();
+        /*ArrayList<Estacionable> cocheras = data.obtenerEstacionables();
         ArrayList<Transitable> vehiculos = data.obtenerTransitables();
         simulador.addEstacionables(cocheras);
         simulador.addTransitables(vehiculos);
@@ -42,8 +42,8 @@ public class Main {
             });
         } catch (ConfiguracionException ex){
             
-        }
-        //new UIIngresoEgresoVehiculo().setVisible(true);
-        //new UIIngresoEgresoVehiculo().setVisible(true);
+        }*/
+        new UIIngresoEgresoVehiculo().setVisible(true);
+        new UIIngresoEgresoVehiculo().setVisible(true);
     }
 }

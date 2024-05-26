@@ -1,4 +1,4 @@
-package iuparking;
+package vistaParking;
 
 import dominio.Cochera;
 import dominio.Estadia;
