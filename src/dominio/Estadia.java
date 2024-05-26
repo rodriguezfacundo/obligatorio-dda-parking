@@ -8,31 +8,30 @@ public class Estadia {
     private Date salida;
     private Vehiculo vehiculo;
     private Cochera cochera;
-    private float valorFacturado;
+    private double valorFacturado;
     private boolean esFinalizada;
     private Anomalia anomalia;
     private TemporizadorUT temporizadorUT;
-    private double factorDemanda;
     private double precioBase;
     private ArrayList<Multa> multas = new ArrayList<>();
-    
-    public Estadia(Vehiculo vehiculo, Cochera cochera, double precioBase, double factorDemanda){
-        this.cochera = cochera;
-        this.vehiculo = vehiculo;
-        this.temporizadorUT = new TemporizadorUT();
-        this.temporizadorUT.start();
-        this.factorDemanda = factorDemanda;
-        this.precioBase = precioBase;
-    }
     
     public Estadia(Vehiculo vehiculo, Cochera cochera){
         this.cochera = cochera;
         this.vehiculo = vehiculo;
         this.temporizadorUT = new TemporizadorUT();
         this.temporizadorUT.start();
+        this.precioBase = obtenerPrecioBase(vehiculo.getTipo(), cochera.getParking());
     }
     
-    public float getValorFacturado() {
+    public Estadia(Vehiculo vehiculo){
+        this.cochera = null;
+        this.vehiculo = vehiculo;
+        this.temporizadorUT = new TemporizadorUT();
+        this.temporizadorUT.start();
+        setEsFinalizada(true);
+    }
+    
+    public double getValorFacturado() {
         return valorFacturado;
     }
 
@@ -61,22 +60,27 @@ public class Estadia {
             this.esFinalizada = false;
         }else{
             this.esFinalizada = true;
-            this.cochera.setOcupada(false);
             this.salida = new Date();
             temporizadorUT.stop();
+            if(this.cochera!=null){
+                this.cochera.setOcupada(false);
+                this.cochera.getParking().sumarUnEgreso();
+            }
         }
     }
+    
     public boolean getEsFinalizada(){
         return this.esFinalizada;
     }
     
-        public String getEsFinalizadaToString(){
+    public String getEsFinalizadaToString(){
         if(!this.esFinalizada){
             return "ABIERTA";
         } else{
             return "FINALIZADA";
         }
     }
+    
     public void setCocheraOcupada(boolean estaOcupada){
         this.cochera.setOcupada(estaOcupada);
     }
@@ -101,14 +105,9 @@ public class Estadia {
         return this.temporizadorUT.getUT();
     }
     
-    //Esto es solo para calcular el valorFacturado dependiendo la tendencia y el factor demanda, falta implementar 
     public void calcularValorFacturado() {
-        int UT = this.getCantidadUT();
-
-        double valorEstadia = this.precioBase * UT * this.factorDemanda;
-        this.valorFacturado = (float) (valorEstadia);
-        Double costoMultas = getCostoTotalMultas();
-        this.valorFacturado+= costoMultas;
+        //Valor de estadía = ( PB * <UT> * FD ) [+ M]
+        this.valorFacturado = (this.precioBase * this.getCantidadUT() * this.valorFactorDemanda()) + this.costoMultas();
     }
     
     public boolean tieneMultas(){
@@ -119,7 +118,7 @@ public class Estadia {
         }
     }
     
-    public Double getCostoTotalMultas(){
+    public Double costoMultas(){
         Double total = 0d;
         if(tieneMultas()){
             for(Multa multa:this.multas){
@@ -129,13 +128,21 @@ public class Estadia {
         return total;
     }
     
-    
     public void verificarSiEsMultable(){
-        for (Etiqueta etiqueta : this.cochera.getEtiquetas()) {
+        if(this.anomalia != null){
+         for (Etiqueta etiqueta : this.cochera.getEtiquetas()) {
             if (!this.getVehiculo().tieneEtiqueta(etiqueta.getClass())) {
                 this.multas.add(new Multa(etiqueta, this));//Si es multable va a agregar esas nuevas multas a la estadia asociada.
             }
+        }   
         }
     }
     
+    private double obtenerPrecioBase(TipoVehiculo tipoVehiculo, Parking parking) {
+        return parking.getPrecioTipoVehiculo(tipoVehiculo);
+    }
+    
+    private double valorFactorDemanda(){
+        return this.cochera.getParking().obtenerValorFactorDemanda(this.getCantidadUT());
+    }
 }

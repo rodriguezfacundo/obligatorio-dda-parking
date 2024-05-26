@@ -7,16 +7,18 @@ public class Parking {
         private int id;
         private String nombre;
         private String direccion;
-        private ArrayList<Cochera> cocheras;
-        private ArrayList<Tarifa> tarifas;
-        private Double factorDemanda;
+        private ArrayList<Cochera> cocheras = new ArrayList<>();
+        private ArrayList<Tarifa> tarifas = new ArrayList<>();
+        private ArrayList<Tendencia> tendencias= new ArrayList<>();
+        private double factorDemanda;
 
-        public Parking(String nombre, String direccion, Tarifa tarifa) {
+        private int cantidadIngresos = 0;
+        private int cantidadEgresos = 0;
+        public Parking(String nombre, String direccion, Tarifa tarifa, double factor) {
             this.id = contadorID++;
             this.nombre = nombre;
             this.direccion = direccion;
-            this.cocheras = new ArrayList<>();
-            this.tarifas = new ArrayList<>();
+            this.factorDemanda = factor;//El factor de demanda es un valor de entre 0.25 y 10 que se establece en cada parking, el factor de demanda inicial es 1
         }
 
         public Parking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda) {
@@ -105,6 +107,53 @@ public class Parking {
         }
         
         public Double getFactorDemanda(){
+            return this.factorDemanda;
+        }
+        
+        public double getPrecioTipoVehiculo(TipoVehiculo tipo){
+            for(Tarifa tarifa: this.tarifas){
+                if(tarifa.getTipoVehiculo().equals(tipo)){
+                    return tarifa.getPrecioPorUT();
+                }
+            }
+            return 0d;
+        }
+        
+        public int getCapacidad(){
+            return this.getCocheras().size();
+        }
+        
+        public int getCantidadCocherasOcupadas(){
+            int cantidad = 0;
+            for(Cochera cochera:this.cocheras){
+                if(cochera.estaOcupada()){
+                    cantidad += 1;
+                }
+            }
+            return cantidad;
+        }
+        
+        public void sumarUnIngreso(){
+            this.cantidadIngresos += 1;
+        }
+        
+        public void sumarUnEgreso(){
+            this.cantidadEgresos += 1;
+        }
+        
+        public int diferenciaEntreIngresoYEgresos(){
+            return this.cantidadIngresos - this.cantidadEgresos;
+        }
+        
+        public ArrayList<Tendencia> getTendencias(){
+            return this.tendencias;
+        }
+        
+        public double obtenerValorFactorDemanda(int cantidadUT){
+            for(Tendencia ten:this.tendencias){
+                this.factorDemanda = ten.calcularFactorDemanda(this.factorDemanda, this.getCantidadCocherasOcupadas(), 
+                        this.getCapacidad(), this.diferenciaEntreIngresoYEgresos(), cantidadUT);
+            }
             return this.factorDemanda;
         }
 }

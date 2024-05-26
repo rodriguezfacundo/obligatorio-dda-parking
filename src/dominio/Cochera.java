@@ -27,7 +27,7 @@ public class Cochera implements IEtiquetable, Estacionable  {
     
      public String getCodigo() {
         return codigo;
-    }
+     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
@@ -94,9 +94,13 @@ public class Cochera implements IEtiquetable, Estacionable  {
             return null;
         }
 
-       public ArrayList<Etiqueta> getEtiquetas() {
-        return this.etiquetas;
-    }
+        public ArrayList<Etiqueta> getEtiquetas() {
+            return this.etiquetas;
+        }
+       
+        public Parking getParking(){
+            return this.parking;
+        }
 
     @Override
     public boolean esDiscapacitado() {

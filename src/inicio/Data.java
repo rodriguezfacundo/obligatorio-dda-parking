@@ -1,7 +1,13 @@
 package inicio;
 
+import dominio.EtiquetaDiscapacitado;
+import dominio.EtiquetaElectrico;
+import dominio.EtiquetaEmpleado;
 import dominio.Parking;
 import dominio.Propietario;
+import dominio.TendenciaEstable;
+import dominio.TendenciaNegativa;
+import dominio.TendenciaPositiva;
 import java.util.ArrayList;
 import java.util.Random;
 import simuladortransito.Estacionable;
@@ -20,12 +26,14 @@ public class Data {
         
         //Se registran dos parkings
         public  void agregarParkings(){
-            fachada.agregarParking("ParkGuardián", "Av. Italia 2500", 75, new Random().nextDouble(10 - 0.25 + 1 ) + 0.25);
-            fachada.agregarParking("ParkCordón", "Av. 18 de Julio 1500", 66,new Random().nextDouble(10 - 0.25 + 1 ) + 0.25);
+            fachada.agregarParking("ParkGuardián", "Av. Italia 2500", 75, 1.0);
+            fachada.agregarParking("ParkCordón", "Av. 18 de Julio 1500", 66,1.0);
         }
         
         public void agregarEtiquetas(){
-            fachada.agregarEtiquetas();
+            fachada.agregarEtiquetas(new EtiquetaDiscapacitado());
+            fachada.agregarEtiquetas(new EtiquetaElectrico());
+            fachada.agregarEtiquetas(new EtiquetaEmpleado());
         }
         
         //Se generan 50 propietarios
@@ -77,8 +85,15 @@ public class Data {
              return fachada.obtenerCocherasEstacionables();
          }
          
+         public void agregarTendencias(){
+                fachada.agregarTendencia(new TendenciaEstable());
+                fachada.agregarTendencia(new TendenciaNegativa());
+                fachada.agregarTendencia(new TendenciaPositiva());
+         }
+         
          public void cargarData(){
              this.agregarParkings();
+             this.agregarTendencias();
              this.agregarEtiquetas();
              this.generarPropietarios();
              this.asignarEtiquetasCocheras();

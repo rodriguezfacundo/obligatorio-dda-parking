@@ -1,6 +1,5 @@
 package sistemas;
 
-import dominio.Cochera;
 import dominio.Propietario;
 import dominio.TipoVehiculo;
 import dominio.Vehiculo;
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import simuladortransito.Estacionable;
 import simuladortransito.Transitable;
 
 public class SistemaVehiculo {

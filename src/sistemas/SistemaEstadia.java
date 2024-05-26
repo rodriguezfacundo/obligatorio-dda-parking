@@ -12,25 +12,16 @@ import simuladortransito.Transitable;
 
 public class SistemaEstadia implements Sensor {
     private ArrayList<Estadia> estadias = new ArrayList<>();
-        
+    
     public ArrayList<Estadia> obtenerEstadias(){
         return this.estadias;
-    }
-    
-    public Estadia obtenerEstadiaAbiertaPorCochera(String codigoCochera){
-        for(Estadia est:this.estadias){
-            if(est.getCochera().getCodigo().equals(codigoCochera) && !est.getEsFinalizada()){
-                return est;
-            }
-        }
-        return null;
     }
 
     @Override
     public void ingreso(Transitable transitable, Estacionable estacionable) {
         Vehiculo vehiculo = (Vehiculo)transitable;
          Cochera cochera =(Cochera)estacionable;
-        Estadia estadiaNueva = new Estadia(vehiculo, cochera, 0.1, 1);
+        Estadia estadiaNueva = new Estadia(vehiculo, cochera);
         if(cochera.estaOcupada()){
             Estadia estadiaSinAvisarFinalizacion = cochera.getEstadiaSinFinalizar();
             setEstadiaErrorHoudini(estadiaSinAvisarFinalizacion);
@@ -53,9 +44,10 @@ public class SistemaEstadia implements Sensor {
         }
         if(cochera!=null && cochera.estaOcupada()){
             Estadia estadia = obtenerEstadiaAbiertaPorCochera(cochera.getCodigo());
-            if(estadia != null && !estadia.getVehiculo().getPatente().equals(vehiculo.getPatente())){
+            if(estadia != null && !coincideVehiculoConEstadia(estadia, vehiculo.getPatente())){
                 setEstadiaErrorTransportador1(estadia);
-                //setEstadiaErrorTransportador2(estadia);
+                Estadia estadiaTransportador2 = new Estadia(vehiculo);
+                setEstadiaErrorTransportador2(estadiaTransportador2);
             } else{
                 estadia.verificarSiEsMultable();
                 estadia.setEsFinalizada(true);
@@ -65,12 +57,34 @@ public class SistemaEstadia implements Sensor {
         }
     }
     
+    public Estadia obtenerEstadiaAbiertaPorCochera(String codigoCochera){
+        for(Estadia est:this.estadias){
+            if(est.getCochera().getCodigo().equals(codigoCochera) && !est.getEsFinalizada()){
+                return est;
+            }
+        }
+        return null;
+    }
+    
+    public void agregarNuevaEstadia(Estadia estadiaNueva){
+        this.estadias.add(estadiaNueva);
+    }
+    
+    private boolean coincideVehiculoConEstadia(Estadia estadia, String patenteVehiculo){
+        if(estadia.getVehiculo().getPatente().equals(patenteVehiculo)){
+            return true;
+        }   else{
+            return false;
+        }
+    }
+    
     private void setDatosEstadiaNueva(Estadia estadiaNueva, boolean cocheraOcupada, boolean esFinalizada) {
         if(estadiaNueva != null){
             estadiaNueva.setCocheraOcupada(cocheraOcupada);
             estadiaNueva.setFechaEntrada(new Date());
             estadiaNueva.setEsFinalizada(esFinalizada);
             estadiaNueva.getCochera().agregarEstadia(estadiaNueva);
+            estadiaNueva.getCochera().getParking().sumarUnIngreso();
         }
     }
     
@@ -87,24 +101,22 @@ public class SistemaEstadia implements Sensor {
         if(estadiaConCocheraLibre != null){
             Anomalia anomalia = new Anomalia("MISTERY", estadiaConCocheraLibre);
             estadiaConCocheraLibre.setAnomalia(anomalia);
+            estadiaConCocheraLibre.getCochera().getParking().sumarUnEgreso();
         }
     }
     
-    public void agregarNuevaEstadia(Estadia estadiaNueva){
-        this.estadias.add(estadiaNueva);
-    }
-
-    private void setEstadiaErrorTransportador1(Estadia estadia) {
+     private void setEstadiaErrorTransportador1(Estadia estadia) {
         if(estadia != null){
             Anomalia anomalia = new Anomalia("TRANSPORTADOR1", estadia);
             estadia.setAnomalia(anomalia);
         }
     }
 
-    //Queda revisar bien porque la letra dice
-    //otra anomalía asociada al vehículo que acaba de identificarse como saliente con el código
-    //“TRANSPORTADOR2”
     private void setEstadiaErrorTransportador2(Estadia estadia) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(estadia != null){
+            Anomalia anomalia = new Anomalia("TRANSPORTADOR2", estadia);
+            estadia.setAnomalia(anomalia);
+            this.agregarNuevaEstadia(estadia);
+        }
     }
 }

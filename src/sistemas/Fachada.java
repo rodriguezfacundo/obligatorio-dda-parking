@@ -2,11 +2,9 @@ package sistemas;
 import dominio.Cochera;
 import dominio.Estadia;
 import dominio.Etiqueta;
-import dominio.EtiquetaDiscapacitado;
-import dominio.EtiquetaElectrico;
-import dominio.EtiquetaEmpleado;
 import dominio.Parking;
 import dominio.Propietario;
+import dominio.Tendencia;
 import dominio.TipoVehiculo;
 import dominio.Vehiculo;
 import java.util.ArrayList;
@@ -39,12 +37,8 @@ public class Fachada extends Observable{
         sParking.agregarParking(new Parking(nombre, direccion, cantidadCocheras, factorDemanda));
     }
     
-    public void agregarEtiquetas(){
-        sEtiqueta.agregarEtiqueta(new EtiquetaDiscapacitado());
-        sEtiqueta.agregarEtiqueta(new EtiquetaElectrico());
-        sEtiqueta.agregarEtiqueta(new EtiquetaEmpleado());
-
-
+    public void agregarEtiquetas(Etiqueta etiqueta){
+        sEtiqueta.agregarEtiqueta(etiqueta);
     }
     
     public ArrayList<Etiqueta> obtenerEtiquetas(){
@@ -113,6 +107,10 @@ public class Fachada extends Observable{
     
     public void finalizarEstadia(String patenteVehiculo, String codigoCochera) {
         sEstadia.egreso(obtenerVehiculoPorPatente(patenteVehiculo), obtenerCocheraPorCodigo(codigoCochera));
+    }
+    
+    public void agregarTendencia(Tendencia ten){
+        sParking.agregarTendencia(ten);
     }
     
    public ArrayList<Estadia> obtenerEstadias(){

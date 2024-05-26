@@ -240,7 +240,7 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
        }
     }
     
-        private void cargarEstadias() {
+   private void cargarEstadias() {
         ArrayList<Estadia> estadias = fachada.obtenerEstadias();
         DefaultTableModel model = (DefaultTableModel) tableEstadias.getModel();
         model.setRowCount(0); 
@@ -248,7 +248,7 @@ public class UIIngresoEgresoVehiculo extends javax.swing.JFrame implements IObse
         for (Estadia estadia : estadias) {
             Object[] row = new Object[8];
             row[0] = estadia.getVehiculo().getPatente();
-            row[1] = estadia.getCochera().getCodigo();
+            row[1] = estadia.getCochera() != null ? estadia.getCochera().getCodigo() : "";
             row[2] = estadia.getEntrada();
             row[3] = estadia.getSalida();
             row[4] = estadia.getEsFinalizadaToString();

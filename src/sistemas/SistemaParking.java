@@ -2,6 +2,7 @@ package sistemas;
 
 import dominio.Parking;
 import dominio.Tarifa;
+import dominio.Tendencia;
 import java.util.ArrayList;
 
 
@@ -27,6 +28,12 @@ public class SistemaParking {
 
         for(Parking park:this.parkings){
             park.setTarifas(tarifas);
+        }
+    }
+
+    void agregarTendencia(Tendencia ten) {
+        for(Parking par: this.parkings){
+            par.getTendencias().add(ten);
         }
     }
 }
