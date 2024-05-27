@@ -2,8 +2,9 @@ package dominio;
 
 import java.util.ArrayList;
 import java.util.Date;
+import observador.Observable;
 
-public class Estadia {
+public class Estadia extends Observable {
     private Date entrada;
     private Date salida;
     private Vehiculo vehiculo;
@@ -21,6 +22,7 @@ public class Estadia {
         this.temporizadorUT = new TemporizadorUT();
         this.temporizadorUT.start();
         this.precioBase = obtenerPrecioBase(vehiculo.getTipo(), cochera.getParking());
+        this.cochera.getParking().evaluarTendencia();
     }
     
     public Estadia(Vehiculo vehiculo){
@@ -65,6 +67,7 @@ public class Estadia {
             if(this.cochera!=null){
                 this.cochera.setOcupada(false);
                 this.cochera.getParking().sumarUnEgreso();
+                this.cochera.getParking().evaluarTendencia();
             }
         }
     }

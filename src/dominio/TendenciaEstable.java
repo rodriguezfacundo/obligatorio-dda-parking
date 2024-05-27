@@ -5,13 +5,14 @@ public class TendenciaEstable extends Tendencia {
     public TendenciaEstable() {
         super("Estable");
     }
-
     @Override
-    public double calcularFactorDemanda(double factorDemandaActual, int ocupacion, int capacidad, int diferenciaIngresosEgresos, int cantidadUT, Parking parking) {
-        if (Math.abs(diferenciaIngresosEgresos) <= 0.1 * capacidad) {
+    public void evaluarTendencia(Parking parking) {
+        if (Math.abs(parking.diferenciaEntreIngresoYEgresos()) <= 0.1 * parking.getCapacidad()) {
             parking.setTendencia(this);
-            return Math.max(0.25, factorDemandaActual - 0.01 * cantidadUT);
         }
-        return factorDemandaActual;
+    }
+    @Override
+    public double calcularFactorDemanda(int cantidadUT, Parking parking) {
+            return Math.max(0.25, parking.getFactorDemanda() - 0.01 * cantidadUT);
     }
 }

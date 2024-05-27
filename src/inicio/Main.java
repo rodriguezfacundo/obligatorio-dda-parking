@@ -12,6 +12,7 @@ import simuladortransito.Sensor;
 import simuladortransito.SimuladorTransito;
 import simuladortransito.Transitable;
 import sistemas.Fachada;
+import vistaParking.Menu;
 
 public class Main {
     private static SimuladorTransito simulador = SimuladorTransito.getInstancia();
@@ -43,7 +44,7 @@ public class Main {
         } catch (ConfiguracionException ex){
             
         }*/
-        new UIIngresoEgresoVehiculo().setVisible(true);
+        //new Menu().setVisible(true);
         new UIIngresoEgresoVehiculo().setVisible(true);
     }
 }

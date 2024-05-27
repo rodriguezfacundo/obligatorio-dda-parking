@@ -149,12 +149,14 @@ public class Parking extends Observable {
             this.tendencia = ten;
         }
         
-        public double obtenerValorFactorDemanda(int cantidadUT){
-            for(Tendencia ten: SistemaParking.getInstancia().getTendencias()){
-                this.factorDemanda = ten.calcularFactorDemanda(this.factorDemanda, this.getCantidadCocherasOcupadas(), 
-                        this.getCapacidad(), this.diferenciaEntreIngresoYEgresos(), cantidadUT, this);
+        public void evaluarTendencia(){
+            for(Tendencia ten:SistemaParking.getInstancia().getTendencias()){
+                ten.evaluarTendencia(this);
             }
-            return this.factorDemanda;
+        }
+        
+        public double obtenerValorFactorDemanda(int cantidadUT){
+            return this.tendencia.calcularFactorDemanda(cantidadUT, this);
         }
         
         public long getCantidadCocherasDisponibles(){
@@ -190,6 +192,13 @@ public class Parking extends Observable {
             double total = 0;
              for(Cochera c:cocheras){
                 total = total + c.obtenerTotalFacturado();
+            }
+            return total;
+        }
+        public Double obtenerTotalFacturadoMultas(){
+            Double total = 0.00;
+            for(Cochera c:cocheras){
+                total = total + c.obtenerTotalFacturadoMultas();
             }
             return total;
         }

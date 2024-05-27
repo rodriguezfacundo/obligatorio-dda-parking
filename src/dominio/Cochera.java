@@ -113,6 +113,13 @@ public class Cochera implements IEtiquetable, Estacionable  {
             return total;
         }
 
+        public Double obtenerTotalFacturadoMultas(){
+            Double total = 0.00;
+            for(Estadia e:estadias){
+                total = total + e.costoMultas();
+            }
+            return total;
+        }
     @Override
     public boolean esDiscapacitado() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

@@ -14,5 +14,7 @@ public abstract class Tendencia {
     public Tendencia(String nombre) {
         this.nombre = nombre;
     }
-    public abstract double calcularFactorDemanda(double factorDemandaActual, int ocupacion, int capacidad, int diferenciaIngresosEgresos, int cantidadUT, Parking parking);
+    
+    public abstract void evaluarTendencia(Parking parking);
+    public abstract double calcularFactorDemanda(int cantidadUT, Parking parking);
 }
