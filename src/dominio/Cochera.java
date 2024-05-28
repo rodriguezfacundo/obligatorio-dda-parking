@@ -85,15 +85,6 @@ public class Cochera implements IEtiquetable, Estacionable  {
             this.estadias.add(estadia);
         }
 
-        public Estadia getEstadiaSinFinalizar() {
-            for(Estadia est:this.estadias){
-                if(!est.getEsFinalizada()){
-                    return est;
-                }
-            }
-            return null;
-        }
-
         public ArrayList<Etiqueta> getEtiquetas() {
             return this.etiquetas;
         }
@@ -120,6 +111,15 @@ public class Cochera implements IEtiquetable, Estacionable  {
             }
             return total;
         }
+        
+        public Estadia obtenerEstadiaAbierta(){
+            for(Estadia est:this.estadias){
+                if(!est.getEsFinalizada()){
+                    return est;
+                }
+            }
+            return null;
+         }
     @Override
     public boolean esDiscapacitado() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

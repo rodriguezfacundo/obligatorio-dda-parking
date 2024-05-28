@@ -14,8 +14,6 @@ import simuladortransito.Transitable;
 
 public class Fachada extends Observable{
     
-    public enum Eventos{entraVehiculo, saleVehiculo};
-    
     private SistemaParking sParking = SistemaParking.getInstancia();
     private SistemaEtiqueta sEtiqueta = new SistemaEtiqueta();
     private SistemaCochera sCochera = SistemaCochera.getInstancia();
@@ -104,14 +102,6 @@ public class Fachada extends Observable{
         return sCochera.obtenerCocheraPorCodigo(codCochera);
     }
     
-    public void iniciarEstadia(String patenteVehiculo, String codigoCochera){
-       sEstadia.ingreso(obtenerVehiculoPorPatente(patenteVehiculo), obtenerCocheraPorCodigo(codigoCochera));
-    }
-    
-    public void finalizarEstadia(String patenteVehiculo, String codigoCochera) {
-        sEstadia.egreso(obtenerVehiculoPorPatente(patenteVehiculo), obtenerCocheraPorCodigo(codigoCochera));
-    }
-    
    public ArrayList<Estadia> obtenerEstadias(){
         return sEstadia.obtenerEstadias();
     }
@@ -126,4 +116,8 @@ public class Fachada extends Observable{
    public double obtenerTotalFacturado(){
        return sParking.obtenerTotalFacturado();
    }
+
+    public void agregarEstadia(Estadia estadiaNueva) {
+        sEstadia.agregarNuevaEstadia(estadiaNueva);
+    }
 }

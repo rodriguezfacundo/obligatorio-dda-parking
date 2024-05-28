@@ -23,6 +23,11 @@ public class Estadia extends Observable {
         this.temporizadorUT.start();
         this.precioBase = obtenerPrecioBase(vehiculo.getTipo(), cochera.getParking());
         this.cochera.getParking().evaluarTendencia();
+        this.esFinalizada = false;
+        this.cochera.setOcupada(true);
+        this.vehiculo.setEstacionado(true);
+        this.cochera.agregarEstadia(this);
+        this.cochera.getParking().sumarUnIngreso();
     }
     
     public Estadia(Vehiculo vehiculo){
@@ -30,8 +35,9 @@ public class Estadia extends Observable {
         this.vehiculo = vehiculo;
         this.temporizadorUT = new TemporizadorUT();
         this.temporizadorUT.start();
-        setEsFinalizada(true);
+        this.temporizadorUT.stop();
     }
+    
     
     public double getValorFacturado() {
         return valorFacturado;
@@ -55,21 +61,6 @@ public class Estadia extends Observable {
 
     public Date getSalida() {
         return salida;
-    }
-    
-    public void setEsFinalizada(boolean esFinalizada){
-        if(!esFinalizada){
-            this.esFinalizada = false;
-        }else{
-            this.esFinalizada = true;
-            this.salida = new Date();
-            temporizadorUT.stop();
-            if(this.cochera!=null){
-                this.cochera.setOcupada(false);
-                this.cochera.getParking().sumarUnEgreso();
-                this.cochera.getParking().evaluarTendencia();
-            }
-        }
     }
     
     public boolean getEsFinalizada(){
@@ -147,5 +138,60 @@ public class Estadia extends Observable {
     
     private double valorFactorDemanda(){
         return this.cochera.getParking().obtenerValorFactorDemanda(this.getCantidadUT());
+    }
+
+    boolean contieneVehiculo(Vehiculo vehiculo) {
+        if(this.vehiculo.equals(vehiculo)){
+            return true;
+        } else{
+            return false;
+        }
+    }
+    
+    public void anomaliaHoudini(){
+        this.esFinalizada = true;
+        this.valorFacturado = 0;
+        this.salida = null;
+        this.anomalia = new Anomalia("HOUDINI", this);
+        temporizadorUT.stop();
+    }
+    
+    public void anomaliaMistery(){
+        this.temporizadorUT.stop();
+        this.esFinalizada = true;
+        this.valorFacturado = 0;
+        Date fecha = new Date();
+        this.entrada = fecha;
+        this.salida = fecha;
+        this.anomalia = new Anomalia("MISTERY", this);
+        this.cochera.setOcupada(false);
+        this.vehiculo.setEstacionado(false);
+        this.cochera.agregarEstadia(this);
+        this.cochera.getParking().sumarUnIngreso();
+        this.cochera.getParking().sumarUnEgreso();
+    }
+    
+    public void anomaliaTransportadorUno(){
+        this.valorFacturado = 0;
+        this.anomalia = new Anomalia("TRANSPORTADOR1", this);
+    }
+
+    void anomaliaTransportadorDos() {
+        this.anomalia = new Anomalia("TRANSPORTADOR2", this);
+        this.entrada = null;
+        this.salida = new Date();
+        this.esFinalizada = true;
+        this.vehiculo.setEstacionado(false);
+    }
+
+    void finalizar() {
+        this.temporizadorUT.stop();
+        this.esFinalizada = true;
+        this.cochera.getParking().evaluarTendencia();
+        this.cochera.setOcupada(false);
+        this.vehiculo.setEstacionado(false);
+        this.cochera.getParking().sumarUnEgreso();
+        this.verificarSiEsMultable();
+        this.calcularValorFacturado();
     }
 }
