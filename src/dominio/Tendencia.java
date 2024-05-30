@@ -1,6 +1,6 @@
 package dominio;
 
-public abstract class Tendencia {
+public abstract class Tendencia  {
     private String nombre;
 
     public String getNombre() {

@@ -15,12 +15,6 @@ import simuladortransito.Transitable;
 public class Fachada extends Observable{
     
     private SistemaParking sParking = SistemaParking.getInstancia();
-    private SistemaEtiqueta sEtiqueta = new SistemaEtiqueta();
-    private SistemaCochera sCochera = SistemaCochera.getInstancia();
-    private SistemaPropietario sPropietario = SistemaPropietario.getInstancia();
-    private SistemaVehiculo sVehiculo = SistemaVehiculo.getInstancia();
-    private SistemaEstadia sEstadia = new SistemaEstadia();
-
     
     private static Fachada instancia = new Fachada();
 
@@ -39,51 +33,51 @@ public class Fachada extends Observable{
     }
     
     public void agregarEtiquetas(Etiqueta etiqueta){
-        sEtiqueta.agregarEtiqueta(etiqueta);
+        sParking.agregarEtiqueta(etiqueta);
     }
     
     public ArrayList<Etiqueta> obtenerEtiquetas(){
-        return sEtiqueta.obtenerEtiquetas();
+        return sParking.obtenerEtiquetas();
     }
     
     public void asignarEtiquetasCocheras(){
-        sEtiqueta.asignarEtiquetas(this.obtenerCocheras());
+        sParking.asignarEtiquetas(this.obtenerCocheras());
     }
     
     public ArrayList<Estacionable> obtenerCocherasEstacionables(){
-        return sCochera.obtenerCocherasEstacionables();
+        return sParking.obtenerCocherasEstacionables();
     }
     
     public ArrayList<Cochera> obtenerCocheras(){
-        return sCochera.obtenerCocheras();
+        return sParking.obtenerCocheras();
     }
     
     public void generarPropietarios(int cantidadAGenerar){
-        sPropietario.generarPropietarios(cantidadAGenerar);
+        sParking.generarPropietarios(cantidadAGenerar);
     }
     
     public ArrayList<Propietario> obtenerPropietarios(){
-        return sPropietario.obtenerPropietarios();
+        return sParking.obtenerPropietarios();
     }
     
     public void registrarTipoVehiculo(String nombre){
-        sVehiculo.registrarTipoVehiculo(new TipoVehiculo(nombre));
+        sParking.registrarTipoVehiculo(new TipoVehiculo(nombre));
     }
     
     public void registrarVehiculos(){
-        sVehiculo.registrarVehiculos(this.sCochera.obtenerCocheras().size() * 2);
+        sParking.registrarVehiculos(this.sParking.obtenerCocheras().size() * 2);
     }
     
     public ArrayList<Transitable> obtenerVehiculosTransitables(){
-        return sVehiculo.obtenerVehiciulosTransitables();
+        return sParking.obtenerVehiciulosTransitables();
     }
     
      public ArrayList<Vehiculo> obtenerVehiculos(){
-        return sVehiculo.obtenerVehiciulos();
+        return sParking.obtenerVehiciulos();
     }
     
     public void asignarEtiquetasVehiculos(){
-        sEtiqueta.asignarEtiquetas(this.obtenerVehiculos());
+        sParking.asignarEtiquetas(this.obtenerVehiculos());
     }
     
     public void inicializarTarifasEnParking(){
@@ -95,15 +89,15 @@ public class Fachada extends Observable{
     }
     
     public Vehiculo obtenerVehiculoPorPatente(String patente){
-        return sVehiculo.obtenerVehiculoPorPatente(patente);
+        return sParking.obtenerVehiculoPorPatente(patente);
     }
     
     public Cochera obtenerCocheraPorCodigo(String codCochera){
-        return sCochera.obtenerCocheraPorCodigo(codCochera);
+        return sParking.obtenerCocheraPorCodigo(codCochera);
     }
     
    public ArrayList<Estadia> obtenerEstadias(){
-        return sEstadia.obtenerEstadias();
+        return sParking.obtenerEstadias();
     }
     
    public Tendencia obtenerTendenciaPorNombre(String nombre){
@@ -118,6 +112,6 @@ public class Fachada extends Observable{
    }
 
     public void agregarEstadia(Estadia estadiaNueva) {
-        sEstadia.agregarNuevaEstadia(estadiaNueva);
+        sParking.agregarNuevaEstadia(estadiaNueva);
     }
 }

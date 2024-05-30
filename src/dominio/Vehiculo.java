@@ -61,31 +61,18 @@ public class Vehiculo implements IEtiquetable, Transitable{
     }
  
     
-     @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("VEHICULO{");
-            sb.append("Patente='").append(this.patente).append('\'');
-            sb.append(", Tipo=").append(this.tipo.getNombre()); 
-            sb.append(", CI Propietario=").append(this.propietario.getNombre());
-            sb.append(", Etiquetas=[");
-            for (int i = 0; i < etiquetas.size(); i++) {
-                sb.append(etiquetas.get(i).getNombre());
-                if (i < etiquetas.size() - 1) {
-                    sb.append(", ");
-                }
-            }
-            sb.append("]}");
-            sb.append(", Infracciones=[");
-            for (int i = 0; i < this.multas.size(); i++) {
-                sb.append(this.multas.get(i).getNombre());
-                if (i < this.multas.size() - 1) {
-                    sb.append(", ");
-                }
-            }
-            sb.append("]}");
-            return sb.toString();
+    private StringBuilder obtenerEtiquetasString(){
+        StringBuilder etiquetasStr = new StringBuilder();
+        for (Etiqueta etiqueta : etiquetas) {
+            etiquetasStr.append(etiqueta.getNombre()).append(" ");
         }
+        return etiquetasStr;
+    }
+    
+         @Override
+    public String toString() {
+        return this.patente + " - " + (this.estaEstacionado ? " ESTACIONADO" : "NO ESTACIONADO")  + " - Etiquetas: " +  this.obtenerEtiquetasString();
+    }
 
     @Override
     public void agregarEtiqueta(Etiqueta etiqueta) {

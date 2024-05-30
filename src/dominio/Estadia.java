@@ -123,7 +123,7 @@ public class Estadia extends Observable {
     }
     
     public void verificarSiEsMultable(){
-        if(this.anomalia != null){
+        if(this.anomalia == null){
          for (Etiqueta etiqueta : this.cochera.getEtiquetas()) {
             if (!this.getVehiculo().tieneEtiqueta(etiqueta.getClass())) {
                 this.multas.add(new Multa(etiqueta, this));//Si es multable va a agregar esas nuevas multas a la estadia asociada.
@@ -193,5 +193,6 @@ public class Estadia extends Observable {
         this.cochera.getParking().sumarUnEgreso();
         this.verificarSiEsMultable();
         this.calcularValorFacturado();
+        this.vehiculo.getPropietario().restarCuentaCorriente(this.valorFacturado);
     }
 }

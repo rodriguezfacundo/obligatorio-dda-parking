@@ -3,15 +3,15 @@ package dominio;
 import interfaces.IEtiquetable;
 import java.util.ArrayList;
 import simuladortransito.Estacionable;
-import sistemas.SistemaCochera;
+import sistemas.SistemaParking;
 
 
 
 public class Cochera implements IEtiquetable, Estacionable  {
+
     private static int contadorID = 1;
     private String codigo;
     private Parking parking;
-    private Vehiculo vehiculo;
     private boolean estaOcupada;
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     private ArrayList<Estadia> estadias = new ArrayList<>();
@@ -34,7 +34,7 @@ public class Cochera implements IEtiquetable, Estacionable  {
     }
     
     public void agregarCochera(){
-        SistemaCochera.getInstancia().agregarCochera(this);
+        SistemaParking.getInstancia().agregarCochera(this);
     }
     
      @Override
@@ -42,25 +42,6 @@ public class Cochera implements IEtiquetable, Estacionable  {
              this.etiquetas.add(etiqueta);
         }
     
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Cochera{");
-            sb.append("codigo='").append(codigo).append('\'');
-            sb.append(", parking=").append(parking.getNombre()); 
-            sb.append(", vehiculo=").append(vehiculo);
-            sb.append(", esta ocupada?=").append(estaOcupada); 
-            sb.append(", etiquetas=[");
-            for (int i = 0; i < etiquetas.size(); i++) {
-                sb.append(etiquetas.get(i).getNombre());
-                if (i < etiquetas.size() - 1) {
-                    sb.append(", ");
-                }
-            }
-            sb.append("]}");
-            return sb.toString();
-        }
-        
         public void setOcupada(boolean estaOcupada) {
              this.estaOcupada = estaOcupada;
         }
@@ -133,5 +114,19 @@ public class Cochera implements IEtiquetable, Estacionable  {
     @Override
     public boolean esEmpleado() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
+    @Override
+    public String toString() {
+        return codigo + " - " + (this.estaOcupada ? " OCUPADA" : " LIBRE") + " - Etiquetas: " + obtenerEtiquetasString();
+    }
+    
+        private StringBuilder obtenerEtiquetasString(){
+        StringBuilder etiquetasStr = new StringBuilder();
+        for (Etiqueta etiqueta : etiquetas) {
+            etiquetasStr.append(etiqueta.getNombre()).append(" ");
+        }
+        return etiquetasStr;
     }
 }

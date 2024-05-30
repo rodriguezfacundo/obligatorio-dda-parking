@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import observador.Observable;
 import sistemas.SistemaParking;
 
-public class Parking extends Observable {
+public class Parking extends Observable{
         private static int contadorID = 1;
         private int id;
         private String nombre;
@@ -150,9 +150,7 @@ public class Parking extends Observable {
         }
         
         public void evaluarTendencia(){
-            for(Tendencia ten:SistemaParking.getInstancia().getTendencias()){
-                ten.evaluarTendencia(this);
-            }
+            SistemaParking.getInstancia().evaluarTendencia(this);
         }
         
         public double obtenerValorFactorDemanda(int cantidadUT){

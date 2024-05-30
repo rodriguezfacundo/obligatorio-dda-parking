@@ -4,6 +4,7 @@ import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
 import simuladortransito.Transitable;
 import sistemas.Fachada;
+import sistemas.SistemaParking;
 
 public class SensorEstadia implements Sensor{
     
@@ -18,7 +19,7 @@ public class SensorEstadia implements Sensor{
                 Fachada.getInstancia().agregarEstadia(estadiaAnomaliaHoudini);
             } 
             Estadia estadiaNueva = new Estadia(vehiculo, cochera);
-            Fachada.getInstancia().agregarEstadia(estadiaNueva);
+            SistemaParking.getInstancia().agregarNuevaEstadia(estadiaNueva);
          }
     }
 
@@ -30,14 +31,14 @@ public class SensorEstadia implements Sensor{
             if(!cochera.estaOcupada()){
                 Estadia estadiaMistery = new Estadia(vehiculo, cochera);
                 estadiaMistery.anomaliaMistery();
-                Fachada.getInstancia().agregarEstadia(estadiaMistery);
+                 SistemaParking.getInstancia().agregarNuevaEstadia(estadiaMistery);
             } else{
                 Estadia estadia = cochera.obtenerEstadiaAbierta();
                 if(estadia != null && !estadia.contieneVehiculo(vehiculo)){
                     estadia.anomaliaTransportadorUno();
                     Estadia estadiaTransportadorDos = new Estadia(vehiculo);
                     estadiaTransportadorDos.anomaliaTransportadorDos();
-                    Fachada.getInstancia().agregarEstadia(estadiaTransportadorDos);
+                    SistemaParking.getInstancia().agregarNuevaEstadia(estadiaTransportadorDos);
                 } else{
                     estadia.finalizar();
                  }

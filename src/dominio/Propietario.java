@@ -62,4 +62,14 @@ public class Propietario {
             return sb.toString();
         }
 
+    public void restarCuentaCorriente(double monto) {
+        double valorMinimoCuentaCorriente = -10;
+        double nuevoMonto = this.cuentaCorriente - monto;
+        if(nuevoMonto < valorMinimoCuentaCorriente){
+           this.cuentaCorriente = valorMinimoCuentaCorriente;
+        } else{
+            this.cuentaCorriente = nuevoMonto;
+        }
+    }
+
 }

@@ -2,6 +2,22 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/dominio/SensorEstadia.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/sistemas/SistemaEtiqueta.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/sistemas/SistemaVehiculo.java</file>
+            <file>jar:file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/lib/SimuladorTransito.jar!/simuladorIU/SimuladorIU.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/sistemas/Fachada.java</file>
+            <file>jar:file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/lib/SimuladorTransito.jar!/simuladorIU/ControladorSimulador.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/inicio/Main.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/dominio/Estadia.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/dominio/Anomalia.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/dominio/Cochera.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/sistemas/SistemaPropietario.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/sistemas/SistemaEstadia.java</file>
+            <file>jar:file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/lib/SimuladorTransito.jar!/simuladortransito/Sensor.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/sistemas/SistemaCochera.java</file>
+            <file>file:/C:/Users/facul/OneDrive/Documentos/FACULTAD/DDA/obligatorio-dda-parking/src/dominio/Parking.java</file>
+        </group>
     </open-files>
 </project-private>
