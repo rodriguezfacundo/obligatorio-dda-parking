@@ -20,6 +20,7 @@ import javax.swing.table.TableModel;
 public class UITableroControl extends javax.swing.JFrame implements ITableroControl{
     private ControladorTableroControl controlador;
     private ArrayList<Estadia> estadiasAnomaliasCheckbox; 
+    private ArrayList<Parking> parkingsEnTablero;
     /**
      * Creates new form TableroControl
      */
@@ -236,7 +237,9 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
     private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
         // TODO add your handling code here:
-        //SOLO POR TEST
+        int seleccionado = tb_tablero_control.getSelectedRow();
+        Parking pSeleccionado = this.parkingsEnTablero.get(seleccionado);
+        new UIListaPrecios(this,false,pSeleccionado).setVisible(true);
         
     }//GEN-LAST:event_btn_carteleraActionPerformed
 
@@ -265,6 +268,10 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(UITableroControl.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -303,6 +310,7 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
     }
     @Override
     public void mostrarListaParkings(ArrayList<Parking> parkings) {
+        this.parkingsEnTablero = parkings;
         TableModel modeloParkings = this.tb_tablero_control.getModel();
         for (int i = 0; i < parkings.size(); i++) {
             Parking p = parkings.get(i);

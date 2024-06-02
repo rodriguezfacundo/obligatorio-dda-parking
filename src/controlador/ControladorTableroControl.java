@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controlador;
 
-import dominio.Anomalia;
 import dominio.Estadia;
 import interfaces.ITableroControl;
 import vistaParking.UITableroControl;
@@ -12,10 +7,6 @@ import observador.IObservador;
 import observador.Observable;
 import sistemas.Fachada;
 
-/**
- *
- * @author mende
- */
 public class ControladorTableroControl implements IObservador{
     private ITableroControl vista;
     private Fachada fachada;
@@ -62,6 +53,3 @@ public class ControladorTableroControl implements IObservador{
         fachada.quitarObservador(this);
     }
 }
-
-
-
