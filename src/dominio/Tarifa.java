@@ -17,4 +17,7 @@ public class Tarifa {
     public TipoVehiculo getTipoVehiculo(){
         return this.tipoVehiculo;
     }
+    public void actualizarPrecio(double precioNuevo){
+        this.precioPorUT = precioNuevo;
+    }
 }

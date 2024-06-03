@@ -5,6 +5,8 @@
 package controlador;
 
 import dominio.Parking;
+import dominio.Tarifa;
+import java.util.ArrayList;
 import observador.IObservador;
 import observador.Observable;
 import sistemas.Fachada;
@@ -17,27 +19,36 @@ public class ControladorListaPrecios implements IObservador{
     
     
     public ControladorListaPrecios(VistaListaPrecios vista,Parking parking) {
+        this.fachada = Fachada.getInstancia();
         this.vista = vista;
+        this.parking=parking;
         agregarObservador();
         mostrarPrecios();
-        this.parking=parking;
     }
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+       if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
+            mostrarPrecios();
+        }  
     }
     
     public void agregarObservador(){
-        fachada.agregarObservador(this);
+        this.parking.agregarObservador(this);
+    }
+    public void quitarObservador(){
+        this.parking.quitarObservador(this);
     }
     
     public void mostrarPrecios(){
-        
+        this.vista.mostrarPrecios(this.parking.getTarifas());
     }
     public void mostrarTitulo(){
         this.vista.mostrarTitulo(parking.getNombre());
     }
-    
+    public void cambiarValor(int pos,Double nuevoValor){
+        if(pos==0)pos=1;
+        this.parking.actualizarValorTarifa(pos,nuevoValor);
+    }
     
 }

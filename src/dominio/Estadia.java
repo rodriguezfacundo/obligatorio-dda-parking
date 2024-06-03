@@ -26,7 +26,7 @@ public class Estadia extends Observable {
         this.esFinalizada = false;
         this.cochera.setOcupada(true);
         this.vehiculo.setEstacionado(true);
-        this.cochera.agregarEstadia(this);
+//        this.cochera.agregarEstadia(this);
         this.cochera.getParking().sumarUnIngreso();
     }
     
@@ -154,6 +154,7 @@ public class Estadia extends Observable {
         this.salida = null;
         this.anomalia = new Anomalia("HOUDINI", this);
         temporizadorUT.stop();
+        avisarAnomalia();
     }
     
     public void anomaliaMistery(){
@@ -169,11 +170,13 @@ public class Estadia extends Observable {
         this.cochera.agregarEstadia(this);
         this.cochera.getParking().sumarUnIngreso();
         this.cochera.getParking().sumarUnEgreso();
+        avisarAnomalia();
     }
     
     public void anomaliaTransportadorUno(){
         this.valorFacturado = 0;
         this.anomalia = new Anomalia("TRANSPORTADOR1", this);
+        avisarAnomalia();
     }
 
     void anomaliaTransportadorDos() {
@@ -182,8 +185,9 @@ public class Estadia extends Observable {
         this.salida = new Date();
         this.esFinalizada = true;
         this.vehiculo.setEstacionado(false);
+        avisarAnomalia();
     }
-
+    
     void finalizar() {
         this.temporizadorUT.stop();
         this.esFinalizada = true;
@@ -194,5 +198,8 @@ public class Estadia extends Observable {
         this.verificarSiEsMultable();
         this.calcularValorFacturado();
         this.vehiculo.getPropietario().restarCuentaCorriente(this.valorFacturado);
+    }
+    void avisarAnomalia(){
+        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA);
     }
 }
