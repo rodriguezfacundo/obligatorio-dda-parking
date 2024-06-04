@@ -121,6 +121,11 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
         ch_monitorear_anomalias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ch_monitorear_anomalias.setText("Monitorear anomalías");
+        ch_monitorear_anomalias.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ch_monitorear_anomaliasStateChanged(evt);
+            }
+        });
         ch_monitorear_anomalias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ch_monitorear_anomaliasActionPerformed(evt);
@@ -232,16 +237,21 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
     private void ch_monitorear_anomaliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasActionPerformed
         // TODO add your handling code here:
-        int seleccionado = tb_tablero_control.getSelectedRow();
-        if(seleccionado==-1)return;
-        boolean monitorear = this.ch_monitorear_anomalias.isSelected();
-        if(monitorear) this.controlador.agregarObservadorEstadias(seleccionado);
-        if(!monitorear)this.controlador.quitarObservadorEstadias(seleccionado);
     }//GEN-LAST:event_ch_monitorear_anomaliasActionPerformed
 
     private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
         // TODO add your handling code here:        
     }//GEN-LAST:event_btn_carteleraActionPerformed
+
+    private void ch_monitorear_anomaliasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasStateChanged
+        // TODO add your handling code here:
+        int seleccionado = tb_tablero_control.getSelectedRow();
+        if(seleccionado==-1)return;
+        boolean monitorear = this.ch_monitorear_anomalias.isSelected();
+        System.out.println("Cambio valor checkbox 1 : " + monitorear);
+        if(monitorear) this.controlador.guardarParkingSeleccionado(seleccionado);
+        if(!monitorear)this.controlador.quitarParkingSeleccionado(seleccionado);
+    }//GEN-LAST:event_ch_monitorear_anomaliasStateChanged
 
     /**
      * @param args the command line arguments

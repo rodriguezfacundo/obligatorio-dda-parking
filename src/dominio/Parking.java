@@ -69,11 +69,10 @@ public class Parking extends Observable {
     public ArrayList<Tarifa> getTarifas() {
         return this.tarifas;
     }
-    public void actualizarValorTarifa(int pos, double nuevoValor){
-        this.tarifas.get(pos).actualizarPrecio(nuevoValor);
-        this.avisar(Observable.Eventos.PARKING_CAMBIO);
-    }
-
+    public void actualizarValorTarifa(int pos, double nuevoValor) throws ParkingException{
+           this.tarifas.get(pos).actualizarPrecio(nuevoValor);
+           this.avisar(Observable.Eventos.PARKING_CAMBIO, this);
+   }
     private ArrayList<Cochera> agregarCocheras(int cantidadCocheras) {
         ArrayList<Cochera> cocherasNuevas = new ArrayList<>();
         if (esCantidadCocherasAceptable(cantidadCocheras)) {
@@ -109,7 +108,13 @@ public class Parking extends Observable {
         sb.append("]}");
         return sb.toString();
     }
-
+    @Override
+      public boolean equals(Object o) {
+          String parkingId = String.valueOf(this.getId());
+          Parking p = (Parking)o;
+          String parkingCompararId = String.valueOf(p.getId());
+          return parkingId.equals(parkingCompararId);
+      }
     public Double getFactorDemanda() {
         return this.factorDemanda;
     }
@@ -155,7 +160,7 @@ public class Parking extends Observable {
 
     public void setTendencia(Tendencia ten) {
         this.tendencia = ten;
-        this.avisar(Observable.Eventos.CAMBIO_TENDENCIA);
+        this.avisar(Observable.Eventos.CAMBIO_TENDENCIA,this);
     }
 
     public void evaluarTendencia() {
@@ -211,12 +216,11 @@ public class Parking extends Observable {
         }
         return total;
     }
-
-    public void avisarAnomalia() {
-        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA);
-    }
-
     public void avisarCambioEstadoEstadia() {
-        this.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
+        this.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA,this);
     }
+    public void avisarAnomalia(Estadia estadiaConAnomalia){
+        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA,estadiaConAnomalia );
+    }
+   
 }

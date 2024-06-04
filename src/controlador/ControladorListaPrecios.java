@@ -5,6 +5,7 @@
 package controlador;
 
 import dominio.Parking;
+import dominio.ParkingException;
 import dominio.Tarifa;
 import java.util.ArrayList;
 import observador.IObservador;
@@ -27,7 +28,7 @@ public class ControladorListaPrecios implements IObservador{
     }
 
     @Override
-    public void actualizar(Object evento, Observable origen) {
+    public void actualizar(Object evento, Object origen) {
        if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
             mostrarPrecios();
         }  
@@ -48,7 +49,11 @@ public class ControladorListaPrecios implements IObservador{
     }
     public void cambiarValor(int pos,Double nuevoValor){
         if(pos==0)pos=1;
-        this.parking.actualizarValorTarifa(pos,nuevoValor);
+        try{
+            this.parking.actualizarValorTarifa(pos,nuevoValor);
+        }catch(ParkingException ex){
+            vista.mensajeError(ex.getMessage());
+        }
     }
     
 }

@@ -8,4 +8,5 @@ public interface VistaListaPrecios {
     void mostrarPrecios(ArrayList<Tarifa> tarifas);
     void guardar();
     void cancelar();
+    void mensajeError(String msg);
 }

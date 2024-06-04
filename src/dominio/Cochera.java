@@ -50,7 +50,7 @@ public class Cochera implements IEtiquetable, Estacionable {
             } 
             Estadia estadiaNueva = new Estadia(vehiculo, this);
             this.estadias.add(estadiaNueva);
-            this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
+            this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA,this);
     }
     public void egreso(Vehiculo vehiculo) {
         if (!this.estaOcupada()) {
@@ -67,9 +67,8 @@ public class Cochera implements IEtiquetable, Estacionable {
                 estadia.finalizar();
             }
         }
-        this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
+        this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA,this);
     }
-    
     public ArrayList<Estadia> getEstadias() {
         return this.estadias;
     }
@@ -150,5 +149,8 @@ public class Cochera implements IEtiquetable, Estacionable {
             etiquetasStr.append(etiqueta.getNombre()).append(" ");
         }
         return etiquetasStr;
+    }
+    void avisarAnomalia(Estadia estadiaConAnomalia){
+        this.parking.avisarAnomalia(estadiaConAnomalia);
     }
 }

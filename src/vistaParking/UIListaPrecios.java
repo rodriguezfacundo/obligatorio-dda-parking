@@ -10,6 +10,7 @@ import java.awt.Frame;
 import controlador.VistaListaPrecios;
 import dominio.Tarifa;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 /**
@@ -193,5 +194,10 @@ public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrec
     @Override
     public void cancelar() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void mensajeError(String msg) {
+       JOptionPane.showMessageDialog(this, msg);
     }
 }

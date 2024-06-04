@@ -16,7 +16,7 @@ public class ControladorCarteleraElectronica implements IObservador{
 
     //Aca se procesan los eventos del modelo
     @Override
-    public void actualizar(Object evento, Observable origen) {
+    public void actualizar(Object evento, Object origen) {
         
     }
 }

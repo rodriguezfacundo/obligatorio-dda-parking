@@ -14,6 +14,7 @@ public class ControladorTableroControl implements IObservador{
     private ITableroControl vista;
     private Fachada fachada;
     private ArrayList<Parking> parkings;
+    private Parking parkingSeleccionado;
     private ArrayList<Estadia> estadiasAnomalias;
     
     
@@ -21,21 +22,25 @@ public class ControladorTableroControl implements IObservador{
         this.fachada = Fachada.getInstancia();
         this.vista = vistaTableroControl;
         this.parkings = fachada.obtenerParkings();
+        this.parkingSeleccionado = null;
         this.estadiasAnomalias =  new ArrayList<Estadia>();
         agregarObservadorParkings();
         mostrarTableroControl();
     }
 
     @Override
-    public void actualizar(Object evento, Observable origen) {
+    public void actualizar(Object evento, Object origen) {
       if (((Observable.Eventos) evento).equals(Observable.Eventos.ANOMALIA_REGISTRADA)) {
-            Estadia nuevaAnomalia = (Estadia) origen;
-            this.estadiasAnomalias.add(nuevaAnomalia);
-            mostrarAnomalias();
+          Estadia estadiaOrigen = (Estadia)origen;
+          if(estadiaOrigen.getCochera().getParking().equals(this.parkingSeleccionado))mostrarAnomalias(estadiaOrigen);
         }  
       if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA)) {
            mostrarTableroControl();
         }
+    }
+    public Parking getParkingSeleccionado(int pos){
+        if(pos==0)pos=1;
+        return this.parkings.get(pos);
     }
     public void mostrarTableroControl(){
         mostrarCantidadEstadias();
@@ -53,12 +58,9 @@ public class ControladorTableroControl implements IObservador{
         this.parkings = fachada.obtenerParkings();
         this.vista.mostrarListaParkings(this.parkings);
     }
-    public void mostrarAnomalias(){
-        this.vista.mostrarAnomaliasCheckbox(this.estadiasAnomalias);
-    }
-    public Parking getParkingSeleccionado(int seleccionado){
-          if(seleccionado==0)seleccionado=1;
-        return this.parkings.get(seleccionado);
+    public void mostrarAnomalias(Estadia estadiaNuevaAnomalia){
+        this.estadiasAnomalias.add(estadiaNuevaAnomalia);
+        this.vista.mostrarAnomaliasCheckbox(estadiasAnomalias);
     }
     public void agregarObservadorParkings(){
         for (Parking p : parkings) {
@@ -70,22 +72,12 @@ public class ControladorTableroControl implements IObservador{
             p.quitarObservador(this);
         }
     }
-    public void agregarObservadorEstadias(int pos){
+    public void guardarParkingSeleccionado(int pos){
         if(pos==0)pos=1;
-        System.out.print(pos);
-        Parking seleccionado = this.parkings.get(pos);
-        for(Cochera c:seleccionado.getCocheras()){
-            for(Estadia e:c.getEstadias()){
-                e.agregarObservador(this);
-            }
-        }
+        this.parkingSeleccionado = this.parkings.get(pos);
+        System.out.println("guardar parking seleccionado ejecutado : " + this.parkingSeleccionado);
     }
-    public void quitarObservadorEstadias(int pos){
-        Parking seleccionado = this.parkings.get(pos);
-        for(Cochera c:seleccionado.getCocheras()){
-            for(Estadia e:c.getEstadias()){
-                e.quitarObservador(this);
-            }
-        }
+    public void quitarParkingSeleccionado(int pos){
+        this.parkingSeleccionado = null;
     }
 }

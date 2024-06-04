@@ -20,10 +20,10 @@ public class Observable {
     public void quitarObservador(IObservador obs){
         observadores.remove(obs);
     }
-    public void avisar(Object evento){
+    public void avisar(Object evento, Object origen){
         ArrayList<IObservador> copia = new ArrayList(observadores);
         for(IObservador obs:copia){
-            obs.actualizar(evento, this);
+            obs.actualizar(evento, origen);
         }
     }
 }

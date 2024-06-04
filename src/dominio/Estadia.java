@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import observador.Observable;
 
-public class Estadia extends Observable {
+public class Estadia{
     private Date entrada;
     private Date salida;
     private Vehiculo vehiculo;
@@ -200,6 +200,6 @@ public class Estadia extends Observable {
         this.vehiculo.getPropietario().restarCuentaCorriente(this.valorFacturado);
     }
     void avisarAnomalia(){
-        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA);
+        this.cochera.avisarAnomalia(this);
     }
 }

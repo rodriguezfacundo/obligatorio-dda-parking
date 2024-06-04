@@ -322,6 +322,7 @@
         <Property name="text" type="java.lang.String" value="Monitorear anomal&#xed;as"/>
       </Properties>
       <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="ch_monitorear_anomaliasStateChanged"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ch_monitorear_anomaliasActionPerformed"/>
       </Events>
     </Component>
