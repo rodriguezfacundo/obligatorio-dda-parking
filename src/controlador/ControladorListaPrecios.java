@@ -25,6 +25,7 @@ public class ControladorListaPrecios implements IObservador{
         this.parking=parking;
         agregarObservador();
         mostrarPrecios();
+        mostrarTitulo();
     }
 
     @Override
@@ -45,7 +46,7 @@ public class ControladorListaPrecios implements IObservador{
         this.vista.mostrarPrecios(this.parking.getTarifas());
     }
     public void mostrarTitulo(){
-        this.vista.mostrarTitulo(parking.getNombre());
+        this.vista.mostrarTitulo(this.parking.getNombre());
     }
     public void cambiarValor(int pos,Double nuevoValor){
         if(pos==0)pos=1;
@@ -55,5 +56,4 @@ public class ControladorListaPrecios implements IObservador{
             vista.mensajeError(ex.getMessage());
         }
     }
-    
 }

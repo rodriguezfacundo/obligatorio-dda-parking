@@ -240,7 +240,15 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
     }//GEN-LAST:event_ch_monitorear_anomaliasActionPerformed
 
     private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
-        // TODO add your handling code here:        
+        // TODO add your handling code here:  
+        int seleccionado = tb_tablero_control.getSelectedRow();
+        if(seleccionado == -1){
+            //Debo largar excepcion de que seleccione un parking
+            return;
+        } else{
+            Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
+            new UICarteleraElectronica(this, false, pSeleccionado).setVisible(true);
+        }
     }//GEN-LAST:event_btn_carteleraActionPerformed
 
     private void ch_monitorear_anomaliasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasStateChanged
