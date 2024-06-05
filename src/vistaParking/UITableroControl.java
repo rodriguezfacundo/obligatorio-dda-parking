@@ -19,15 +19,13 @@ import javax.swing.table.TableModel;
  */
 public class UITableroControl extends javax.swing.JFrame implements ITableroControl{
     private ControladorTableroControl controlador;
-    private ArrayList<Estadia> estadiasAnomaliasCheckbox; 
-    private ArrayList<Parking> parkingsEnTablero;
     /**
      * Creates new form TableroControl
      */
     public UITableroControl(Frame parent, boolean modal) {
+        System.out.println("ÜI Tablero control constructor");
         initComponents();
         this.controlador = new ControladorTableroControl(this);
-        this.estadiasAnomaliasCheckbox = new ArrayList<Estadia> ();
     }
 
     /**
@@ -123,6 +121,11 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
         ch_monitorear_anomalias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         ch_monitorear_anomalias.setText("Monitorear anomalías");
+        ch_monitorear_anomalias.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ch_monitorear_anomaliasStateChanged(evt);
+            }
+        });
         ch_monitorear_anomalias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ch_monitorear_anomaliasActionPerformed(evt);
@@ -226,22 +229,37 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
     private void btn_preciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_preciosActionPerformed
         // TODO add your handling code here:
+        int seleccionado = tb_tablero_control.getSelectedRow();
+        if(seleccionado==-1)return;
+        Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
+        new UIListaPrecios(this,false,pSeleccionado).setVisible(true);
     }//GEN-LAST:event_btn_preciosActionPerformed
 
     private void ch_monitorear_anomaliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasActionPerformed
         // TODO add your handling code here:
-        boolean monitorear = this.ch_monitorear_anomalias.isSelected();
-        if(monitorear) this.controlador.agregarObservador();
-        if(!monitorear)this.controlador.quitarObservador();
     }//GEN-LAST:event_ch_monitorear_anomaliasActionPerformed
 
     private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
+        // TODO add your handling code here:  
+        int seleccionado = tb_tablero_control.getSelectedRow();
+        if(seleccionado == -1){
+            //Debo largar excepcion de que seleccione un parking
+            return;
+        } else{
+            Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
+            new UICarteleraElectronica(this, false, pSeleccionado).setVisible(true);
+        }
+    }//GEN-LAST:event_btn_carteleraActionPerformed
+
+    private void ch_monitorear_anomaliasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasStateChanged
         // TODO add your handling code here:
         int seleccionado = tb_tablero_control.getSelectedRow();
-        Parking pSeleccionado = this.parkingsEnTablero.get(seleccionado);
-        new UIListaPrecios(this,false,pSeleccionado).setVisible(true);
-        
-    }//GEN-LAST:event_btn_carteleraActionPerformed
+        if(seleccionado==-1)return;
+        boolean monitorear = this.ch_monitorear_anomalias.isSelected();
+        System.out.println("Cambio valor checkbox 1 : " + monitorear);
+        if(monitorear) this.controlador.guardarParkingSeleccionado(seleccionado);
+        if(!monitorear)this.controlador.quitarParkingSeleccionado(seleccionado);
+    }//GEN-LAST:event_ch_monitorear_anomaliasStateChanged
 
     /**
      * @param args the command line arguments
@@ -310,10 +328,12 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
     }
     @Override
     public void mostrarListaParkings(ArrayList<Parking> parkings) {
-        this.parkingsEnTablero = parkings;
+        System.out.println("ÜI mostrarListaParkings");
         TableModel modeloParkings = this.tb_tablero_control.getModel();
+        System.out.println("ÜI mostrarListaParkings parkings.size " + parkings.size());
         for (int i = 0; i < parkings.size(); i++) {
             Parking p = parkings.get(i);
+            System.out.println("ÜI mostrarListaParkings parking " + p);
             modeloParkings.setValueAt(p.getNombre(), i, 0);
             modeloParkings.setValueAt(p.getCantidadCocherasOcupadas(), i, 1);
             modeloParkings.setValueAt(p.getCantidadCocherasDisponibles(), i, 2);
@@ -326,11 +346,10 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
     }
 
     @Override
-    public void mostrarAnomaliasCheckbox(Estadia nueva) {
-      this.estadiasAnomaliasCheckbox.add(nueva);
+    public void mostrarAnomaliasCheckbox(ArrayList<Estadia> estadias) {
       TableModel modeloParkings = this.tb_anomalias.getModel();
-        for (int i = 0; i < this.estadiasAnomaliasCheckbox.size(); i++) {
-            Estadia e = this.estadiasAnomaliasCheckbox.get(i);
+        for (int i = 0; i < estadias.size(); i++) {
+            Estadia e = estadias.get(i);
             modeloParkings.setValueAt(e.getAnomalia().getFechaCreacion(), i, 0);
             modeloParkings.setValueAt(e.getVehiculo().getPropietario().getNombre(), i, 1);
             modeloParkings.setValueAt(e.getAnomalia().getCodigoError(), i, 2);
