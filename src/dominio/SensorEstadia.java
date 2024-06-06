@@ -3,8 +3,6 @@ package dominio;
 import simuladortransito.Estacionable;
 import simuladortransito.Sensor;
 import simuladortransito.Transitable;
-import sistemas.Fachada;
-import sistemas.SistemaParking;
 
 public class SensorEstadia implements Sensor{
     

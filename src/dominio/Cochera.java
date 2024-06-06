@@ -61,7 +61,7 @@ public class Cochera implements IEtiquetable, Estacionable {
             Estadia estadia = this.obtenerEstadiaAbierta();
             if (estadia != null && !estadia.contieneVehiculo(vehiculo)) {
                 estadia.anomaliaTransportadorUno();
-                Estadia estadiaTransportadorDos = new Estadia(vehiculo);
+                Estadia estadiaTransportadorDos = new Estadia(vehiculo, this);
                 estadiaTransportadorDos.anomaliaTransportadorDos();
             } else {
                 estadia.finalizar();

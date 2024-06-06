@@ -8,8 +8,11 @@ import controlador.ControladorCarteleraElectronica;
 import dominio.Parking;
 import java.awt.Frame;
 import controlador.VistaCarteleraElectronica;
+import dominio.Etiqueta;
 import dominio.Tarifa;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.swing.table.TableModel;
 
 /**
@@ -22,7 +25,7 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
     /**
      * Creates new form UICarteleraElectronica
      */
-    public UICarteleraElectronica(Frame parent, boolean moda, Parking seleccionado) {
+    public UICarteleraElectronica(Frame parent, boolean modal, Parking seleccionado) {
         initComponents();
         this.controlador = new ControladorCarteleraElectronica(this, seleccionado);
     }
@@ -42,14 +45,13 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_lista_precios = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tb_cocheras_con_etiquetas_disponibilidad = new javax.swing.JTable();
         jSeparator1 = new javax.swing.JSeparator();
         jToggleButton1 = new javax.swing.JToggleButton();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
         txt_nombre_parking = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        txt_disponiblidad_parking = new javax.swing.JTextPane();
+        txt_disponibilidad_parking = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,7 +74,7 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
         ));
         jScrollPane1.setViewportView(tb_lista_precios);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tb_cocheras_con_etiquetas_disponibilidad.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -83,7 +85,7 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
                 "Cocheras", "Disponibilidad"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tb_cocheras_con_etiquetas_disponibilidad);
 
         jToggleButton1.setBackground(new java.awt.Color(51, 102, 255));
         jToggleButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -97,8 +99,7 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
 
         txt_nombre_parking.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        txt_disponiblidad_parking.setEditable(false);
-        jScrollPane3.setViewportView(txt_disponiblidad_parking);
+        txt_disponibilidad_parking.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,8 +120,8 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
                         .addGap(27, 27, 27)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_disponibilidad_parking, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 2, Short.MAX_VALUE))
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
@@ -148,19 +149,19 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txt_nombre_parking, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_disponibilidad_parking, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(92, 92, 92)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addComponent(jToggleButton1)
                 .addGap(103, 103, 103))
         );
@@ -208,17 +209,20 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTable jTable2;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JTable tb_cocheras_con_etiquetas_disponibilidad;
     private javax.swing.JTable tb_lista_precios;
-    private javax.swing.JTextPane txt_disponiblidad_parking;
+    private javax.swing.JLabel txt_disponibilidad_parking;
     private javax.swing.JLabel txt_nombre_parking;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public void mostrarDisponibilidad(Long cantidad) {
+        this.txt_disponibilidad_parking.setText(Long.toString(cantidad));
+    }
 
     @Override
     public void mostrarTitulo(String titulo) {
@@ -235,8 +239,23 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
         }
     }
 
+    public void mostrarEtiquetas(ArrayList<Etiqueta> etiquetas) {
+        TableModel modeloEtiquetas = this.tb_cocheras_con_etiquetas_disponibilidad.getModel();
+        for (int i = 0; i < etiquetas.size(); i++) {
+            Etiqueta etiqueta = etiquetas.get(i);
+            modeloEtiquetas.setValueAt(etiqueta.getNombre(), i, 0);
+            modeloEtiquetas.setValueAt(etiqueta.getNombre(), i, 1);
+        }
+    }
+
     @Override
-    public void mostrarDisponibilidad(Long cantidad) {
-        this.txt_disponiblidad_parking.setText(Long.toString(cantidad));
+    public void mostrarDisponibilidadCocheraPorEtiqueta(Map<String, Integer> etiquetasDisponibilidad) {
+        TableModel modeloEtiquetas = this.tb_cocheras_con_etiquetas_disponibilidad.getModel();
+        List<String> etiquetas = new ArrayList<>(etiquetasDisponibilidad.keySet());
+        List<Integer> valores = new ArrayList<>(etiquetasDisponibilidad.values());
+        for (int i = 0; i < etiquetas.size(); i++) {
+            modeloEtiquetas.setValueAt(etiquetas.get(i), i, 0);
+            modeloEtiquetas.setValueAt(valores.get(i), i, 1);
+        }
     }
 }

@@ -136,6 +136,11 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
         btn_cerrar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btn_cerrar.setForeground(new java.awt.Color(255, 255, 255));
         btn_cerrar.setText("Cerrar");
+        btn_cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cerrarActionPerformed(evt);
+            }
+        });
 
         txt_cantidad_estadias.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         txt_cantidad_estadias.setText(" ");
@@ -260,6 +265,10 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
         if(monitorear) this.controlador.guardarParkingSeleccionado(seleccionado);
         if(!monitorear)this.controlador.quitarParkingSeleccionado(seleccionado);
     }//GEN-LAST:event_ch_monitorear_anomaliasStateChanged
+
+    private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_cerrarActionPerformed
 
     /**
      * @param args the command line arguments

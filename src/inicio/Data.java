@@ -42,6 +42,10 @@ public class Data {
             fachada.agregarEtiquetas(new EtiquetaEmpleado());
         }
         
+        public void agregarEtiquetasParkings(){
+            fachada.agregarEtiquetasEnParking();
+        }
+        
         //Se generan 50 propietarios
         public void generarPropietarios (){
             fachada.generarPropietarios(50);
@@ -97,6 +101,7 @@ public class Data {
              this.agregarEtiquetas();
              this.generarPropietarios();
              this.asignarEtiquetasCocheras();
+             this.agregarEtiquetasParkings();
              this.registrarTipoVehiculo();
              this.registrarVehiculos();
              this.asignarEtiquetasVehiculos();

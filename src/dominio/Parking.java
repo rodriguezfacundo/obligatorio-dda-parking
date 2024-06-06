@@ -1,6 +1,8 @@
 package dominio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import observador.Observable;
 import sistemas.SistemaParking;
 
@@ -12,6 +14,7 @@ public class Parking extends Observable {
     private String direccion;
     private ArrayList<Cochera> cocheras = new ArrayList<>();
     private ArrayList<Tarifa> tarifas = new ArrayList<>();
+    private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     private Tendencia tendencia;
     private double factorDemanda;
 
@@ -221,6 +224,30 @@ public class Parking extends Observable {
     }
     public void avisarAnomalia(Estadia estadiaConAnomalia){
         this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA,estadiaConAnomalia );
+    }
+
+    public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+    
+    public ArrayList<Etiqueta> getEtiquetas(){
+        return this.etiquetas;
+    }
+    
+    public Map<String, Integer> obtenerDisponibilidadPorEtiqueta() {
+        Map<String, Integer> disponibilidadPorEtiqueta = new HashMap<>();
+        
+        for (Cochera cochera : this.cocheras) {
+            for (Etiqueta etiqueta : cochera.getEtiquetas()) {
+                String nombreEtiqueta = etiqueta.getNombre();
+                disponibilidadPorEtiqueta.putIfAbsent(nombreEtiqueta, 0);
+
+                if (!cochera.estaOcupada()) {
+                    disponibilidadPorEtiqueta.put(nombreEtiqueta, disponibilidadPorEtiqueta.get(nombreEtiqueta) + 1);
+                }
+            }
+        }
+        return disponibilidadPorEtiqueta;
     }
    
 }

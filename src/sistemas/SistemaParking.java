@@ -150,6 +150,12 @@ public class SistemaParking <T extends IEtiquetable> {
         return this.etiquetas;
     }
     
+      public void agregarEtiquetasParkings(){
+        for(Parking parking: this.parkings){
+            parking.setEtiquetas(this.etiquetas);
+        }
+    }
+    
     public void asignarEtiquetas(ArrayList<T> listaEntidad) {
         int cantidad = listaEntidad.size() * 20 / 100; // el 20% de la lista que reciba por parametro debera tener etiquetas
 

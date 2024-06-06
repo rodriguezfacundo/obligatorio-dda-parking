@@ -114,4 +114,8 @@ public class Fachada extends Observable{
     public void agregarEstadia(Estadia estadiaNueva) {
         sParking.agregarNuevaEstadia(estadiaNueva);
     }
+
+    public void agregarEtiquetasEnParking() {
+        sParking.agregarEtiquetasParkings();
+    }
 }

@@ -30,13 +30,13 @@ public class Estadia{
         this.cochera.getParking().sumarUnIngreso();
     }
     
-    public Estadia(Vehiculo vehiculo){
-        this.cochera = null;
-        this.vehiculo = vehiculo;
+    /*public Estadia(Cochera cochera){
+        this.cochera = cochera;
+        this.vehiculo = cochera..;
         this.temporizadorUT = new TemporizadorUT();
         this.temporizadorUT.start();
         this.temporizadorUT.stop();
-    }
+    }*/
     
     
     public double getValorFacturado() {

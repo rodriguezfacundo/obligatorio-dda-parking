@@ -49,7 +49,7 @@ public class ControladorListaPrecios implements IObservador{
         this.vista.mostrarTitulo(this.parking.getNombre());
     }
     public void cambiarValor(int pos,Double nuevoValor){
-        if(pos==0)pos=1;
+        //if(pos==0)pos=1;
         try{
             this.parking.actualizarValorTarifa(pos,nuevoValor);
         }catch(ParkingException ex){
