@@ -22,10 +22,13 @@ public class ControladorCarteleraElectronica implements IObservador{
     @Override
     public void actualizar(Object evento, Object origen) {
         if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
-          //mostrar cocheras con etiquetas y su disponibilidad;
-          mostrarPrecios();
-          mostrarDisponibilidad();
+            //mostrar cocheras con etiquetas y su disponibilidad;
+             mostrarPrecios();
         } 
+        if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA)){
+            mostrarDisponibilidad();
+            mostrarEtiquetas();
+         }
     }
     
     public void agregarObservador(){
@@ -39,10 +42,15 @@ public class ControladorCarteleraElectronica implements IObservador{
         mostrarPrecios();
         mostrarTitulo();
         mostrarDisponibilidad();
+        mostrarEtiquetas();
     }
     
     public void mostrarPrecios(){
         this.vista.mostrarPrecios(this.parking.getTarifas());
+    }
+    
+    public void mostrarEtiquetas(){
+        this.vista.mostrarDisponibilidadCocheraPorEtiqueta(this.parking.obtenerDisponibilidadPorEtiqueta());
     }
     
     public void mostrarTitulo(){

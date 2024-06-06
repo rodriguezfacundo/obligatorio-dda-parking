@@ -39,7 +39,7 @@ public class ControladorTableroControl implements IObservador{
         }
     }
     public Parking getParkingSeleccionado(int pos){
-        if(pos==0)pos=1;
+        //if(pos==0)pos=1;
         return this.parkings.get(pos);
     }
     public void mostrarTableroControl(){
@@ -73,7 +73,7 @@ public class ControladorTableroControl implements IObservador{
         }
     }
     public void guardarParkingSeleccionado(int pos){
-        if(pos==0)pos=1;
+        //if(pos==0)pos=1;
         this.parkingSeleccionado = this.parkings.get(pos);
         System.out.println("guardar parking seleccionado ejecutado : " + this.parkingSeleccionado);
     }
