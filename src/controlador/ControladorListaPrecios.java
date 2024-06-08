@@ -41,6 +41,7 @@ public class ControladorListaPrecios implements IObservador{
     }
     public void quitarObservador(){
         this.parking.quitarObservador(this);
+        
     }
     
     public void mostrarPrecios(){

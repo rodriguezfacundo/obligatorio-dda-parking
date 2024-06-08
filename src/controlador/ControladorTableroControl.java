@@ -78,5 +78,6 @@ public class ControladorTableroControl implements IObservador{
         if(pos<0)throw new ParkingException("Ningun parking seleccionado");
         if(monitorear)this.parkingSeleccionado = this.parkings.get(pos);
         if(!monitorear)this.parkingSeleccionado = null;
+        
     }
 }

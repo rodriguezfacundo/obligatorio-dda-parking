@@ -1,5 +1,6 @@
 package observador;
 
+
 import java.util.ArrayList;
 
 public class Observable {

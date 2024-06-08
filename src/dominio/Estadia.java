@@ -16,6 +16,7 @@ public class Estadia{
     private double precioBase;
     private ArrayList<Multa> multas = new ArrayList<>();
     
+    
     public Estadia(Vehiculo vehiculo, Cochera cochera){
         this.cochera = cochera;
         this.vehiculo = vehiculo;

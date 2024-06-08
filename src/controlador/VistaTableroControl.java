@@ -1,4 +1,4 @@
-//VISTA TABLERO CONTROL
+
 package controlador;
 
 import dominio.Estadia;

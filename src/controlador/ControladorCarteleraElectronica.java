@@ -10,6 +10,7 @@ public class ControladorCarteleraElectronica implements IObservador{
     private Fachada fachada;
     private Parking parking;
     
+    
     public ControladorCarteleraElectronica(VistaCarteleraElectronica vista, Parking parking){
         this.vista = vista;
         this.fachada = Fachada.getInstancia();

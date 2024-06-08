@@ -1,4 +1,4 @@
-//TARIFA
+
 package dominio;
 
 public class Tarifa {

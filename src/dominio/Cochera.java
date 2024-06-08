@@ -1,4 +1,4 @@
-//COCHERA
+
 package dominio;
 
 import interfaces.IEtiquetable;

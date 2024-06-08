@@ -17,4 +17,5 @@ public interface ITableroControl {
     void mostrarTotalFacturado(float total);
     void mostrarListaParkings(ArrayList<Parking> parkings);
     void mostrarAnomaliasCheckbox(ArrayList<Estadia> estadias);
+    
 }

@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
 package vistaParking;
 
 import controlador.ControladorListaPrecios;
@@ -216,5 +217,6 @@ public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrec
     @Override
     public void mensajeError(String msg) {
        JOptionPane.showMessageDialog(this, msg);
+       
     }
 }

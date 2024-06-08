@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+
 package vistaParking;
 
 import controlador.ControladorTableroControl;
@@ -401,6 +402,7 @@ public class UITableroControl extends javax.swing.JFrame implements VistaTablero
           new UICarteleraElectronica(this, false, pSeleccionado).setVisible(true);
         }catch(ParkingException ex){
             this.mensajeError(ex.getMessage());
+            
         }
     }
 }

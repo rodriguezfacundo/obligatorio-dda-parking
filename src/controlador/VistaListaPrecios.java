@@ -9,4 +9,5 @@ public interface VistaListaPrecios {
     void guardar();
     void cancelar();
     void mensajeError(String msg);
+    
 }

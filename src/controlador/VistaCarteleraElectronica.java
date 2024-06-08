@@ -10,4 +10,5 @@ public interface VistaCarteleraElectronica {
      void mostrarPrecios(ArrayList<Tarifa> tarifas);
      void mostrarDisponibilidad(Long cantidad);
      void mostrarDisponibilidadCocheraPorEtiqueta(Map<String, Integer> etiquetas);
+     
 }
