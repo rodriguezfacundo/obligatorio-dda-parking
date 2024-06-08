@@ -1,2 +1,0 @@
-org.obligatorio.iuparking.UICarteleraElectronica$1
-org.obligatorio.iuparking.UICarteleraElectronica
