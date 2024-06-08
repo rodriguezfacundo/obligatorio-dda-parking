@@ -1,8 +1,10 @@
+//CONTROLADOR TABLERO CONTROL
 package controlador;
 
 import dominio.Cochera;
 import dominio.Estadia;
 import dominio.Parking;
+import dominio.ParkingException;
 import interfaces.ITableroControl;
 import java.util.ArrayList;
 import vistaParking.UITableroControl;
@@ -11,14 +13,14 @@ import observador.Observable;
 import sistemas.Fachada;
 
 public class ControladorTableroControl implements IObservador{
-    private ITableroControl vista;
+    private VistaTableroControl vista;
     private Fachada fachada;
     private ArrayList<Parking> parkings;
     private Parking parkingSeleccionado;
     private ArrayList<Estadia> estadiasAnomalias;
     
     
-    public ControladorTableroControl(UITableroControl vistaTableroControl){
+    public ControladorTableroControl(VistaTableroControl vistaTableroControl){
         this.fachada = Fachada.getInstancia();
         this.vista = vistaTableroControl;
         this.parkings = fachada.obtenerParkings();
@@ -29,17 +31,17 @@ public class ControladorTableroControl implements IObservador{
     }
 
     @Override
-    public void actualizar(Object evento, Object origen) {
+    public void actualizar(Object evento, Observable origen) {
       if (((Observable.Eventos) evento).equals(Observable.Eventos.ANOMALIA_REGISTRADA)) {
-          Estadia estadiaOrigen = (Estadia)origen;
-          if(estadiaOrigen.getCochera().getParking().equals(this.parkingSeleccionado))mostrarAnomalias(estadiaOrigen);
+          Parking parkingOrigen = (Parking)origen;
+          if(parkingOrigen.equals(this.parkingSeleccionado))mostrarAnomalias(parkingOrigen);
         }  
       if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA)) {
            mostrarTableroControl();
         }
     }
-    public Parking getParkingSeleccionado(int pos){
-        //if(pos==0)pos=1;
+    public Parking getParkingSeleccionado(int pos)throws ParkingException{
+        if(pos<0 || pos>this.parkings.size())throw new ParkingException("No se selecciono ningun parking");
         return this.parkings.get(pos);
     }
     public void mostrarTableroControl(){
@@ -58,8 +60,8 @@ public class ControladorTableroControl implements IObservador{
         this.parkings = fachada.obtenerParkings();
         this.vista.mostrarListaParkings(this.parkings);
     }
-    public void mostrarAnomalias(Estadia estadiaNuevaAnomalia){
-        this.estadiasAnomalias.add(estadiaNuevaAnomalia);
+    public void mostrarAnomalias(Parking parkingAnomalia){
+        this.estadiasAnomalias.add(parkingAnomalia.getUltimaEstadiaConAnomalia());
         this.vista.mostrarAnomaliasCheckbox(estadiasAnomalias);
     }
     public void agregarObservadorParkings(){
@@ -72,12 +74,9 @@ public class ControladorTableroControl implements IObservador{
             p.quitarObservador(this);
         }
     }
-    public void guardarParkingSeleccionado(int pos){
-        //if(pos==0)pos=1;
-        this.parkingSeleccionado = this.parkings.get(pos);
-        System.out.println("guardar parking seleccionado ejecutado : " + this.parkingSeleccionado);
-    }
-    public void quitarParkingSeleccionado(int pos){
-        this.parkingSeleccionado = null;
+    public void monitorearAnomaliasParking(int pos,boolean monitorear)throws ParkingException{
+        if(pos<0)throw new ParkingException("Ningun parking seleccionado");
+        if(monitorear)this.parkingSeleccionado = this.parkings.get(pos);
+        if(!monitorear)this.parkingSeleccionado = null;
     }
 }

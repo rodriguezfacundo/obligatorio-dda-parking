@@ -20,7 +20,7 @@ public class ControladorCarteleraElectronica implements IObservador{
 
     //Aca se procesan los eventos del modelo
     @Override
-    public void actualizar(Object evento, Object origen) {
+    public void actualizar(Object evento, Observable origen) {
         if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
             //mostrar cocheras con etiquetas y su disponibilidad;
              mostrarPrecios();

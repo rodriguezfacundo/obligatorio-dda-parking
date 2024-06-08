@@ -8,6 +8,7 @@ import controlador.ControladorListaPrecios;
 import dominio.Parking;
 import java.awt.Frame;
 import controlador.VistaListaPrecios;
+import dominio.ParkingException;
 import dominio.Tarifa;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -47,6 +48,11 @@ public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrec
         txt_nuevo_valor = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(0, 204, 204));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -145,12 +151,18 @@ public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrec
 
     private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
         // TODO add your handling code here:
+       cancelar();
     }//GEN-LAST:event_btn_cerrarActionPerformed
 
     private void btn_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_guardarActionPerformed
         // TODO add your handling code here:
         guardar();
     }//GEN-LAST:event_btn_guardarActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        this.controlador.quitarObservador();
+    }//GEN-LAST:event_formWindowClosed
 
  
 
@@ -184,16 +196,21 @@ public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrec
 
     @Override
     public void guardar() {
-        String nuevoValor = this.txt_nuevo_valor.getText();
-        if(nuevoValor==null)return;
-        Double valorEntero = Double.parseDouble(nuevoValor);
-        int tarifaSeleccionada = this.tb_lista_precios.getSelectedRow();
-        this.controlador.cambiarValor(tarifaSeleccionada,valorEntero);
+        try{
+          String nuevoValor = this.txt_nuevo_valor.getText();
+          int tarifaSeleccionada = this.tb_lista_precios.getSelectedRow();
+          this.controlador.cambiarValor(tarifaSeleccionada,nuevoValor);
+        }catch(ParkingException ex){
+            this.mensajeError(ex.getMessage());
+        }catch (NumberFormatException ex) {
+         this.mensajeError("El valor ingresado no es un número válido.");
+        } 
     }
 
     @Override
     public void cancelar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         this.controlador.quitarObservador();
+         dispose();
     }
 
     @Override

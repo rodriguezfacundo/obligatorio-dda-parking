@@ -1,3 +1,4 @@
+//COCHERA
 package dominio;
 
 import interfaces.IEtiquetable;
@@ -50,7 +51,7 @@ public class Cochera implements IEtiquetable, Estacionable {
             } 
             Estadia estadiaNueva = new Estadia(vehiculo, this);
             this.estadias.add(estadiaNueva);
-            this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA,this);
+            this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
     }
     public void egreso(Vehiculo vehiculo) {
         if (!this.estaOcupada()) {
@@ -67,7 +68,7 @@ public class Cochera implements IEtiquetable, Estacionable {
                 estadia.finalizar();
             }
         }
-        this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA,this);
+        this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
     }
     public ArrayList<Estadia> getEstadias() {
         return this.estadias;

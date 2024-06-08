@@ -1,3 +1,4 @@
+//CONTROLADOR LISTA PRECIOS
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -29,7 +30,7 @@ public class ControladorListaPrecios implements IObservador{
     }
 
     @Override
-    public void actualizar(Object evento, Object origen) {
+    public void actualizar(Object evento, Observable origen) {
        if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
             mostrarPrecios();
         }  
@@ -48,10 +49,14 @@ public class ControladorListaPrecios implements IObservador{
     public void mostrarTitulo(){
         this.vista.mostrarTitulo(this.parking.getNombre());
     }
-    public void cambiarValor(int pos,Double nuevoValor){
-        //if(pos==0)pos=1;
-        try{
-            this.parking.actualizarValorTarifa(pos,nuevoValor);
+    public void cambiarValor(int pos,String nuevoValor)throws ParkingException{
+        try{          
+            if(pos<0){
+                this.vista.mensajeError("Ningun tipo seleccionado");
+                return;
+            }
+            Double nuevoValorDouble = Double.parseDouble(nuevoValor);
+            this.parking.actualizarValorTarifa(pos,nuevoValorDouble);
         }catch(ParkingException ex){
             vista.mensajeError(ex.getMessage());
         }

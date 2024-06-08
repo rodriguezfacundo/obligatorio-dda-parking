@@ -5,25 +5,27 @@
 package vistaParking;
 
 import controlador.ControladorTableroControl;
+import controlador.VistaTableroControl;
 import dominio.Anomalia;
 import dominio.Estadia;
 import dominio.Parking;
+import dominio.ParkingException;
 import interfaces.ITableroControl;
 import java.awt.Frame;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 /**
  *
  * @author facul
  */
-public class UITableroControl extends javax.swing.JFrame implements ITableroControl{
+public class UITableroControl extends javax.swing.JFrame implements VistaTableroControl{
     private ControladorTableroControl controlador;
     /**
      * Creates new form TableroControl
      */
     public UITableroControl(Frame parent, boolean modal) {
-        System.out.println("ÜI Tablero control constructor");
         initComponents();
         this.controlador = new ControladorTableroControl(this);
     }
@@ -124,6 +126,11 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
         ch_monitorear_anomalias.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 ch_monitorear_anomaliasStateChanged(evt);
+            }
+        });
+        ch_monitorear_anomalias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ch_monitorear_anomaliasMouseClicked(evt);
             }
         });
         ch_monitorear_anomalias.addActionListener(new java.awt.event.ActionListener() {
@@ -234,10 +241,7 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
     private void btn_preciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_preciosActionPerformed
         // TODO add your handling code here:
-        int seleccionado = tb_tablero_control.getSelectedRow();
-        if(seleccionado==-1)return;
-        Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
-        new UIListaPrecios(this,false,pSeleccionado).setVisible(true);
+        listaPrecios();
     }//GEN-LAST:event_btn_preciosActionPerformed
 
     private void ch_monitorear_anomaliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasActionPerformed
@@ -245,30 +249,25 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
     }//GEN-LAST:event_ch_monitorear_anomaliasActionPerformed
 
     private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
-        // TODO add your handling code here:  
-        int seleccionado = tb_tablero_control.getSelectedRow();
-        if(seleccionado == -1){
-            //Debo largar excepcion de que seleccione un parking
-            return;
-        } else{
-            Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
-            new UICarteleraElectronica(this, false, pSeleccionado).setVisible(true);
-        }
+        // TODO add your handling code here: 
+        carteleraElectronica();
     }//GEN-LAST:event_btn_carteleraActionPerformed
 
     private void ch_monitorear_anomaliasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasStateChanged
         // TODO add your handling code here:
-        int seleccionado = tb_tablero_control.getSelectedRow();
-        if(seleccionado==-1)return;
-        boolean monitorear = this.ch_monitorear_anomalias.isSelected();
-        System.out.println("Cambio valor checkbox 1 : " + monitorear);
-        if(monitorear) this.controlador.guardarParkingSeleccionado(seleccionado);
-        if(!monitorear)this.controlador.quitarParkingSeleccionado(seleccionado);
+
     }//GEN-LAST:event_ch_monitorear_anomaliasStateChanged
 
     private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
         // TODO add your handling code here:
+        this.controlador.quitarObservadorParkings();
+        dispose();
     }//GEN-LAST:event_btn_cerrarActionPerformed
+
+    private void ch_monitorear_anomaliasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasMouseClicked
+        // TODO add your handling code here:
+        monitorearAnomalias();
+    }//GEN-LAST:event_ch_monitorear_anomaliasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -363,6 +362,45 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
             modeloParkings.setValueAt(e.getVehiculo().getPropietario().getNombre(), i, 1);
             modeloParkings.setValueAt(e.getAnomalia().getCodigoError(), i, 2);
             modeloParkings.setValueAt(e.getCochera().getCodigo(), i, 3);
+        }
+    }
+
+    @Override
+    public void mensajeError(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public void monitorearAnomalias() {
+       try{
+            int seleccionado = tb_tablero_control.getSelectedRow();
+            boolean monitorear = this.ch_monitorear_anomalias.isSelected();
+            this.controlador.monitorearAnomaliasParking(seleccionado,monitorear);
+        }catch(ParkingException ex){
+            this.ch_monitorear_anomalias.setSelected(false);
+            this.mensajeError(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void listaPrecios() {
+        try{
+            int seleccionado = tb_tablero_control.getSelectedRow();
+            Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
+            new UIListaPrecios(this,false,pSeleccionado).setVisible(true);
+        }catch(ParkingException ex){
+            this.mensajeError(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void carteleraElectronica() {
+        try{
+          int seleccionado = tb_tablero_control.getSelectedRow();
+          Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
+          new UICarteleraElectronica(this, false, pSeleccionado).setVisible(true);
+        }catch(ParkingException ex){
+            this.mensajeError(ex.getMessage());
         }
     }
 }

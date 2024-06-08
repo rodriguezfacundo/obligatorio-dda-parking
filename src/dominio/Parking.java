@@ -1,3 +1,4 @@
+//PARKING
 package dominio;
 
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import observador.Observable;
 import sistemas.SistemaParking;
 
 public class Parking extends Observable {
-
     private static int contadorID = 1;
     private int id;
     private String nombre;
@@ -17,7 +17,7 @@ public class Parking extends Observable {
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     private Tendencia tendencia;
     private double factorDemanda;
-
+    private Estadia ultimaEstadiaConAnomalia;
     private int cantidadIngresos = 0;
     private int cantidadEgresos = 0;
 
@@ -29,53 +29,12 @@ public class Parking extends Observable {
         this.factorDemanda = factorDemanda; //El factor de demanda es un valor de entre 0.25 y 10 que se establece en cada parking, el factor de demanda inicial es 1
         this.cocheras = agregarCocheras(cantidadCocheras);
     }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public ArrayList<Cochera> getCocheras() {
-        return cocheras;
-    }
-
-    public void setCocheras(ArrayList<Cochera> cocheras) {
-        this.cocheras = cocheras;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    
     private boolean esCantidadCocherasAceptable(int cantidadCocheras) {
         return cantidadCocheras >= 50 && cantidadCocheras <= 100;
     }
 
-    public void setTarifas(ArrayList<Tarifa> tarifas) {
-        this.tarifas = tarifas;
-    }
-    public ArrayList<Tarifa> getTarifas() {
-        return this.tarifas;
-    }
-    public void actualizarValorTarifa(int pos, double nuevoValor) throws ParkingException{
-           this.tarifas.get(pos).actualizarPrecio(nuevoValor);
-           this.avisar(Observable.Eventos.PARKING_CAMBIO, this);
-   }
+    //--------------------METODOS PARA PRECARGA DE DATOS----------------------
     private ArrayList<Cochera> agregarCocheras(int cantidadCocheras) {
         ArrayList<Cochera> cocherasNuevas = new ArrayList<>();
         if (esCantidadCocherasAceptable(cantidadCocheras)) {
@@ -86,7 +45,112 @@ public class Parking extends Observable {
         return cocherasNuevas;
     }
 
-    @Override
+    //----------------------METDOS AXULIARES--------------------------------
+    public double getPrecioTipoVehiculo(TipoVehiculo tipo) {
+        for (Tarifa tarifa : this.tarifas) {
+            if (tarifa.getTipoVehiculo().equals(tipo)) {
+                return tarifa.getPrecioPorUT();
+            }
+        }
+        return 0d;
+    }
+    public int getCantidadCocherasOcupadas() {
+        int cantidad = 0;
+        for (Cochera cochera : this.cocheras) {
+            if (cochera.estaOcupada()) {
+                cantidad += 1;
+            }
+        }
+        return cantidad;
+    }
+    public void sumarUnIngreso() {
+        this.cantidadIngresos += 1;
+    }
+    public void sumarUnEgreso() {
+        this.cantidadEgresos += 1;
+    }
+    public int diferenciaEntreIngresoYEgresos() {
+        return this.cantidadIngresos - this.cantidadEgresos;
+    }
+    public void evaluarTendencia() {
+        SistemaParking.getInstancia().evaluarTendencia(this);
+    }
+    public double obtenerValorFactorDemanda(int cantidadUT) {
+        return this.tendencia.calcularFactorDemanda(cantidadUT, this);
+    }
+    public long getCantidadCocherasDisponibles() {
+        long cantidadNoOcupadas = cocheras.stream()
+                .filter(cochera -> !cochera.estaOcupada())
+                .count();
+        return cantidadNoOcupadas;
+    }
+    public int contarCocherasDisponiblesPorEtiqueta(Etiqueta etiqueta) {
+        return (int) cocheras.stream()
+                .filter(cochera -> !cochera.estaOcupada() && cochera.getEtiquetas().contains(etiqueta))
+                .count();
+    }
+    public double getPrecioTarifaPorTipoVehiculo(TipoVehiculo tipo) {
+        for (Tarifa tarifa : this.tarifas) {
+            if (tarifa.getTipoVehiculo().equals(tipo)) {
+                return tarifa.getPrecioPorUT();
+            }
+        }
+        return 0d;
+    }
+    public int obtenerCantidadEstadias() {
+        int cantidadEstadias = 0;
+        for (Cochera c : cocheras) {
+            cantidadEstadias = cantidadEstadias + c.obtenerCantidadEstadias();
+        }
+        return cantidadEstadias;
+    }
+    public double obtenerTotalFacturado() {
+        double total = 0;
+        for (Cochera c : cocheras) {
+            total = total + c.obtenerTotalFacturado();
+        }
+        return total;
+    }
+    public Double obtenerTotalFacturadoMultas() {
+        Double total = 0.00;
+        for (Cochera c : cocheras) {
+            total = total + c.obtenerTotalFacturadoMultas();
+        }
+        return total;
+    }
+    public Map<String, Integer> obtenerDisponibilidadPorEtiqueta() {
+        Map<String, Integer> disponibilidadPorEtiqueta = new HashMap<>();
+        for (Cochera cochera : this.cocheras) {
+            for (Etiqueta etiqueta : cochera.getEtiquetas()) {
+                String nombreEtiqueta = etiqueta.getNombre();
+                disponibilidadPorEtiqueta.putIfAbsent(nombreEtiqueta, 0);
+
+                if (!cochera.estaOcupada()) {
+                    disponibilidadPorEtiqueta.put(nombreEtiqueta, disponibilidadPorEtiqueta.get(nombreEtiqueta) + 1);
+                }
+            }
+        }
+        return disponibilidadPorEtiqueta;
+    }
+   
+    //-------------------------EVENTOS----------------------------------
+    public void actualizarValorTarifa(int pos, Double nuevoValor) throws ParkingException{
+           this.tarifas.get(pos).actualizarPrecio(nuevoValor);
+           this.avisar(Observable.Eventos.PARKING_CAMBIO);
+    }
+    public void setTendencia(Tendencia ten) {
+        this.tendencia = ten;
+        this.avisar(Observable.Eventos.CAMBIO_TENDENCIA);
+    }
+    public void avisarCambioEstadoEstadia() {
+        this.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
+    }
+    public void avisarAnomalia(Estadia estadiaConAnomalia){
+        this.ultimaEstadiaConAnomalia = estadiaConAnomalia;
+        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA );
+    }
+    //--------------------EQUALS AND TO_STRING--------------------------------
+        @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("PARKING{");
@@ -118,136 +182,23 @@ public class Parking extends Observable {
           String parkingCompararId = String.valueOf(p.getId());
           return parkingId.equals(parkingCompararId);
       }
-    public Double getFactorDemanda() {
-        return this.factorDemanda;
-    }
+    //--------------------GETTERS AND SETTERS--------------------------------
+    public ArrayList<Etiqueta> getEtiquetas(){return this.etiquetas;}
+    public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {this.etiquetas = etiquetas;}
+    public int getCapacidad() {return this.getCocheras().size();}
+    public Double getFactorDemanda() {return this.factorDemanda;}
+    public void setTarifas(ArrayList<Tarifa> tarifas) {this.tarifas = tarifas;}
+    public ArrayList<Tarifa> getTarifas() {return this.tarifas;}
+    public Tendencia getTendencia() {return this.tendencia;}
+    public String getNombre() {return nombre;}
+    public Estadia getUltimaEstadiaConAnomalia() {return ultimaEstadiaConAnomalia;}
+    public void setUltimaEstadiaConAnomalia(Estadia ultimaEstadiaConAnomalia) {this.ultimaEstadiaConAnomalia = ultimaEstadiaConAnomalia;}
+    public void setNombre(String nombre) {this.nombre = nombre;}
+    public String getDireccion() {return direccion;}
+    public void setDireccion(String direccion) {this.direccion = direccion;}
+    public ArrayList<Cochera> getCocheras() {return cocheras;}
+    public void setCocheras(ArrayList<Cochera> cocheras) {this.cocheras = cocheras;}
+    public int getId() {return id;}
+    public void setId(int id) {this.id = id;}
 
-    public double getPrecioTipoVehiculo(TipoVehiculo tipo) {
-        for (Tarifa tarifa : this.tarifas) {
-            if (tarifa.getTipoVehiculo().equals(tipo)) {
-                return tarifa.getPrecioPorUT();
-            }
-        }
-        return 0d;
-    }
-
-    public int getCapacidad() {
-        return this.getCocheras().size();
-    }
-
-    public int getCantidadCocherasOcupadas() {
-        int cantidad = 0;
-        for (Cochera cochera : this.cocheras) {
-            if (cochera.estaOcupada()) {
-                cantidad += 1;
-            }
-        }
-        return cantidad;
-    }
-
-    public void sumarUnIngreso() {
-        this.cantidadIngresos += 1;
-    }
-
-    public void sumarUnEgreso() {
-        this.cantidadEgresos += 1;
-    }
-
-    public int diferenciaEntreIngresoYEgresos() {
-        return this.cantidadIngresos - this.cantidadEgresos;
-    }
-
-    public Tendencia getTendencia() {
-        return this.tendencia;
-    }
-
-    public void setTendencia(Tendencia ten) {
-        this.tendencia = ten;
-        this.avisar(Observable.Eventos.CAMBIO_TENDENCIA,this);
-    }
-
-    public void evaluarTendencia() {
-        SistemaParking.getInstancia().evaluarTendencia(this);
-    }
-
-    public double obtenerValorFactorDemanda(int cantidadUT) {
-        return this.tendencia.calcularFactorDemanda(cantidadUT, this);
-    }
-
-    public long getCantidadCocherasDisponibles() {
-        long cantidadNoOcupadas = cocheras.stream()
-                .filter(cochera -> !cochera.estaOcupada())
-                .count();
-        return cantidadNoOcupadas;
-    }
-
-    public int contarCocherasDisponiblesPorEtiqueta(Etiqueta etiqueta) {
-        return (int) cocheras.stream()
-                .filter(cochera -> !cochera.estaOcupada() && cochera.getEtiquetas().contains(etiqueta))
-                .count();
-    }
-
-    public double getPrecioTarifaPorTipoVehiculo(TipoVehiculo tipo) {
-        for (Tarifa tarifa : this.tarifas) {
-            if (tarifa.getTipoVehiculo().equals(tipo)) {
-                return tarifa.getPrecioPorUT();
-            }
-        }
-        return 0d;
-    }
-
-    public int obtenerCantidadEstadias() {
-        int cantidadEstadias = 0;
-        for (Cochera c : cocheras) {
-            cantidadEstadias = cantidadEstadias + c.obtenerCantidadEstadias();
-        }
-        return cantidadEstadias;
-    }
-
-    public double obtenerTotalFacturado() {
-        double total = 0;
-        for (Cochera c : cocheras) {
-            total = total + c.obtenerTotalFacturado();
-        }
-        return total;
-    }
-
-    public Double obtenerTotalFacturadoMultas() {
-        Double total = 0.00;
-        for (Cochera c : cocheras) {
-            total = total + c.obtenerTotalFacturadoMultas();
-        }
-        return total;
-    }
-    public void avisarCambioEstadoEstadia() {
-        this.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA,this);
-    }
-    public void avisarAnomalia(Estadia estadiaConAnomalia){
-        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA,estadiaConAnomalia );
-    }
-
-    public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
-        this.etiquetas = etiquetas;
-    }
-    
-    public ArrayList<Etiqueta> getEtiquetas(){
-        return this.etiquetas;
-    }
-    
-    public Map<String, Integer> obtenerDisponibilidadPorEtiqueta() {
-        Map<String, Integer> disponibilidadPorEtiqueta = new HashMap<>();
-        
-        for (Cochera cochera : this.cocheras) {
-            for (Etiqueta etiqueta : cochera.getEtiquetas()) {
-                String nombreEtiqueta = etiqueta.getNombre();
-                disponibilidadPorEtiqueta.putIfAbsent(nombreEtiqueta, 0);
-
-                if (!cochera.estaOcupada()) {
-                    disponibilidadPorEtiqueta.put(nombreEtiqueta, disponibilidadPorEtiqueta.get(nombreEtiqueta) + 1);
-                }
-            }
-        }
-        return disponibilidadPorEtiqueta;
-    }
-   
 }
