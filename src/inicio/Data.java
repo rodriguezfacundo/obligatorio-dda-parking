@@ -24,6 +24,7 @@ public class Data {
     
         private Fachada fachada = Fachada.getInstancia();
         
+        //SE AGREGAN LAS TENDENCIAS AL SISTEMA
         public void agregarTendencias(){
                 fachada.agregarTendencia(new TendenciaEstable());
                 fachada.agregarTendencia(new TendenciaNegativa());
@@ -36,12 +37,13 @@ public class Data {
             fachada.agregarParking("ParkCordón", "Av. 18 de Julio 1500", 66,1.0,fachada.obtenerTendenciaPorNombre("Estable"));
         }
         
+        //SE AGREGAN ETIQUETAS
         public void agregarEtiquetas(){
             fachada.agregarEtiquetas(new EtiquetaDiscapacitado());
             fachada.agregarEtiquetas(new EtiquetaElectrico());
             fachada.agregarEtiquetas(new EtiquetaEmpleado());
         }
-        
+        //SE ASIGNAN LAS ETIQUETAS A LOS PARKINGS
         public void agregarEtiquetasParkings(){
             fachada.agregarEtiquetasEnParking();
         }

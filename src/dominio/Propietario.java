@@ -31,10 +31,6 @@ public class Propietario {
         this.nombre = nombre;
     }
 
-    public ArrayList<Vehiculo> getVehiculos() {
-        return vehiculos;
-    }
-
     public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
     }
@@ -42,26 +38,6 @@ public class Propietario {
     public void agregarVehiculo(Vehiculo vehiculo){
         this.vehiculos.add(vehiculo);
     }
-    
-    
-    @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append("PROPIETARIO{");
-            sb.append("cedula='").append(this.cedula).append('\'');
-            sb.append(", nombre=").append(this.nombre); 
-            sb.append(", cuentaCorriente").append(this.cuentaCorriente);
-            sb.append(", Vehiculos=[");
-            for (int i = 0; i < vehiculos.size(); i++) {
-                sb.append(vehiculos.get(i).getPatente());
-                if (i < vehiculos.size() - 1) {
-                    sb.append(", ");
-                }
-            }
-            sb.append("]}");
-            return sb.toString();
-        }
-
     public void restarCuentaCorriente(double monto) {
         double valorMinimoCuentaCorriente = -10;
         double nuevoMonto = this.cuentaCorriente - monto;

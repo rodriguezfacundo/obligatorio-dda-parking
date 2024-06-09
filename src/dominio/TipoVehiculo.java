@@ -11,24 +11,14 @@ public class TipoVehiculo {
         this.nombre = nombre;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public ArrayList<Tarifa> getTarifasAsociadas() {
-        return tarifasAsociadas;
-    }
-
-    public void setTarifasAsociadas(ArrayList<Tarifa> tarifasAsociadas) {
-        this.tarifasAsociadas = tarifasAsociadas;
-    }
-    public void agregarTarifa(Tarifa nueva){
-        this.tarifasAsociadas.add(nueva);
-    }
+    //GETTERS Y SETTERS
+    public String getNombre() {return nombre;}
+    public void setNombre(String nombre) {this.nombre = nombre;}
+    public ArrayList<Tarifa> getTarifasAsociadas() {return tarifasAsociadas;}
+    public void setTarifasAsociadas(ArrayList<Tarifa> tarifasAsociadas) {this.tarifasAsociadas = tarifasAsociadas;}
+    public void agregarTarifa(Tarifa nueva){this.tarifasAsociadas.add(nueva);}
+    
+    //Calcula el promedio de las tarifas asociadas y lo retorna.
     public double calcularPromedio(){
         double precioSuma = 0;
         int contador = 0;

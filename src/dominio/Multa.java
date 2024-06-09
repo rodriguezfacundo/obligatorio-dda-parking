@@ -10,7 +10,7 @@ public class Multa {
         this.etiqueta = etiqueta;
         this.estadia = estadia;
     }
-    
+    //Calcula el valor de la multa a traves de su etiqueta.
     public Double valorMulta(int UT, double valorFacturado){
         return this.etiqueta.calcularMulta(UT, valorFacturado);
     }

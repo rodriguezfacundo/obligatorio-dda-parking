@@ -28,63 +28,12 @@ public class Estadia{
         this.vehiculo.setEstacionado(true);
     }
     
-    public double getValorFacturado() {
-        return valorFacturado;
-    }
-
-    public void setValorFacturado(float valorFacturado) {
-        this.valorFacturado = valorFacturado;
-    }
-    
-     public Vehiculo getVehiculo() {
-        return vehiculo;
-    }
-
-    public Cochera getCochera() {
-        return cochera;
-    }
-    
-    public Date getEntrada() {
-        return entrada;
-    }
-
-    public Date getSalida() {
-        return salida;
-    }
-    
-    public boolean getEsFinalizada(){
-        return this.esFinalizada;
-    }
-    
-    public void setCocheraOcupada(boolean estaOcupada){
-        this.cochera.setOcupada(estaOcupada);
-    }
-    
-    public Anomalia getAnomalia(){
-        return this.anomalia;
-    }
-    
-    public void setAnomalia(Anomalia anomalia){
-        this.anomalia = anomalia;
-    }
-    
-    public void setFechaEntrada(Date entrada){
-        this.entrada = entrada;
-    }
-
-    public void setFechaSalida(Date salida) {
-        this.salida = salida;
-    }
-    
-    public int getCantidadUT(){
-        return this.temporizadorUT.getUT();
-    }
-    
+    //METODOS AUXILIARES
     public void calcularValorFacturado() {
         //Valor de estadía = ( PB * <UT> * FD ) [+ M]
         this.valorFacturado = (this.precioBase * this.getCantidadUT() * this.valorFactorDemanda()) + this.costoMultas();
     }
-    
+    //Verifica que si la estadia tuvo multas o no.
     public boolean tieneMultas(){
         if(this.multas.size()>0){
             return true;
@@ -92,7 +41,7 @@ public class Estadia{
             return false;
         }
     }
-    
+    //Recorre las multas y va sumando su importe.
     public Double costoMultas(){
         Double total = 0d;
         if(tieneMultas()){
@@ -102,25 +51,25 @@ public class Estadia{
         }
         return total;
     }
-    
+    //Verifica si es multable y en caso de serlo agrega esa nueva multa a la estadia.
     public void verificarSiEsMultable(){
         if(this.anomalia == null){
          for (Etiqueta etiqueta : this.cochera.getEtiquetas()) {
             if (!this.getVehiculo().tieneEtiqueta(etiqueta.getClass())) {
-                this.multas.add(new Multa(etiqueta, this));//Si es multable va a agregar esas nuevas multas a la estadia asociada.
+                this.multas.add(new Multa(etiqueta, this));
             }
         }   
         }
     }
-    
+    //Obtiene el precio base
     private double obtenerPrecioBase(TipoVehiculo tipoVehiculo, Parking parking) {
         return parking.getPrecioTipoVehiculo(tipoVehiculo);
     }
-    
+    //Obtiene el factor demanda.
     private double valorFactorDemanda(){
         return this.cochera.getParking().obtenerValorFactorDemanda(this.getCantidadUT());
     }
-
+    //Valida si contiene un vehiculo dado.
     boolean contieneVehiculo(Vehiculo vehiculo) {
         if(this.vehiculo.equals(vehiculo)){
             return true;
@@ -128,20 +77,33 @@ public class Estadia{
             return false;
         }
     }
-    
-    public boolean esIngresoReciente(int cantidadUT) {
+    //Obtiene la diferencia de la fecha actual - la fecha de entrada, y si es menor o igual a 10 segundos devuelve true, sino false.
+    public boolean esIngresoReciente() {
         long diferenciaMilisegundos = new Date().getTime() - this.entrada.getTime();
         long diferenciaSegundos = TimeUnit.MILLISECONDS.toSeconds(diferenciaMilisegundos);
-        return diferenciaSegundos <= cantidadUT;
+        return diferenciaSegundos <= 10;
     }
-
-    public boolean esEgresoReciente(int cantidadUT) {
+    //Obtiene la diferencia de la fecha actual - la fecha de salida, y si es menor o igual a 10 segundos devuelve true, sino false.
+    public boolean esEgresoReciente() {
         if (this.salida == null) return false;
         long diferenciaMilisegundos = new Date().getTime() - this.salida.getTime();
         long diferenciaSegundos = TimeUnit.MILLISECONDS.toSeconds(diferenciaMilisegundos);
-        return diferenciaSegundos <= cantidadUT;
+        return diferenciaSegundos <= 10;
+    }
+    //Finaliza la estadia.
+    void finalizar() {
+        this.temporizadorUT.stop();
+        this.esFinalizada = true;
+        this.cochera.setOcupada(false);
+        this.vehiculo.setEstacionado(false);
+        this.verificarSiEsMultable();
+        this.calcularValorFacturado();
+        this.vehiculo.getPropietario().restarCuentaCorriente(this.valorFacturado);
     }
     
+    //AVISAR
+    
+    //Agrega nueva anomalia HOUDINI
     public void anomaliaHoudini(){
         this.esFinalizada = true;
         this.valorFacturado = 0;
@@ -150,7 +112,7 @@ public class Estadia{
         temporizadorUT.stop();
         avisarAnomalia();
     }
-    
+    //Agrega nueva anomalia MISTERY
     public void anomaliaMistery(){
         this.temporizadorUT.stop();
         this.esFinalizada = true;
@@ -164,13 +126,13 @@ public class Estadia{
         this.cochera.agregarEstadia(this);
         avisarAnomalia();
     }
-    
+    //Agrega nueva anomalia TRANSPORTADOR1
     public void anomaliaTransportadorUno(){
         this.valorFacturado = 0;
         this.anomalia = new Anomalia("TRANSPORTADOR1", this);
         avisarAnomalia();
     }
-
+    //Agrega nueva anomalia TRANSPORTADOR2
     void anomaliaTransportadorDos() {
         this.anomalia = new Anomalia("TRANSPORTADOR2", this);
         this.entrada = null;
@@ -179,17 +141,22 @@ public class Estadia{
         this.vehiculo.setEstacionado(false);
         avisarAnomalia();
     }
-    
-    void finalizar() {
-        this.temporizadorUT.stop();
-        this.esFinalizada = true;
-        this.cochera.setOcupada(false);
-        this.vehiculo.setEstacionado(false);
-        this.verificarSiEsMultable();
-        this.calcularValorFacturado();
-        this.vehiculo.getPropietario().restarCuentaCorriente(this.valorFacturado);
-    }
     void avisarAnomalia(){
         this.cochera.avisarAnomalia(this);
     }
+    
+    //GETTERS Y SETTERS
+    public double getValorFacturado() {return valorFacturado;}
+    public void setValorFacturado(float valorFacturado) {this.valorFacturado = valorFacturado;} 
+    public Vehiculo getVehiculo() {return vehiculo;}
+    public Cochera getCochera() {return cochera;} 
+    public Date getEntrada() {return entrada;}
+    public Date getSalida() {return salida;}
+    public boolean getEsFinalizada(){return this.esFinalizada;}    
+    public void setCocheraOcupada(boolean estaOcupada){this.cochera.setOcupada(estaOcupada);}
+    public Anomalia getAnomalia(){return this.anomalia;}    
+    public void setAnomalia(Anomalia anomalia){this.anomalia = anomalia;} 
+    public void setFechaEntrada(Date entrada){this.entrada = entrada;}
+    public void setFechaSalida(Date salida) {this.salida = salida;}   
+    public int getCantidadUT(){return this.temporizadorUT.getUT();}
 }

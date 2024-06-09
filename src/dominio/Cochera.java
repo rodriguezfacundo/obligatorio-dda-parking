@@ -22,17 +22,10 @@ public class Cochera implements IEtiquetable, Estacionable {
         this.contadorID++;
         agregarCochera();
     }
-
+    
+    //METODOS AUXILIARES
     public boolean estaOcupada() {
         return this.estaOcupada ? true : false;
-    }
-
-    public String getEstadoToString() {
-        if (!this.estaOcupada) {
-            return "Libre";
-        } else {
-            return "Ocupada";
-        }
     }
     public Estadia obtenerEstadiaAbierta() {
         for (Estadia est : this.estadias) {
@@ -42,7 +35,35 @@ public class Cochera implements IEtiquetable, Estacionable {
         }
         return null;
     }
-    //Metodo llamado en SensorEstadia de esta forma la clase cochera es quien contiene la logica para el ingreso y manejo de anomalias y sacamos esa responsabilidad del sensor
+    public void agregarEstadia(Estadia estadia) {
+        this.estadias.add(estadia);
+    }
+    public double obtenerTotalFacturado() {
+        double total = 0;
+        for (Estadia e : estadias) {
+            total = total + e.getValorFacturado();
+        }
+        return total;
+    }
+    public Double obtenerTotalFacturadoMultas() {
+        Double total = 0.00;
+        for (Estadia e : estadias) {
+            total = total + e.costoMultas();
+        }
+        return total;
+    }
+    public int obtenerCantidadEstadias() {
+        return this.estadias.size();
+    }
+    public void agregarCochera() {
+        SistemaParking.getInstancia().agregarCochera(this);
+    }
+    @Override
+    public void agregarEtiqueta(Etiqueta etiqueta) {
+        this.etiquetas.add(etiqueta);
+    }
+    
+    //AVISAR
     public void ingreso(Vehiculo vehiculo) {
          if(this.estaOcupada()){
                 Estadia estadiaAnomaliaHoudini = this.obtenerEstadiaAbierta();
@@ -71,80 +92,29 @@ public class Cochera implements IEtiquetable, Estacionable {
         }
         this.parking.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
     }
-    public ArrayList<Estadia> getEstadias() {
-        return this.estadias;
+    public void avisarAnomalia(Estadia estadiaConAnomalia){
+        this.parking.avisarAnomalia(estadiaConAnomalia);
     }
 
-    public void agregarEstadia(Estadia estadia) {
-        this.estadias.add(estadia);
-    }
-    public double obtenerTotalFacturado() {
-        double total = 0;
-        for (Estadia e : estadias) {
-            total = total + e.getValorFacturado();
-        }
-        return total;
-    }
-
-    public Double obtenerTotalFacturadoMultas() {
-        Double total = 0.00;
-        for (Estadia e : estadias) {
-            total = total + e.costoMultas();
-        }
-        return total;
-    }
-        public ArrayList<Etiqueta> getEtiquetas() {
-        return this.etiquetas;
-    }
-
-    public Parking getParking() {
-        return this.parking;
-    }
-
-    public int obtenerCantidadEstadias() {
-        return this.estadias.size();
-    }
-    public String getCodigo() {
-        return codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
-
-    public void agregarCochera() {
-        SistemaParking.getInstancia().agregarCochera(this);
-    }
-
-    @Override
-    public void agregarEtiqueta(Etiqueta etiqueta) {
-        this.etiquetas.add(etiqueta);
-    }
-
-    public void setOcupada(boolean estaOcupada) {
-        this.estaOcupada = estaOcupada;
-    }
-
+    //NO SE USAN, ESTAN SOLAMENTE POR EL SIMULADOR DADO.
     @Override
     public boolean esDiscapacitado() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
     @Override
     public boolean esElectrico() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
     @Override
     public boolean esEmpleado() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    //TO STRING
     @Override
     public String toString() {
         return codigo + " - " + (this.estaOcupada ? " OCUPADA" : " LIBRE") + " - Etiquetas: " + obtenerEtiquetasString();
     }
-
     private StringBuilder obtenerEtiquetasString() {
         StringBuilder etiquetasStr = new StringBuilder();
         for (Etiqueta etiqueta : etiquetas) {
@@ -152,8 +122,12 @@ public class Cochera implements IEtiquetable, Estacionable {
         }
         return etiquetasStr;
     }
-    void avisarAnomalia(Estadia estadiaConAnomalia){
-        this.parking.avisarAnomalia(estadiaConAnomalia);
-    }
     
+    //GETTERS Y SETTERS
+    public void setOcupada(boolean estaOcupada) {this.estaOcupada = estaOcupada;}
+    public String getCodigo() {return codigo;}
+    public void setCodigo(String codigo) {this.codigo = codigo;}
+    public ArrayList<Estadia> getEstadias() {return this.estadias;}
+    public Parking getParking() {return this.parking;}
+    public ArrayList<Etiqueta> getEtiquetas() {return this.etiquetas;}
 }

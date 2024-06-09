@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controlador;
 
 import dominio.Parking;
@@ -28,14 +24,12 @@ public class ControladorListaPrecios implements IObservador{
             mostrarPrecios();
         }  
     }
-    
     public void agregarObservador(){
         this.parking.agregarObservador(this);
     }
     public void quitarObservador(){
         this.parking.quitarObservador(this);
     }
-    
     public void mostrarPrecios(){
         this.vista.mostrarPrecios(this.parking.getTarifas());
     }

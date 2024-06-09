@@ -91,11 +91,6 @@ public class Fachada extends Observable{
     public Vehiculo obtenerVehiculoPorPatente(String patente){
         return sParking.obtenerVehiculoPorPatente(patente);
     }
-    
-    public Cochera obtenerCocheraPorCodigo(String codCochera){
-        return sParking.obtenerCocheraPorCodigo(codCochera);
-    }
-    
    public ArrayList<Estadia> obtenerEstadias(){
         return sParking.obtenerEstadias();
     }
@@ -110,11 +105,6 @@ public class Fachada extends Observable{
    public double obtenerTotalFacturado(){
        return sParking.obtenerTotalFacturado();
    }
-
-    public void agregarEstadia(Estadia estadiaNueva) {
-        sParking.agregarNuevaEstadia(estadiaNueva);
-    }
-
     public void agregarEtiquetasEnParking() {
         sParking.agregarEtiquetasParkings();
     }
