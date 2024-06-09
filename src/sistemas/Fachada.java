@@ -1,6 +1,5 @@
 package sistemas;
 import dominio.Cochera;
-import dominio.Estadia;
 import dominio.Etiqueta;
 import dominio.Parking;
 import dominio.Propietario;
@@ -91,10 +90,6 @@ public class Fachada extends Observable{
     public Vehiculo obtenerVehiculoPorPatente(String patente){
         return sParking.obtenerVehiculoPorPatente(patente);
     }
-   public ArrayList<Estadia> obtenerEstadias(){
-        return sParking.obtenerEstadias();
-    }
-    
    public Tendencia obtenerTendenciaPorNombre(String nombre){
        return sParking.obtenerTendenciaPorNombre(nombre);
    }

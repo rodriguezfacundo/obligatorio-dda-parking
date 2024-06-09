@@ -63,20 +63,32 @@ public class Vehiculo implements IEtiquetable, Transitable{
     public void setTipo(TipoVehiculo tipo) {this.tipo = tipo;}
     public Propietario getPropietario() {return propietario;}
     
-    //NO SE UTILIZAN, SOLAMENTE ESTAN POR EL SENSOR
+    //sOLO PARA EL SENSOR
     @Override
     public boolean esDiscapacitado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+         boolean esDiscapacitado = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Discapacitado"))esDiscapacitado=true;
+        }
+        return esDiscapacitado;
     }
 
     @Override
     public boolean esElectrico() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esElectrico = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Electrico"))esElectrico=true;
+        }
+        return esElectrico;
     }
 
     @Override
     public boolean esEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esEmpleado = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Empleado"))esEmpleado=true;
+        }
+        return esEmpleado;
     }
     
 }

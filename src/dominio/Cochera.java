@@ -20,7 +20,6 @@ public class Cochera implements IEtiquetable, Estacionable {
         this.parking = parking;
         this.estaOcupada = false;
         this.contadorID++;
-        agregarCochera();
     }
     
     //METODOS AUXILIARES
@@ -54,9 +53,6 @@ public class Cochera implements IEtiquetable, Estacionable {
     }
     public int obtenerCantidadEstadias() {
         return this.estadias.size();
-    }
-    public void agregarCochera() {
-        SistemaParking.getInstancia().agregarCochera(this);
     }
     @Override
     public void agregarEtiqueta(Etiqueta etiqueta) {
@@ -96,18 +92,30 @@ public class Cochera implements IEtiquetable, Estacionable {
         this.parking.avisarAnomalia(estadiaConAnomalia);
     }
 
-    //NO SE USAN, ESTAN SOLAMENTE POR EL SIMULADOR DADO.
+    //SE USAN SOLO PARA EL SENSOR MASIVO
     @Override
     public boolean esDiscapacitado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esDiscapacitado = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Discapacitado"))esDiscapacitado=true;
+        }
+        return esDiscapacitado;
     }
     @Override
     public boolean esElectrico() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esElectrico = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Electrico"))esElectrico=true;
+        }
+        return esElectrico;
     }
     @Override
     public boolean esEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esEmpleado = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Empleado"))esEmpleado=true;
+        }
+        return esEmpleado;
     }
 
     //TO STRING
