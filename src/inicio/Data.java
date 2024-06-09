@@ -98,8 +98,8 @@ public class Data {
          }
          
          public void cargarData(){
-             this.agregarParkings();
              this.agregarTendencias();
+             this.agregarParkings();
              this.agregarEtiquetas();
              this.generarPropietarios();
              this.asignarEtiquetasCocheras();

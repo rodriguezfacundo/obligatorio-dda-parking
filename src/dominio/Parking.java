@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import observador.Observable;
+import simuladortransito.Estacionable;
 import sistemas.SistemaParking;
 
 public class Parking extends Observable {
@@ -25,6 +26,7 @@ public class Parking extends Observable {
         this.direccion = direccion;
         this.contadorID++;
         this.factorDemanda = factorDemanda; //El factor de demanda es un valor de entre 0.25 y 10 que se establece en cada parking, el factor de demanda inicial es 1
+        this.tendencia = tendencia;
         this.cocheras = agregarCocheras(cantidadCocheras);
     }
         
@@ -36,13 +38,8 @@ public class Parking extends Observable {
         sb.append("id='").append(this.id).append('\'');
         sb.append(", nombre=").append(this.nombre);
         sb.append(", direccion=").append(this.direccion);
-        sb.append(", cocheras=[");
-        for (int i = 0; i < this.cocheras.size(); i++) {
-            sb.append(this.cocheras.get(i).getCodigo());
-            if (i < this.cocheras.size() - 1) {
-                sb.append(", ");
-            }
-        }
+        sb.append(", TENDENCIA=").append(this.tendencia.getNombre());
+        sb.append(", FACTOR DEMANDA=").append(this.factorDemanda);
         sb.append("]}");
         sb.append(", tarifas=[");
         for (int i = 0; i < this.tarifas.size(); i++) {
@@ -97,6 +94,21 @@ public class Parking extends Observable {
         }
         return cantidad;
     }
+    public Cochera obtenerCocheraPorCodigo(String codCochera){
+        for(Cochera c:cocheras){
+            if(c.getCodigo().equals(codCochera)) return c;
+        }
+        return null;
+    }
+    public ArrayList<Estacionable> obtenerCocherasEstacionables(){
+        ArrayList<Estacionable> estacionablesRetorno = new ArrayList<Estacionable>();
+        for(Cochera c:cocheras){
+             if(!c.estaOcupada()){
+                estacionablesRetorno.add((Estacionable) c);
+            }
+        }
+        return estacionablesRetorno;
+    }
     //Metodo que se utiliza luego en las evaluaciones de las tendencias, retorna la diferencia entre ingresos y egresos de los ultimos
     //10 UT.
     public int diferenciaEntreIngresoYEgresosRecientes() {
@@ -121,7 +133,9 @@ public class Parking extends Observable {
     }
     //Calcula y retorna el valor del factor demanda.
     public double obtenerValorFactorDemanda(int cantidadUT) {
-        return this.tendencia.calcularFactorDemanda(cantidadUT, this);
+        double fd = this.tendencia.calcularFactorDemanda(cantidadUT, this);
+        this.factorDemanda = fd;
+        return this.factorDemanda;
     }
     //Retorna la cantidad de cocheras disponibles para estacionar.
     public long getCantidadCocherasDisponibles() {
