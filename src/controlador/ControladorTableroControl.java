@@ -30,7 +30,7 @@ public class ControladorTableroControl implements IObservador{
     public void actualizar(Object evento, Observable origen) {
       if (((Observable.Eventos) evento).equals(Observable.Eventos.ANOMALIA_REGISTRADA)) {
           Parking parkingOrigen = (Parking)origen;
-           if(this.parkingSeleccionado!=null && parkingOrigen.equals(this.parkingSeleccionado))mostrarAnomalias(parkingOrigen);
+           if(this.parkingSeleccionado!=null&& parkingOrigen.equals(this.parkingSeleccionado))mostrarAnomalias(parkingOrigen);
         }  
       if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA)) {
            mostrarTableroControl();
