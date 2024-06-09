@@ -3,16 +3,13 @@ package controlador;
 import dominio.Parking;
 import observador.IObservador;
 import observador.Observable;
-import sistemas.Fachada;
 
 public class ControladorCarteleraElectronica implements IObservador{
     private VistaCarteleraElectronica vista;
-    private Fachada fachada;
     private Parking parking;
     
     public ControladorCarteleraElectronica(VistaCarteleraElectronica vista, Parking parking){
         this.vista = vista;
-        this.fachada = Fachada.getInstancia();
         this.parking = parking;
         agregarObservador();
         this.mostrarCarteleraElectronica();
@@ -20,9 +17,8 @@ public class ControladorCarteleraElectronica implements IObservador{
 
     //Aca se procesan los eventos del modelo
     @Override
-    public void actualizar(Object evento, Object origen) {
+    public void actualizar(Object evento, Observable origen) {
         if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
-            //mostrar cocheras con etiquetas y su disponibilidad;
              mostrarPrecios();
         } 
         if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA)){

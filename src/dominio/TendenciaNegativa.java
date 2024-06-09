@@ -8,7 +8,7 @@ public class TendenciaNegativa extends Tendencia {
     
     @Override
     public void evaluarTendencia(Parking parking) {
-        if ((parking.diferenciaEntreIngresoYEgresos() < 0) &&  (parking.diferenciaEntreIngresoYEgresos() < 0.1 * parking.getCapacidad())) {
+        if ((parking.diferenciaEntreIngresoYEgresosRecientes(10) < 0) &&  (parking.diferenciaEntreIngresoYEgresosRecientes(10) < 0.1 * parking.getCapacidad())) {
             parking.setTendencia(this);
         }
     }

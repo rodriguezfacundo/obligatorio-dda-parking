@@ -8,6 +8,7 @@ import controlador.ControladorListaPrecios;
 import dominio.Parking;
 import java.awt.Frame;
 import controlador.VistaListaPrecios;
+import dominio.ParkingException;
 import dominio.Tarifa;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -16,6 +17,7 @@ import javax.swing.table.TableModel;
 /**
  *
  * @author facul
+ * 
  */
 public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrecios {
     private ControladorListaPrecios controlador;
@@ -169,7 +171,7 @@ public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrec
 
     @Override
     public void mostrarTitulo(String titulo) {
-       this.txt_nombre_parking.setText(titulo);
+        this.txt_nombre_parking.setText(titulo);
     }
 
     @Override
@@ -184,16 +186,21 @@ public class UIListaPrecios extends javax.swing.JFrame implements VistaListaPrec
 
     @Override
     public void guardar() {
-        String nuevoValor = this.txt_nuevo_valor.getText();
-        if(nuevoValor==null)return;
-        Double valorEntero = Double.parseDouble(nuevoValor);
-        int tarifaSeleccionada = this.tb_lista_precios.getSelectedRow();
-        this.controlador.cambiarValor(tarifaSeleccionada,valorEntero);
+        try{
+          String nuevoValor = this.txt_nuevo_valor.getText();
+          int tarifaSeleccionada = this.tb_lista_precios.getSelectedRow();
+          this.controlador.cambiarValor(tarifaSeleccionada,nuevoValor);
+        }catch(ParkingException ex){
+            this.mensajeError(ex.getMessage());
+        }catch (NumberFormatException ex) {
+         this.mensajeError("El valor ingresado no es un número válido.");
+        } 
     }
 
     @Override
     public void cancelar() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.controlador.quitarObservador();
+        dispose();
     }
 
     @Override

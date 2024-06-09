@@ -5,19 +5,21 @@
 package vistaParking;
 
 import controlador.ControladorTableroControl;
+import controlador.VistaTableroControl;
 import dominio.Anomalia;
 import dominio.Estadia;
 import dominio.Parking;
-import interfaces.ITableroControl;
+import dominio.ParkingException;
 import java.awt.Frame;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 
 /**
  *
  * @author facul
  */
-public class UITableroControl extends javax.swing.JFrame implements ITableroControl{
+public class UITableroControl extends javax.swing.JFrame implements VistaTableroControl{
     private ControladorTableroControl controlador;
     /**
      * Creates new form TableroControl
@@ -50,10 +52,10 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
         jSeparator3 = new javax.swing.JSeparator();
         jScrollPane2 = new javax.swing.JScrollPane();
         tb_anomalias = new javax.swing.JTable();
-        ch_monitorear_anomalias = new javax.swing.JCheckBox();
         btn_cerrar = new javax.swing.JButton();
         txt_cantidad_estadias = new javax.swing.JLabel();
         txt_total_facturado = new javax.swing.JLabel();
+        ch_monitorear_anomalias = new javax.swing.JCheckBox();
 
         jMenu1.setText("jMenu1");
 
@@ -119,19 +121,6 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
         ));
         jScrollPane2.setViewportView(tb_anomalias);
 
-        ch_monitorear_anomalias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        ch_monitorear_anomalias.setText("Monitorear anomalías");
-        ch_monitorear_anomalias.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                ch_monitorear_anomaliasStateChanged(evt);
-            }
-        });
-        ch_monitorear_anomalias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ch_monitorear_anomaliasActionPerformed(evt);
-            }
-        });
-
         btn_cerrar.setBackground(new java.awt.Color(51, 102, 255));
         btn_cerrar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btn_cerrar.setForeground(new java.awt.Color(255, 255, 255));
@@ -144,6 +133,24 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
         txt_cantidad_estadias.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
         txt_cantidad_estadias.setText(" ");
+
+        ch_monitorear_anomalias.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        ch_monitorear_anomalias.setText("Monitorear anomalías");
+        ch_monitorear_anomalias.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ch_monitorear_anomaliasStateChanged(evt);
+            }
+        });
+        ch_monitorear_anomalias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ch_monitorear_anomaliasMouseClicked(evt);
+            }
+        });
+        ch_monitorear_anomalias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ch_monitorear_anomaliasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -178,11 +185,12 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jSeparator1)
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addComponent(jSeparator3)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,8 +199,7 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
                                 .addGap(31, 31, 31))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(ch_monitorear_anomalias, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())))
-                    .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addGap(49, 49, 49))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,13 +226,15 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
                     .addComponent(btn_cartelera))
                 .addGap(33, 33, 33)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(ch_monitorear_anomalias)
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
-                        .addComponent(btn_cerrar))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ch_monitorear_anomalias)
+                        .addGap(35, 35, 35)
+                        .addComponent(btn_cerrar)))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -233,42 +242,30 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_preciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_preciosActionPerformed
-        // TODO add your handling code here:
-        int seleccionado = tb_tablero_control.getSelectedRow();
-        if(seleccionado==-1)return;
-        Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
-        new UIListaPrecios(this,false,pSeleccionado).setVisible(true);
+        listaPrecios();
     }//GEN-LAST:event_btn_preciosActionPerformed
+
+    private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
+        carteleraElectronica();
+    }//GEN-LAST:event_btn_carteleraActionPerformed
+
+    private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
+        this.controlador.quitarObservadorParkings();
+        dispose();
+    }//GEN-LAST:event_btn_cerrarActionPerformed
+
+    private void ch_monitorear_anomaliasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ch_monitorear_anomaliasStateChanged
+
+    private void ch_monitorear_anomaliasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasMouseClicked
+        // TODO add your handling code here:
+        monitorearAnomalias();
+    }//GEN-LAST:event_ch_monitorear_anomaliasMouseClicked
 
     private void ch_monitorear_anomaliasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ch_monitorear_anomaliasActionPerformed
-
-    private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
-        // TODO add your handling code here:  
-        int seleccionado = tb_tablero_control.getSelectedRow();
-        if(seleccionado == -1){
-            //Debo largar excepcion de que seleccione un parking
-            return;
-        } else{
-            Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
-            new UICarteleraElectronica(this, false, pSeleccionado).setVisible(true);
-        }
-    }//GEN-LAST:event_btn_carteleraActionPerformed
-
-    private void ch_monitorear_anomaliasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasStateChanged
-        // TODO add your handling code here:
-        int seleccionado = tb_tablero_control.getSelectedRow();
-        if(seleccionado==-1)return;
-        boolean monitorear = this.ch_monitorear_anomalias.isSelected();
-        System.out.println("Cambio valor checkbox 1 : " + monitorear);
-        if(monitorear) this.controlador.guardarParkingSeleccionado(seleccionado);
-        if(!monitorear)this.controlador.quitarParkingSeleccionado(seleccionado);
-    }//GEN-LAST:event_ch_monitorear_anomaliasStateChanged
-
-    private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btn_cerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -333,7 +330,7 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
 
     @Override
     public void mostrarTotalFacturado(float total) {
-       this.txt_total_facturado.setText(Float.toString(total));
+        this.txt_total_facturado.setText(Float.toString(total));
     }
     @Override
     public void mostrarListaParkings(ArrayList<Parking> parkings) {
@@ -363,6 +360,46 @@ public class UITableroControl extends javax.swing.JFrame implements ITableroCont
             modeloParkings.setValueAt(e.getVehiculo().getPropietario().getNombre(), i, 1);
             modeloParkings.setValueAt(e.getAnomalia().getCodigoError(), i, 2);
             modeloParkings.setValueAt(e.getCochera().getCodigo(), i, 3);
+        }
+    }
+
+    @Override
+    public void mensajeError(String message) {
+        JOptionPane.showMessageDialog(this, message);
+    }
+
+    @Override
+    public void monitorearAnomalias() {
+        try{
+            int seleccionado = tb_tablero_control.getSelectedRow();
+            boolean monitorear = this.ch_monitorear_anomalias.isSelected();
+            this.controlador.monitorearAnomaliasParking(seleccionado,monitorear);
+        }catch(ParkingException ex){
+            this.ch_monitorear_anomalias.setSelected(false);
+            this.mensajeError(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void listaPrecios() {
+        try{
+            int seleccionado = tb_tablero_control.getSelectedRow();
+            Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
+            new UIListaPrecios(this,false,pSeleccionado).setVisible(true);
+        }catch(ParkingException ex){
+            this.mensajeError(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void carteleraElectronica() {
+        try{
+          int seleccionado = tb_tablero_control.getSelectedRow();
+          Parking pSeleccionado = this.controlador.getParkingSeleccionado(seleccionado);
+          new UICarteleraElectronica(this, false, pSeleccionado).setVisible(true);
+        }catch(ParkingException ex){
+            this.mensajeError(ex.getMessage());
+            
         }
     }
 }

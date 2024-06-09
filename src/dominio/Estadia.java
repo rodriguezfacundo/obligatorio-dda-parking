@@ -2,7 +2,7 @@ package dominio;
 
 import java.util.ArrayList;
 import java.util.Date;
-import observador.Observable;
+import java.util.concurrent.TimeUnit;
 
 public class Estadia{
     private Date entrada;
@@ -19,25 +19,14 @@ public class Estadia{
     public Estadia(Vehiculo vehiculo, Cochera cochera){
         this.cochera = cochera;
         this.vehiculo = vehiculo;
+        this.entrada = new Date();
         this.temporizadorUT = new TemporizadorUT();
         this.temporizadorUT.start();
         this.precioBase = obtenerPrecioBase(vehiculo.getTipo(), cochera.getParking());
-        this.cochera.getParking().evaluarTendencia();
         this.esFinalizada = false;
         this.cochera.setOcupada(true);
         this.vehiculo.setEstacionado(true);
-//        this.cochera.agregarEstadia(this);
-        this.cochera.getParking().sumarUnIngreso();
     }
-    
-    /*public Estadia(Cochera cochera){
-        this.cochera = cochera;
-        this.vehiculo = cochera..;
-        this.temporizadorUT = new TemporizadorUT();
-        this.temporizadorUT.start();
-        this.temporizadorUT.stop();
-    }*/
-    
     
     public double getValorFacturado() {
         return valorFacturado;
@@ -65,14 +54,6 @@ public class Estadia{
     
     public boolean getEsFinalizada(){
         return this.esFinalizada;
-    }
-    
-    public String getEsFinalizadaToString(){
-        if(!this.esFinalizada){
-            return "ABIERTA";
-        } else{
-            return "FINALIZADA";
-        }
     }
     
     public void setCocheraOcupada(boolean estaOcupada){
@@ -148,6 +129,19 @@ public class Estadia{
         }
     }
     
+    public boolean esIngresoReciente(int cantidadUT) {
+        long diferenciaMilisegundos = new Date().getTime() - this.entrada.getTime();
+        long diferenciaSegundos = TimeUnit.MILLISECONDS.toSeconds(diferenciaMilisegundos);
+        return diferenciaSegundos <= cantidadUT;
+    }
+
+    public boolean esEgresoReciente(int cantidadUT) {
+        if (this.salida == null) return false;
+        long diferenciaMilisegundos = new Date().getTime() - this.salida.getTime();
+        long diferenciaSegundos = TimeUnit.MILLISECONDS.toSeconds(diferenciaMilisegundos);
+        return diferenciaSegundos <= cantidadUT;
+    }
+    
     public void anomaliaHoudini(){
         this.esFinalizada = true;
         this.valorFacturado = 0;
@@ -168,8 +162,6 @@ public class Estadia{
         this.cochera.setOcupada(false);
         this.vehiculo.setEstacionado(false);
         this.cochera.agregarEstadia(this);
-        this.cochera.getParking().sumarUnIngreso();
-        this.cochera.getParking().sumarUnEgreso();
         avisarAnomalia();
     }
     
@@ -191,10 +183,8 @@ public class Estadia{
     void finalizar() {
         this.temporizadorUT.stop();
         this.esFinalizada = true;
-        this.cochera.getParking().evaluarTendencia();
         this.cochera.setOcupada(false);
         this.vehiculo.setEstacionado(false);
-        this.cochera.getParking().sumarUnEgreso();
         this.verificarSiEsMultable();
         this.calcularValorFacturado();
         this.vehiculo.getPropietario().restarCuentaCorriente(this.valorFacturado);
