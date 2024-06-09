@@ -7,7 +7,7 @@ public class TendenciaEstable extends Tendencia {
     }
     @Override
     public void evaluarTendencia(Parking parking) {
-        if (Math.abs(parking.diferenciaEntreIngresoYEgresos()) <= 0.1 * parking.getCapacidad()) {
+        if (Math.abs(parking.diferenciaEntreIngresoYEgresosRecientes(10)) <= 0.1 * parking.getCapacidad()) {
             parking.setTendencia(this);
         }
     }

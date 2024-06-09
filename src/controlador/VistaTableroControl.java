@@ -8,5 +8,9 @@ public interface VistaTableroControl {
     void mostrarCantidadEstadias(int cantidad);
     void mostrarTotalFacturado(float total);
     void mostrarListaParkings(ArrayList<Parking> parkings);
-    void mostrarAnomaliasCheckbox(Estadia nueva);
+    void mostrarAnomaliasCheckbox(ArrayList<Estadia> estadiasAnomali);
+    void mensajeError(String message);
+    void monitorearAnomalias();
+    void listaPrecios();
+    void carteleraElectronica();
 }

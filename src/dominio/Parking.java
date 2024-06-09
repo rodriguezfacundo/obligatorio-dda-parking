@@ -17,9 +17,7 @@ public class Parking extends Observable {
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     private Tendencia tendencia;
     private double factorDemanda;
-
-    private int cantidadIngresos = 0;
-    private int cantidadEgresos = 0;
+    private Estadia ultimaEstadiaConAnomalia;
 
     public Parking(String nombre, String direccion, int cantidadCocheras, Double factorDemanda, Tendencia tendencia) {
         this.id = this.contadorID;
@@ -72,10 +70,10 @@ public class Parking extends Observable {
     public ArrayList<Tarifa> getTarifas() {
         return this.tarifas;
     }
-    public void actualizarValorTarifa(int pos, double nuevoValor) throws ParkingException{
+    public void actualizarValorTarifa(int pos, Double nuevoValor) throws ParkingException{
            this.tarifas.get(pos).actualizarPrecio(nuevoValor);
-           this.avisar(Observable.Eventos.PARKING_CAMBIO, this);
-   }
+           this.avisar(Observable.Eventos.PARKING_CAMBIO);
+    }
     private ArrayList<Cochera> agregarCocheras(int cantidadCocheras) {
         ArrayList<Cochera> cocherasNuevas = new ArrayList<>();
         if (esCantidadCocherasAceptable(cantidadCocheras)) {
@@ -145,16 +143,21 @@ public class Parking extends Observable {
         return cantidad;
     }
 
-    public void sumarUnIngreso() {
-        this.cantidadIngresos += 1;
-    }
-
-    public void sumarUnEgreso() {
-        this.cantidadEgresos += 1;
-    }
-
-    public int diferenciaEntreIngresoYEgresos() {
-        return this.cantidadIngresos - this.cantidadEgresos;
+    public int diferenciaEntreIngresoYEgresosRecientes(int cantidadUT) {
+        int ingresosRecientes = 0;
+        int egresosRecientes = 0;
+        for (Cochera cochera : this.cocheras) {
+            ArrayList<Estadia> estadias = cochera.getEstadias();
+            for (Estadia estadia : estadias) {
+                if (estadia.esIngresoReciente(cantidadUT)) {
+                    ingresosRecientes++;
+                }
+                if (estadia.esEgresoReciente(cantidadUT)) {
+                    egresosRecientes++;
+                }
+            }
+        }
+        return ingresosRecientes - egresosRecientes;
     }
 
     public Tendencia getTendencia() {
@@ -163,7 +166,7 @@ public class Parking extends Observable {
 
     public void setTendencia(Tendencia ten) {
         this.tendencia = ten;
-        this.avisar(Observable.Eventos.CAMBIO_TENDENCIA,this);
+        this.avisar(Observable.Eventos.CAMBIO_TENDENCIA);
     }
 
     public void evaluarTendencia() {
@@ -220,10 +223,11 @@ public class Parking extends Observable {
         return total;
     }
     public void avisarCambioEstadoEstadia() {
-        this.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA,this);
+        this.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);
     }
     public void avisarAnomalia(Estadia estadiaConAnomalia){
-        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA,estadiaConAnomalia );
+        this.ultimaEstadiaConAnomalia = estadiaConAnomalia;
+        this.avisar(Observable.Eventos.ANOMALIA_REGISTRADA );
     }
 
     public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
@@ -250,4 +254,6 @@ public class Parking extends Observable {
         return disponibilidadPorEtiqueta;
     }
    
+    public Estadia getUltimaEstadiaConAnomalia() {return ultimaEstadiaConAnomalia;}
+    public void setUltimaEstadiaConAnomalia(Estadia ultimaEstadiaConAnomalia) {this.ultimaEstadiaConAnomalia = ultimaEstadiaConAnomalia;}
 }

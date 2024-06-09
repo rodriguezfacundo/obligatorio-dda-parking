@@ -13,27 +13,12 @@ public class Anomalia {
         this.estadia = estadia;
         this.fechaCreacion = new Date();
     }
-
-    public String getCodigoError() {
-        return codigoError;
-    }
-
-    public void setCodigoError(String codigoError) {
-        this.codigoError = codigoError;
-    }
-    public Estadia getEstadia() {
-        return estadia;
-    }
-
-    public void setEstadia(Estadia estadia) {
-        this.estadia = estadia;
-    }
-
-    public Date getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(Date fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
+    
+    //GET Y SET
+    public void setCodigoError(String codigoError){this.codigoError = codigoError;}
+    public Estadia getEstadia() {return estadia;}
+    public void setEstadia(Estadia estadia) {this.estadia = estadia;}
+    public Date getFechaCreacion() {return fechaCreacion;}
+    public void setFechaCreacion(Date fechaCreacion) {this.fechaCreacion = fechaCreacion;}
+    public String getCodigoError() {return codigoError;}
 }
