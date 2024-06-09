@@ -13,6 +13,7 @@ import dominio.ParkingException;
 import java.awt.Frame;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 
 /**
@@ -250,8 +251,15 @@ public class UITableroControl extends javax.swing.JFrame implements VistaTablero
     }//GEN-LAST:event_btn_carteleraActionPerformed
 
     private void btn_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cerrarActionPerformed
-        this.controlador.quitarObservadorParkings();
-        dispose();
+        try {
+            this.controlador.quitarObservadorParkings();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            dispose();
+        }});
     }//GEN-LAST:event_btn_cerrarActionPerformed
 
     private void ch_monitorear_anomaliasStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasStateChanged

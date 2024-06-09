@@ -4,7 +4,6 @@ public class Tarifa {
     private double  precioPorUT;
     private TipoVehiculo  tipoVehiculo;
 
-
     public  Tarifa(double precioPorUT, TipoVehiculo tv) {
         this.precioPorUT = precioPorUT;
         this.tipoVehiculo = tv;
@@ -18,8 +17,10 @@ public class Tarifa {
     public TipoVehiculo getTipoVehiculo(){
         return this.tipoVehiculo;
     }
+    //Metodo que actualiza el precio de la tarifa al nuevo valor que recibe por parametro.
+    //Valida que el nuevo valor no sea negativo y que el valor no supere el permitido.
     public void actualizarPrecio(double nuevoValor)throws ParkingException{
-         if (nuevoValor < 0) throw new ParkingException("Valor Invalido. El precio debe ser igual o mayor a cero.");
+        if (nuevoValor < 0) throw new ParkingException("Valor Invalido. El precio debe ser igual o mayor a cero.");
         double precioPromedio = this.tipoVehiculo.calcularPromedio();
         if (nuevoValor >= 2 * precioPromedio) throw new ParkingException("Valor demasiado alto. El sistema no permite dispersión de precios por encima del 100%. Ingrese un valor menor a <2x>.");
         this.precioPorUT = nuevoValor;

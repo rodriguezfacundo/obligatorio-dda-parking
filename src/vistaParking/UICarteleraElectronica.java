@@ -13,6 +13,7 @@ import dominio.Tarifa;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
 
 /**
@@ -93,7 +94,7 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
         jToggleButton1.setText("Cerrar");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton1ActionPerformed(evt);
+                jBtnCerrar(evt);
             }
         });
 
@@ -169,9 +170,13 @@ public class UICarteleraElectronica extends javax.swing.JFrame implements VistaC
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+    private void jBtnCerrar(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCerrar
         // TODO add your handling code here:
-    }//GEN-LAST:event_jToggleButton1ActionPerformed
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            dispose();
+        }});
+    }//GEN-LAST:event_jBtnCerrar
 
     /**
      * @param args the command line arguments

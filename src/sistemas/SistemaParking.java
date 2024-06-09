@@ -33,31 +33,26 @@ public class SistemaParking <T extends IEtiquetable> {
 
     private static SistemaParking instancia = new SistemaParking();
 
+    //METODOS DE PARKING
     public static SistemaParking getInstancia() {
         return instancia;
     }
-    
     public  void agregarParking(Parking parking){
         parkings.add(parking);
     }
-    
     public ArrayList<Parking> obtenerParkings(){
         return parkings;
     }    
-    
-    //TARIFAS
-    public  void inicializarTarifasEnParking(){
-        ArrayList<Tarifa> tarifas = new ArrayList<>();
-        tarifas.add(new Tarifa(0.05, this.obtenerTipoDeVehiculoPorNombre("Motocicleta")));
-        tarifas.add(new Tarifa(0.1,  this.obtenerTipoDeVehiculoPorNombre("Standard")));
-        tarifas.add(new Tarifa(0.1, this.obtenerTipoDeVehiculoPorNombre ("Carga")));
-        tarifas.add(new Tarifa(0.1,  this.obtenerTipoDeVehiculoPorNombre("Pasajeros")));
-
+    public void inicializarTarifasEnParking(){
         for(Parking park:this.parkings){
+            ArrayList<Tarifa> tarifas = new ArrayList<>();
+            tarifas.add(new Tarifa(0.05, this.obtenerTipoDeVehiculoPorNombre("Motocicleta")));
+            tarifas.add(new Tarifa(0.1,  this.obtenerTipoDeVehiculoPorNombre("Standard")));
+            tarifas.add(new Tarifa(0.1, this.obtenerTipoDeVehiculoPorNombre ("Carga")));
+            tarifas.add(new Tarifa(0.1,  this.obtenerTipoDeVehiculoPorNombre("Pasajeros")));
             park.setTarifas(tarifas);
         }
     }
-    
     public double obtenerTotalFacturado(){
         double total = 0;
       for(Parking p:parkings){
@@ -67,15 +62,12 @@ public class SistemaParking <T extends IEtiquetable> {
    }
     
     //TENDENCIAS
-
     public void agregarTendencia(Tendencia ten) {
         this.tendencias.add(ten);
     }
-    
     public ArrayList<Tendencia> getTendencias(){
         return this.tendencias;
     }
-
     Tendencia obtenerTendenciaPorNombre(String nombre) {
         for(Tendencia tendencia:this.tendencias){
             if(tendencia.getNombre().equals(nombre)){
@@ -84,7 +76,6 @@ public class SistemaParking <T extends IEtiquetable> {
         }
         return null;
     }
-    
     public void evaluarTendencia(Parking parking) {
         for(Tendencia ten: this.tendencias){
                 ten.evaluarTendencia(parking);
@@ -100,26 +91,13 @@ public class SistemaParking <T extends IEtiquetable> {
        return cantidad;
    }
     
-    
    //COCHERAS
-    
     public void agregarCochera(Cochera cochera) {
         cocheras.add(cochera);
     }
-    
     public ArrayList<Cochera> obtenerCocheras(){
         return this.cocheras;
     }
-
-    public Cochera obtenerCocheraPorCodigo(String codCochera) {
-        for (Cochera cochera : cocheras) {
-            if (cochera.getCodigo().equals(codCochera)) {
-                return cochera;
-            }
-        }
-        return null;
-    }
-
     ArrayList<Estacionable> obtenerCocherasEstacionables() {
         ArrayList<Estacionable> estacionables = new ArrayList<>();
         for(Cochera cochera:this.cocheras){
@@ -131,36 +109,25 @@ public class SistemaParking <T extends IEtiquetable> {
     }
     
     //ESTADIAS
-    
     public ArrayList<Estadia> obtenerEstadias(){
         return this.estadias;
     }
-
-    public void agregarNuevaEstadia(Estadia estadiaNueva){
-        this.estadias.add(estadiaNueva);
-    }
     
     //ETIQUETAS
-    
     public void agregarEtiqueta(Etiqueta etiqueta){
         etiquetas.add(etiqueta);
     }
-    
     public ArrayList<Etiqueta> obtenerEtiquetas(){
         return this.etiquetas;
     }
-    
       public void agregarEtiquetasParkings(){
         for(Parking parking: this.parkings){
             parking.setEtiquetas(this.etiquetas);
         }
     }
-    
     public void asignarEtiquetas(ArrayList<T> listaEntidad) {
         int cantidad = listaEntidad.size() * 20 / 100; // el 20% de la lista que reciba por parametro debera tener etiquetas
-
         Collections.shuffle(listaEntidad);//Para que me desordene la lista
-
         for (int i = 0; i < cantidad; i++) {
             T entidad = listaEntidad.get(i);
             if (!this.etiquetas.isEmpty()) {
@@ -171,111 +138,98 @@ public class SistemaParking <T extends IEtiquetable> {
     }
     
     //PROPIETARIOS
-    
     public void generarPropietarios(int cantidadAGenerar){
-            while(this.propietarios.size() < cantidadAGenerar){
-                String nombre = generarNombre();
-                String cedula = generarCedula();
-                double saldoCuentaCorriente = generarSaldo();
-                Propietario propietario = new Propietario(cedula, nombre, saldoCuentaCorriente);
-                propietarios.add(propietario);
-            }
+        while(this.propietarios.size() < cantidadAGenerar){
+            String nombre = generarNombre();
+            String cedula = generarCedula();
+            double saldoCuentaCorriente = generarSaldo();
+            Propietario propietario = new Propietario(cedula, nombre, saldoCuentaCorriente);
+            propietarios.add(propietario);
         }
-    
-        private String generarNombre() {
-            String[] nombres = {"Juan", "María", "Pedro", "Luis", "Ana", "Carlos", "Laura", "Diego", "Sofía", "Andrés"};
-            String[] apellidos = {"Pérez", "Gómez", "García", "Martínez", "Fernández", "López", "Díaz", "Rodríguez", "Sánchez", "Romero"};
+    }
+    private String generarNombre() {
+        String[] nombres = {"Juan", "María", "Pedro", "Luis", "Ana", "Carlos", "Laura", "Diego", "Sofía", "Andrés"};
+        String[] apellidos = {"Pérez", "Gómez", "García", "Martínez", "Fernández", "López", "Díaz", "Rodríguez", "Sánchez", "Romero"};
 
-            Random rnd = new Random();
-            String nombre = nombres[rnd.nextInt(nombres.length)];
-            String apellido = apellidos[rnd.nextInt(apellidos.length)];
+        Random rnd = new Random();
+        String nombre = nombres[rnd.nextInt(nombres.length)];
+        String apellido = apellidos[rnd.nextInt(apellidos.length)];
 
-            return nombre + " " + apellido;
+        return nombre + " " + apellido;
+    }
+    private String generarCedula() {
+        Random rnd = new Random();
+        StringBuilder cedula = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            cedula.append(rnd.nextInt(10));
         }
-
-        private String generarCedula() {
-            Random rnd = new Random();
-            StringBuilder cedula = new StringBuilder();
-            for (int i = 0; i < 10; i++) {
-                cedula.append(rnd.nextInt(10));
-            }
-            return cedula.toString();
-         }
+        return cedula.toString();
+    }
+    private double generarSaldo() {
+        Random rnd = new Random();
+        DecimalFormat df = new DecimalFormat("#.00");
+        return Double.parseDouble(df.format(rnd.nextDouble() * 110 - 10));
+    }
+    public ArrayList<Propietario> obtenerPropietarios(){
+        return this.propietarios;
+    }
         
-
-        private double generarSaldo() {
-            Random rnd = new Random();
-            DecimalFormat df = new DecimalFormat("#.00");
-            return Double.parseDouble(df.format(rnd.nextDouble() * 110 - 10));
-        }
+    public void agregarVehiculoEnPropietario(Propietario propietario, Vehiculo vehiculo){
+        propietario.agregarVehiculo(vehiculo);
+    }
         
-        public ArrayList<Propietario> obtenerPropietarios(){
-            return this.propietarios;
-        }
+    //VEHICULOS Y TIPO VEHICULOS
+    public void registrarTipoVehiculo(TipoVehiculo tv){
+        tiposVehiculos.add(tv);
+    }
         
-        public void agregarVehiculoEnPropietario(Propietario propietario, Vehiculo vehiculo){
-            propietario.agregarVehiculo(vehiculo);
-        }
-        
-        
-        //VEHICULOS Y TIPO VEHICULOS
-         public void registrarTipoVehiculo(TipoVehiculo tv){
-               tiposVehiculos.add(tv);
-            }
-        
-            public void registrarVehiculos(int cantidadARegistrar){
-                Random rnd = new Random();
-                Set<String> patentesGeneradas = new HashSet<>();
-                ArrayList<Propietario> propietarios = Fachada.getInstancia().obtenerPropietarios();
+    public void registrarVehiculos(int cantidadARegistrar){
+        Random rnd = new Random();
+        Set<String> patentesGeneradas = new HashSet<>();
+        ArrayList<Propietario> propietarios = Fachada.getInstancia().obtenerPropietarios();
                 
-                for (int i = 0; i <= cantidadARegistrar; i++) {
-                    String patente = generarPatenteUnica(patentesGeneradas);
-                    TipoVehiculo tipo = tiposVehiculos.get(rnd.nextInt(tiposVehiculos.size()));
-                    Propietario propietario = propietarios.get(rnd.nextInt(propietarios.size()));
-                    Vehiculo vehiculoNuevo = new Vehiculo(patente, tipo, propietario);
-                    vehiculos.add(vehiculoNuevo);//Agrego el nuevo vehiculo en la lista de vehiculos del sistema.
-                    this.agregarVehiculoEnPropietario(propietario, vehiculoNuevo);//Agrego ese vehiculo en el propietario
-                }
-
-            }
-
-            private static String generarPatenteUnica(Set<String> patentesGeneradas) {
-                String patente;
-                Random rnd = new Random();
-                do {
-                    patente = "MAT" + (1000 + rnd.nextInt(9000));
-                } while (patentesGeneradas.contains(patente));
+        for (int i = 0; i <= cantidadARegistrar; i++) {
+                String patente = generarPatenteUnica(patentesGeneradas);
+                TipoVehiculo tipo = tiposVehiculos.get(rnd.nextInt(tiposVehiculos.size()));
+                Propietario propietario = propietarios.get(rnd.nextInt(propietarios.size()));
+                Vehiculo vehiculoNuevo = new Vehiculo(patente, tipo, propietario);
+                vehiculos.add(vehiculoNuevo);//Agrego el nuevo vehiculo en la lista de vehiculos del sistema.
+                this.agregarVehiculoEnPropietario(propietario, vehiculoNuevo);//Agrego ese vehiculo en el propietario
+        }
+    }
+    private static String generarPatenteUnica(Set<String> patentesGeneradas) {
+        String patente;
+        Random rnd = new Random();
+        do {
+                patente = "MAT" + (1000 + rnd.nextInt(9000));
+        } while (patentesGeneradas.contains(patente));
                 patentesGeneradas.add(patente);
                 return patente;
+    }
+    public ArrayList<Vehiculo> obtenerVehiciulos(){
+        return this.vehiculos;
+    }
+    public TipoVehiculo obtenerTipoDeVehiculoPorNombre(String nombre){
+        TipoVehiculo tipoVehiculoARetornar = null;
+        int i = 0;
+        while(tipoVehiculoARetornar == null || this.tiposVehiculos.size() < i){
+            if(this.tiposVehiculos.get(i).getNombre().equals(nombre)){
+                tipoVehiculoARetornar = this.tiposVehiculos.get(i);
             }
-            
-            public ArrayList<Vehiculo> obtenerVehiciulos(){
-                return this.vehiculos;
-            }
-        
-            public TipoVehiculo obtenerTipoDeVehiculoPorNombre(String nombre){
-                TipoVehiculo tipoVehiculoARetornar = null;
-                int i = 0;
-                while(tipoVehiculoARetornar == null || this.tiposVehiculos.size() < i){
-                    if(this.tiposVehiculos.get(i).getNombre().equals(nombre)){
-                        tipoVehiculoARetornar = this.tiposVehiculos.get(i);
-                    }
-                    i++;
-                }
-                return tipoVehiculoARetornar;
-            }
-
-        public Vehiculo obtenerVehiculoPorPatente(String patente) {
-            for (Vehiculo v : vehiculos) {
-                if (v.getPatente().equals(patente)) {
-                    return v;
-                }
-            }
-            return null;
+            i++;
         }
-
+        return tipoVehiculoARetornar;
+    }
+    public Vehiculo obtenerVehiculoPorPatente(String patente) {
+        for (Vehiculo v : vehiculos) {
+            if (v.getPatente().equals(patente)) {
+                    return v;
+            }
+        }
+        return null;
+    }
     ArrayList<Transitable> obtenerVehiciulosTransitables() {
-       ArrayList<Transitable> transitables = new ArrayList<>();
+        ArrayList<Transitable> transitables = new ArrayList<>();
         for(Vehiculo vehiculo:this.vehiculos){
             if(!vehiculo.estaEstacionado()){
                 transitables.add((Transitable) vehiculo);

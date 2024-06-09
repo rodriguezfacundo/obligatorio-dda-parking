@@ -20,65 +20,13 @@ public class Vehiculo implements IEtiquetable, Transitable{
         this.multas = new ArrayList<>();
     }
 
-    public String getPatente() {
-        return patente;
-    }
-
-    public void setPatente(String patente) {
-        this.patente = patente;
-    }
-
-    public TipoVehiculo getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(TipoVehiculo tipo) {
-        this.tipo = tipo;
-    }
-
-    public Propietario getPropietario() {
-        return propietario;
-    }
-
-    public void setPropietario(Propietario propietario) {
-        this.propietario = propietario;
-    }
-
-    public ArrayList<Etiqueta> getEtiquetas() {
-        return etiquetas;
-    }
-
-    public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {
-        this.etiquetas = etiquetas;
-    }
-
-    public ArrayList<Multa> getInfracciones() {
-        return multas;
-    }
-
-    public void setInfracciones(ArrayList<Multa> infracciones) {
-        this.multas = infracciones;
-    }
- 
-    
-    private StringBuilder obtenerEtiquetasString(){
-        StringBuilder etiquetasStr = new StringBuilder();
-        for (Etiqueta etiqueta : etiquetas) {
-            etiquetasStr.append(etiqueta.getNombre()).append(" ");
-        }
-        return etiquetasStr;
-    }
-    
-         @Override
-    public String toString() {
-        return this.patente + " - " + (this.estaEstacionado ? " ESTACIONADO" : "NO ESTACIONADO")  + " - Etiquetas: " +  this.obtenerEtiquetasString();
-    }
-
+    //METODOS AUXILIARES
     @Override
     public void agregarEtiqueta(Etiqueta etiqueta) {
         this.etiquetas.add(etiqueta);
     }
     
+    //METODO QUE VALIDA SI TIENE ETIQUETA O NO, SE UTILIZA EN LA ESTADIA PARA VALIDAR SI ES POSIBLE DE MULTA O NO.
     public boolean tieneEtiqueta(Class<? extends Etiqueta> etiquetaClass) {
         for (Etiqueta etiqueta : etiquetas) {
             if (etiquetaClass.isInstance(etiqueta)) {
@@ -87,15 +35,35 @@ public class Vehiculo implements IEtiquetable, Transitable{
         }
         return false;
     }
-
-    public void setEstacionado(boolean b) {
-        this.estaEstacionado = b;
+    
+    //TO STRING
+    @Override
+    public String toString() {
+        return patente + " - " + (this.estaEstacionado ? " ESTACIONADO" : " NO ESTACIONADO") + " - Etiquetas: " + obtenerEtiquetasString();
+    }
+    private StringBuilder obtenerEtiquetasString() {
+        StringBuilder etiquetasStr = new StringBuilder();
+        for (Etiqueta etiqueta : etiquetas) {
+            etiquetasStr.append(etiqueta.getNombre()).append(" ");
+        }
+        return etiquetasStr;
     }
     
-    public boolean estaEstacionado(){
-        return this.estaEstacionado;
-    }
-
+    //GETTERS Y SETTERS
+    public void setEstacionado(boolean b) {this.estaEstacionado = b;}
+    public boolean estaEstacionado(){return this.estaEstacionado;}
+    public void setPropietario(Propietario propietario) {this.propietario = propietario;}
+    public ArrayList<Etiqueta> getEtiquetas() {return etiquetas;}
+    public void setEtiquetas(ArrayList<Etiqueta> etiquetas) {this.etiquetas = etiquetas;}
+    public ArrayList<Multa> getInfracciones() {return multas;}
+    public void setInfracciones(ArrayList<Multa> infracciones) {this.multas = infracciones;}
+    public String getPatente() {return patente;}
+    public void setPatente(String patente) {this.patente = patente;}
+    public TipoVehiculo getTipo() {return tipo;}
+    public void setTipo(TipoVehiculo tipo) {this.tipo = tipo;}
+    public Propietario getPropietario() {return propietario;}
+    
+    //NO SE UTILIZAN, SOLAMENTE ESTAN POR EL SENSOR
     @Override
     public boolean esDiscapacitado() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

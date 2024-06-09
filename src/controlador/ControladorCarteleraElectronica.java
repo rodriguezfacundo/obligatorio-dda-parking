@@ -26,33 +26,27 @@ public class ControladorCarteleraElectronica implements IObservador{
             mostrarEtiquetas();
          }
     }
-    
     public void agregarObservador(){
         this.parking.agregarObservador(this);
     }
     public void quitarObservador(){
         this.parking.quitarObservador(this);
     }
-    
     private void mostrarCarteleraElectronica(){
         mostrarPrecios();
         mostrarTitulo();
         mostrarDisponibilidad();
         mostrarEtiquetas();
     }
-    
     public void mostrarPrecios(){
         this.vista.mostrarPrecios(this.parking.getTarifas());
     }
-    
     public void mostrarEtiquetas(){
         this.vista.mostrarDisponibilidadCocheraPorEtiqueta(this.parking.obtenerDisponibilidadPorEtiqueta());
     }
-    
     public void mostrarTitulo(){
         this.vista.mostrarTitulo(parking.getNombre());
     }
-    
     public void mostrarDisponibilidad(){
         this.vista.mostrarDisponibilidad(this.parking.getCantidadCocherasDisponibles());
     }
