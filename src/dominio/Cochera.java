@@ -21,7 +21,7 @@ public class Cochera implements IEtiquetable, Estacionable {
         this.parking = parking;
         this.estaOcupada = false;
         this.contadorID++;
-        agregarCochera();
+//        agregarCochera();
     }
 
     public boolean estaOcupada() {
@@ -111,9 +111,9 @@ public class Cochera implements IEtiquetable, Estacionable {
         this.codigo = codigo;
     }
 
-    public void agregarCochera() {
-        SistemaParking.getInstancia().agregarCochera(this);
-    }
+//    public void agregarCochera() {
+//        SistemaParking.getInstancia().agregarCochera(this);
+//    }
 
     @Override
     public void agregarEtiqueta(Etiqueta etiqueta) {
@@ -126,17 +126,29 @@ public class Cochera implements IEtiquetable, Estacionable {
 
     @Override
     public boolean esDiscapacitado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esDiscapacitado = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Discapacitado"))esDiscapacitado=true;
+        }
+        return esDiscapacitado;
     }
 
     @Override
     public boolean esElectrico() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esElectrico = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Electrico"))esElectrico=true;
+        }
+        return esElectrico;
     }
 
     @Override
     public boolean esEmpleado() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean esEmpleado = false;
+        for(Etiqueta e:etiquetas){
+            if(e.getNombre().equals("Empleado"))esEmpleado=true;
+        }
+        return esEmpleado;
     }
 
     @Override

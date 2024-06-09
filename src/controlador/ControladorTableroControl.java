@@ -5,7 +5,6 @@ import dominio.Cochera;
 import dominio.Estadia;
 import dominio.Parking;
 import dominio.ParkingException;
-import interfaces.ITableroControl;
 import java.util.ArrayList;
 import vistaParking.UITableroControl;
 import observador.IObservador;

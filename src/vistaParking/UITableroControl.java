@@ -11,7 +11,6 @@ import dominio.Anomalia;
 import dominio.Estadia;
 import dominio.Parking;
 import dominio.ParkingException;
-import interfaces.ITableroControl;
 import java.awt.Frame;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -240,8 +239,9 @@ public class UITableroControl extends javax.swing.JFrame implements VistaTablero
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //BOTON LISTA DE PRECIOS
     private void btn_preciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_preciosActionPerformed
-        // TODO add your handling code here:
+
         listaPrecios();
     }//GEN-LAST:event_btn_preciosActionPerformed
 
@@ -249,6 +249,7 @@ public class UITableroControl extends javax.swing.JFrame implements VistaTablero
         // TODO add your handling code here:
     }//GEN-LAST:event_ch_monitorear_anomaliasActionPerformed
 
+    //BOTON CARTELERA ELECTRONICA
     private void btn_carteleraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_carteleraActionPerformed
         // TODO add your handling code here: 
         carteleraElectronica();
@@ -265,6 +266,7 @@ public class UITableroControl extends javax.swing.JFrame implements VistaTablero
         dispose();
     }//GEN-LAST:event_btn_cerrarActionPerformed
 
+    //CHECKBOX MONITOREAR ANOMALIAS
     private void ch_monitorear_anomaliasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ch_monitorear_anomaliasMouseClicked
         // TODO add your handling code here:
         monitorearAnomalias();
@@ -337,12 +339,9 @@ public class UITableroControl extends javax.swing.JFrame implements VistaTablero
     }
     @Override
     public void mostrarListaParkings(ArrayList<Parking> parkings) {
-        System.out.println("ÜI mostrarListaParkings");
         TableModel modeloParkings = this.tb_tablero_control.getModel();
-        System.out.println("ÜI mostrarListaParkings parkings.size " + parkings.size());
         for (int i = 0; i < parkings.size(); i++) {
             Parking p = parkings.get(i);
-            System.out.println("ÜI mostrarListaParkings parking " + p);
             modeloParkings.setValueAt(p.getNombre(), i, 0);
             modeloParkings.setValueAt(p.getCantidadCocherasOcupadas(), i, 1);
             modeloParkings.setValueAt(p.getCantidadCocherasDisponibles(), i, 2);

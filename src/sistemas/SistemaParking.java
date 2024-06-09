@@ -24,14 +24,11 @@ public class SistemaParking <T extends IEtiquetable> {
     
         private ArrayList<Parking> parkings = new ArrayList<>();
         private ArrayList<Tendencia> tendencias = new ArrayList<>();
-        private ArrayList<Cochera> cocheras = new ArrayList<>();
-        private ArrayList<Estadia> estadias = new ArrayList<>();
         private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
         private ArrayList<Propietario> propietarios = new ArrayList<>();
         private ArrayList<TipoVehiculo> tiposVehiculos = new ArrayList<>();
-        private ArrayList<Vehiculo> vehiculos = new ArrayList<>();
-
-    private static SistemaParking instancia = new SistemaParking();
+        private ArrayList<Vehiculo> vehiculos = new ArrayList<>();//
+        private static SistemaParking instancia = new SistemaParking();
 
     public static SistemaParking getInstancia() {
         return instancia;
@@ -103,44 +100,36 @@ public class SistemaParking <T extends IEtiquetable> {
     
    //COCHERAS
     
-    public void agregarCochera(Cochera cochera) {
-        cocheras.add(cochera);
-    }
-    
+//    public void agregarCochera(Cochera cochera) {
+//        cocheras.add(cochera);
+//    }
+//    
     public ArrayList<Cochera> obtenerCocheras(){
-        return this.cocheras;
+        ArrayList<Cochera> cocheras = new ArrayList<Cochera>();
+        for(Parking p:parkings){
+           ArrayList<Cochera> cocherasParking = p.getCocheras();
+           if(!cocherasParking.isEmpty())cocheras.addAll(cocherasParking);
+        }
+        return cocheras;
     }
 
     public Cochera obtenerCocheraPorCodigo(String codCochera) {
-        for (Cochera cochera : cocheras) {
-            if (cochera.getCodigo().equals(codCochera)) {
-                return cochera;
-            }
+        Cochera encontrada = null;
+        for (Parking p : parkings) {
+            encontrada = p.obtenerCocheraPorCodigo(codCochera);
+            if(encontrada!=null)return encontrada;
         }
         return null;
     }
 
     ArrayList<Estacionable> obtenerCocherasEstacionables() {
         ArrayList<Estacionable> estacionables = new ArrayList<>();
-        for(Cochera cochera:this.cocheras){
-            if(!cochera.estaOcupada()){
-                estacionables.add((Estacionable) cochera);
-            }
+        for(Parking p : parkings){
+            ArrayList<Estacionable> estacionablesParking = p.obtenerCocherasEstacionables();
+           if(!estacionablesParking.isEmpty())estacionables.addAll(estacionablesParking);
         }
         return estacionables;
     }
-    
-    //ESTADIAS
-    
-    public ArrayList<Estadia> obtenerEstadias(){
-        return this.estadias;
-    }
-
-    public void agregarNuevaEstadia(Estadia estadiaNueva){
-        this.estadias.add(estadiaNueva);
-    }
-    
-    //ETIQUETAS
     
     public void agregarEtiqueta(Etiqueta etiqueta){
         etiquetas.add(etiqueta);

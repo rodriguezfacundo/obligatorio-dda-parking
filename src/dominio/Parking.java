@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import observador.Observable;
+import simuladortransito.Estacionable;
 import sistemas.SistemaParking;
 
 public class Parking extends Observable {
@@ -132,7 +133,21 @@ public class Parking extends Observable {
         }
         return disponibilidadPorEtiqueta;
     }
-   
+    public Cochera obtenerCocheraPorCodigo(String codCochera){
+        for(Cochera c:cocheras){
+            if(c.getCodigo().equals(codCochera)) return c;
+        }
+        return null;
+    }
+    public ArrayList<Estacionable> obtenerCocherasEstacionables(){
+        ArrayList<Estacionable> estacionablesRetorno = new ArrayList<Estacionable>();
+        for(Cochera c:cocheras){
+             if(!c.estaOcupada()){
+                estacionablesRetorno.add((Estacionable) c);
+            }
+        }
+        return estacionablesRetorno;
+    }
     //-------------------------EVENTOS----------------------------------
     public void actualizarValorTarifa(int pos, Double nuevoValor) throws ParkingException{
            this.tarifas.get(pos).actualizarPrecio(nuevoValor);

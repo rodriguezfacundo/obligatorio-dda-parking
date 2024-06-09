@@ -50,6 +50,8 @@ public class ControladorListaPrecios implements IObservador{
     public void mostrarTitulo(){
         this.vista.mostrarTitulo(this.parking.getNombre());
     }
+    
+    //Caso de uso actualizar precio
     public void cambiarValor(int pos,String nuevoValor)throws ParkingException{
         try{          
             if(pos<0){

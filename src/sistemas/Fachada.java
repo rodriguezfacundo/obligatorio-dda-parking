@@ -96,9 +96,9 @@ public class Fachada extends Observable{
         return sParking.obtenerCocheraPorCodigo(codCochera);
     }
     
-   public ArrayList<Estadia> obtenerEstadias(){
-        return sParking.obtenerEstadias();
-    }
+//   public ArrayList<Estadia> obtenerEstadias(){
+//        return sParking.obtenerEstadias();
+//    }
     
    public Tendencia obtenerTendenciaPorNombre(String nombre){
        return sParking.obtenerTendenciaPorNombre(nombre);
@@ -111,9 +111,9 @@ public class Fachada extends Observable{
        return sParking.obtenerTotalFacturado();
    }
 
-    public void agregarEstadia(Estadia estadiaNueva) {
-        sParking.agregarNuevaEstadia(estadiaNueva);
-    }
+//    public void agregarEstadia(Estadia estadiaNueva) {
+//        sParking.agregarNuevaEstadia(estadiaNueva);
+//    }
 
     public void agregarEtiquetasEnParking() {
         sParking.agregarEtiquetasParkings();
