@@ -6,7 +6,7 @@ import simuladorIU.SimuladorIU;
 import simuladortransito.ConfiguracionException;
 import simuladortransito.Estacionable;
 import simuladortransito.Transitable;
-import vistaParking.Menu;
+import Interfaz.Menu;
 
 public class Main {
     

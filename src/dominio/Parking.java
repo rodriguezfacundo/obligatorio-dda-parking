@@ -135,6 +135,7 @@ public class Parking extends Observable {
     public double obtenerValorFactorDemanda(int cantidadUT) {
         double fd = this.tendencia.calcularFactorDemanda(cantidadUT, this);
         this.factorDemanda = fd;
+        this.avisar(Observable.Eventos.PARKING_CAMBIO);
         return this.factorDemanda;
     }
     //Retorna la cantidad de cocheras disponibles para estacionar.
@@ -188,11 +189,11 @@ public class Parking extends Observable {
     //AVISAR
     public void setTendencia(Tendencia ten) {
         this.tendencia = ten;
-        this.avisar(Observable.Eventos.CAMBIO_TENDENCIA);
+        this.avisar(Observable.Eventos.PARKING_CAMBIO);
     }
     public void actualizarValorTarifa(int pos, Double nuevoValor) throws ParkingException{
            this.tarifas.get(pos).actualizarPrecio(nuevoValor);
-           this.avisar(Observable.Eventos.PARKING_CAMBIO);
+           this.avisar(Observable.Eventos.PARKING_CAMBIO_PRECIO);
     }
     public void avisarCambioEstadoEstadia() {
         this.avisar(Observable.Eventos.INGRESO_EGRESO_ESTADIA);

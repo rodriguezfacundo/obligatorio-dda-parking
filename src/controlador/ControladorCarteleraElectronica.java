@@ -1,5 +1,6 @@
 package controlador;
 
+import Interfaz.VistaCarteleraElectronica;
 import dominio.Parking;
 import observador.IObservador;
 import observador.Observable;
@@ -18,7 +19,7 @@ public class ControladorCarteleraElectronica implements IObservador{
     //Aca se procesan los eventos del modelo
     @Override
     public void actualizar(Object evento, Observable origen) {
-        if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
+        if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO_PRECIO)) {
              mostrarPrecios();
         } 
         if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA)){

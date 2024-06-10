@@ -92,6 +92,7 @@ public class Estadia{
     }
     //Finaliza la estadia.
     void finalizar() {
+        this.salida = new Date();
         this.temporizadorUT.stop();
         this.esFinalizada = true;
         this.cochera.setOcupada(false);
@@ -100,6 +101,7 @@ public class Estadia{
         this.calcularValorFacturado();
         this.vehiculo.getPropietario().restarCuentaCorriente(this.valorFacturado);
     }
+    
     
     //AVISAR
     

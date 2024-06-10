@@ -1,5 +1,6 @@
 package controlador;
 
+import Interfaz.VistaTableroControl;
 import dominio.Estadia;
 import dominio.Parking;
 import dominio.ParkingException;
@@ -13,7 +14,6 @@ public class ControladorTableroControl implements IObservador{
     private Fachada fachada;
     private ArrayList<Parking> parkings;
     private Parking parkingSeleccionado;
-    private ArrayList<Estadia> estadiasAnomalias;
     
     
     public ControladorTableroControl(VistaTableroControl vistaTableroControl){
@@ -21,7 +21,6 @@ public class ControladorTableroControl implements IObservador{
         this.vista = vistaTableroControl;
         this.parkings = fachada.obtenerParkings();
         this.parkingSeleccionado = null;
-        this.estadiasAnomalias =  new ArrayList<Estadia>();
         agregarObservadorParkings();
         mostrarTableroControl();
     }
@@ -32,7 +31,7 @@ public class ControladorTableroControl implements IObservador{
           Parking parkingOrigen = (Parking)origen;
            if(this.parkingSeleccionado!=null&& parkingOrigen.equals(this.parkingSeleccionado))mostrarAnomalias(parkingOrigen);
         }  
-      if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA)) {
+      if(((Observable.Eventos) evento).equals(Observable.Eventos.INGRESO_EGRESO_ESTADIA) || ((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
            mostrarTableroControl();
         }
     }
@@ -57,8 +56,7 @@ public class ControladorTableroControl implements IObservador{
         this.vista.mostrarListaParkings(this.parkings);
     }
     public void mostrarAnomalias(Parking parkingAnomalia){
-        this.estadiasAnomalias.add(parkingAnomalia.getUltimaEstadiaConAnomalia());
-        this.vista.mostrarAnomaliasCheckbox(estadiasAnomalias);
+        this.vista.mostrarAnomaliasCheckbox(parkingAnomalia.getUltimaEstadiaConAnomalia());
     }
     public void agregarObservadorParkings(){
         for (Parking p : parkings) {

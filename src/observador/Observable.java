@@ -7,7 +7,7 @@ public class Observable {
         ANOMALIA_REGISTRADA,
         PARKING_CAMBIO,
         INGRESO_EGRESO_ESTADIA,
-        CAMBIO_TENDENCIA,
+        PARKING_CAMBIO_PRECIO
     }
     
     private ArrayList<IObservador> observadores = new ArrayList();

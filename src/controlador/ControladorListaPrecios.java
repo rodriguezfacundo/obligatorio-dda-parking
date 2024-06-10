@@ -1,5 +1,6 @@
 package controlador;
 
+import Interfaz.VistaListaPrecios;
 import dominio.Parking;
 import dominio.ParkingException;
 import observador.IObservador;
@@ -20,7 +21,7 @@ public class ControladorListaPrecios implements IObservador{
 
     @Override
     public void actualizar(Object evento, Observable origen) {
-       if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO)) {
+       if (((Observable.Eventos) evento).equals(Observable.Eventos.PARKING_CAMBIO_PRECIO)) {
             mostrarPrecios();
         }  
     }

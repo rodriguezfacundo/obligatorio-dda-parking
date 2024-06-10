@@ -1,6 +1,5 @@
 package dominio;
 
-import interfaces.IEtiquetable;
 import java.util.ArrayList;
 import simuladortransito.Transitable;
 

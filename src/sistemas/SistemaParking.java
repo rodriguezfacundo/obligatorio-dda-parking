@@ -9,7 +9,7 @@ import dominio.Tarifa;
 import dominio.Tendencia;
 import dominio.TipoVehiculo;
 import dominio.Vehiculo;
-import interfaces.IEtiquetable;
+import dominio.IEtiquetable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
